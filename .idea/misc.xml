@@ -5,7 +5,8 @@
       <map>
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/drawable/input.xml" value="0.152" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/activity_main.xml" value="0.16530797101449277" />
-        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_login.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_login.xml" value="0.1530701754385965" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_register.xml" value="0.12" />
       </map>
     </option>
   </component>
