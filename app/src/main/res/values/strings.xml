@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Capstone Bangkit 2022</string>
+    <string name="login_title">Silakan Login!</string>
+    <string name="email_input_label">Email</string>
+    <string name="password_input_label">Password</string>
+    <string name="login_button">Login</string>
+    <string name="register_label">Belum Punya Akun?</string>
+    <string name="register_button">Register</string>
 </resources>

@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/drawable/input.xml" value="0.152" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/activity_main.xml" value="0.16530797101449277" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_login.xml" value="0.2" />
       </map>
     </option>
   </component>
