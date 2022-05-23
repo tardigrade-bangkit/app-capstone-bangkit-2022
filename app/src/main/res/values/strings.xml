@@ -10,4 +10,10 @@
     <string name="login_label">Sudah Punya Akun?</string>
     <string name="confirm_password_input_label">Konfirmasi Password</string>
     <string name="name_input_label">Nama</string>
+    <string name="pin_create_label">Buat PIN Orang Tua</string>
+    <string name="pin_enter_label">Masukkan PIN Orang Tua</string>
+    <string name="continue_label">Lanjut</string>
+    <string name="input_empty">%1$s can\'t be empty</string>
+    <string name="email_not_valid">Email is not valid</string>
+    <string name="password_empty">Password can\'t be empty</string>
 </resources>

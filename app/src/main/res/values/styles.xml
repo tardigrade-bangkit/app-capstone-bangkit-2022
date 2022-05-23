@@ -165,7 +165,14 @@
 
     <style name="InputText" parent="@android:style/Widget.EditText">
         <item name="android:padding">12dp</item>
-        <item name="android:background">@drawable/input</item>
+        <item name="android:background">@drawable/input_with_border</item>
+    </style>
+
+    <style name="InputText.Pin">
+        <item name="android:padding">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/input_without_border</item>
     </style>
 
 </resources>

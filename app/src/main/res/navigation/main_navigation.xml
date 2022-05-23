@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_pinFragment"
+            app:destination="@id/pinFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.tardigrade.capstonebangkit.view.parent.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/pinFragment"
+        android:name="com.tardigrade.capstonebangkit.view.parent.pin.PinFragment"
+        android:label="fragment_pin"
+        tools:layout="@layout/fragment_pin" />
 </navigation>
