@@ -16,4 +16,6 @@
     <string name="input_empty">%1$s can\'t be empty</string>
     <string name="email_not_valid">Email is not valid</string>
     <string name="password_empty">Password can\'t be empty</string>
+    <string name="stat_title">Statistik Belajar</string>
+    <string name="profile_title">Profilmu</string>
 </resources>
