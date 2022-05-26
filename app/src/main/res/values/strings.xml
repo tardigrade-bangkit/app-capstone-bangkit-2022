@@ -18,4 +18,9 @@
     <string name="password_empty">Password can\'t be empty</string>
     <string name="stat_title">Statistik Belajar</string>
     <string name="profile_title">Profilmu</string>
+    <string name="child_setting">Pengaturan Anak</string>
+    <string name="new_child_profile">Profil Baru</string>
+    <string name="profile_setting">Pengaturan Profil</string>
+    <string name="edit_info_account">Ubah Informasi Akun</string>
+    <string name="logout">Logout</string>
 </resources>

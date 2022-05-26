@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentPinBinding
 
 class PinFragment : Fragment() {
@@ -92,6 +94,7 @@ class PinFragment : Fragment() {
         }.toString()
 
         Toast.makeText(context, "Pin: $pin", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_pinFragment_to_profileFragment)
     }
 
     override fun onDestroyView() {
