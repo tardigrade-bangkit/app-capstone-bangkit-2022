@@ -54,17 +54,22 @@ class RegisterFragment : Fragment() {
         with(binding ?: return) {
             val emailValid = emailInput
                 .validate(context, getString(R.string.email_input_label)) {
-                    if (!it.text.toString().isValidEmail()) {
-                        it.error = getString(R.string.email_not_valid)
-                        return@validate false
+                    if (!it.isValidEmail()) {
+                        return@validate getString(R.string.email_not_valid)
                     }
 
-                    true
+                    null
                 }
             val nameValid = nameInput
                 .validate(context, getString(R.string.name_input_label))
             val passwordValid = passwordInput
-                .validate(context, getString(R.string.password_input_label))
+                .validate(context, getString(R.string.password_input_label)) {
+                    if(it.length < 8) {
+                        return@validate getString(R.string.password_min_length)
+                    }
+
+                    null
+                }
             val confirmPasswordValid = confirmPasswordInput
                 .validate(context, getString(R.string.confirm_password_input_label))
 
@@ -72,10 +77,10 @@ class RegisterFragment : Fragment() {
                 return
             }
 
-            val email = emailInput.text.toString()
-            val name = nameInput.text.toString()
-            val password = passwordInput.text.toString()
-            val confirmPassword = confirmPasswordInput.text.toString()
+            val email = emailInputEt.text.toString()
+            val name = nameInputEt.text.toString()
+            val password = passwordInputEt.text.toString()
+            val confirmPassword = confirmPasswordInputEt.text.toString()
 
             registerSuccess(email)
         }
