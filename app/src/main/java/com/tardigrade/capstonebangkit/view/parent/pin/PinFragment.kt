@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentPinBinding
 
 class PinFragment : Fragment() {
@@ -37,61 +39,65 @@ class PinFragment : Fragment() {
                 pinInput6
             )
 
-            var textWatcher = object : TextWatcher {
-                var numTemp: String? = null
+            pinInputs.forEach {
+                it.addTextChangedListener(object : TextWatcher {
+                    var numTemp: String? = null
 
-                override fun beforeTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
-                    numTemp = p0.toString()
-                }
+                    override fun beforeTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                        numTemp = p0.toString()
+                    }
 
-                override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
-                    // do nothing
-                }
+                    override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                        // do nothing
+                    }
 
-                override fun afterTextChanged(p0: Editable) {
-                    for (i in pinInputs.indices) {
-                        if (p0 === pinInputs[i].editableText) {
-                            if (p0.isBlank()) {
-                                return
-                            }
-
-                            if (p0.toString().length > 1) {
-                                val newNum = p0.toString().substring(1, 2)
-                                if (newNum != numTemp) {
-                                    pinInputs[i].setText(newNum)
-                                } else {
-                                    pinInputs[i].setText(numTemp)
+                    override fun afterTextChanged(p0: Editable) {
+                        for (i in pinInputs.indices) {
+                            if (p0 === pinInputs[i].editableText) {
+                                if (p0.isBlank()) {
+                                    return
                                 }
-                            }
 
-                            if (i != pinInputs.lastIndex) {
-                                pinInputs[i + 1].requestFocus()
-                                pinInputs[i + 1].setSelection(pinInputs[i + 1].length())
-                            } else {
-                                checkPin(pinInputs)
+                                if (p0.toString().length > 1) {
+                                    val newNum = p0.toString().substring(1, 2)
+                                    if (newNum != numTemp) {
+                                        pinInputs[i].setText(newNum)
+                                    } else {
+                                        pinInputs[i].setText(numTemp)
+                                    }
+                                }
+
+                                if (i != pinInputs.lastIndex) {
+                                    pinInputs[i + 1].requestFocus()
+                                } else {
+                                    checkPin(pinInputs)
+                                }
                             }
                         }
                     }
-                }
+                })
             }
 
-            pinInput1.addTextChangedListener(textWatcher)
-            pinInput2.addTextChangedListener(textWatcher)
-            pinInput3.addTextChangedListener(textWatcher)
-            pinInput4.addTextChangedListener(textWatcher)
-            pinInput5.addTextChangedListener(textWatcher)
-            pinInput6.addTextChangedListener(textWatcher)
+            continueBtn.setOnClickListener {
+                checkPin(pinInputs)
+            }
         }
     }
 
     private fun checkPin(pinInputs: Array<EditText>) {
         val pin = StringBuilder().apply {
             pinInputs.forEach {
+                if (it.text.isBlank()) {
+                    Toast.makeText(context, "Pin not valid", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
                 this.append(it.text.toString())
             }
         }.toString()
 
         Toast.makeText(context, "Pin: $pin", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_pinFragment_to_dashboardFragment)
     }
 
     override fun onDestroyView() {
