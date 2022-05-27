@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
+        android:title="@string/statistic" />
+
+    <item
+        android:id="@+id/nav_children_area"
+        android:icon="@drawable/ic_outline_article_24"
+        android:title="@string/to_children_area" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_outline_account_circle_24"
+        android:title="@string/profile" />
+</menu>

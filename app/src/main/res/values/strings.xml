@@ -23,4 +23,7 @@
     <string name="profile_setting">Pengaturan Profil</string>
     <string name="edit_info_account">Ubah Informasi Akun</string>
     <string name="logout">Logout</string>
+    <string name="statistic">Statistik</string>
+    <string name="to_children_area">Ke Anak-anak</string>
+    <string name="profile">Profil</string>
 </resources>
