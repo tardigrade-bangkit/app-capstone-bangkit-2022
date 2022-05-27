@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -32,7 +33,7 @@ class LoginFragment : Fragment() {
 
         setFragmentResultListener(RegisterFragment.RESULT_KEY) { _, bundle ->
             val email = bundle.getString(RegisterFragment.RESULT_EMAIL)
-            binding?.emailInput?.setText(email)
+            binding?.emailInputEt?.setText(email)
         }
 
         binding?.apply {
@@ -64,12 +65,11 @@ class LoginFragment : Fragment() {
         with(binding ?: return) {
             val emailValid = emailInput
                 .validate(context, getString(R.string.email_input_label)) {
-                    if (!it.text.toString().isValidEmail()) {
-                        it.error = getString(R.string.email_not_valid)
-                        return@validate false
+                    if (!it.isValidEmail()) {
+                        return@validate getString(R.string.email_not_valid)
                     }
 
-                    true
+                    null
                 }
             val passwordValid = passwordInput
                 .validate(context, getString(R.string.password_input_label))
@@ -78,8 +78,11 @@ class LoginFragment : Fragment() {
                 return
             }
 
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
+            val email = emailInputEt.text.toString()
+            val password = passwordInputEt.text.toString()
+
+            Toast.makeText(context, "Logged in with $email and $password", Toast.LENGTH_SHORT)
+                .show()
 
             loginSuccess()
         }

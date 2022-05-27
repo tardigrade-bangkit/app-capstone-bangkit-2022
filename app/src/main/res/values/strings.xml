@@ -13,9 +13,10 @@
     <string name="pin_create_label">Buat PIN Orang Tua</string>
     <string name="pin_enter_label">Masukkan PIN Orang Tua</string>
     <string name="continue_label">Lanjut</string>
-    <string name="input_empty">%1$s can\'t be empty</string>
-    <string name="email_not_valid">Email is not valid</string>
-    <string name="password_empty">Password can\'t be empty</string>
+    <string name="input_empty">%1$s tidak boleh kosong</string>
+    <string name="email_not_valid">Email tidak valid</string>
+    <string name="password_empty">Password tidak boleh kosong</string>
+    <string name="password_min_length">Password harus punya minimal 8 karakter</string>
     <string name="stat_title">Statistik Belajar</string>
     <string name="profile_title">Profilmu</string>
     <string name="child_setting">Pengaturan Anak</string>
