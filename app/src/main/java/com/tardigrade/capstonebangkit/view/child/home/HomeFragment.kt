@@ -57,11 +57,11 @@ class HomeFragment : Fragment() {
                 )
             )
 
-            newLessonsList.layoutManager = GridLayoutManager(context, 3)
-            newLessonsList.adapter = LessonAdapter(lessonList)
-
-            pastLessonsList.layoutManager = GridLayoutManager(context, 3)
-            pastLessonsList.adapter = LessonAdapter(lessonList)
+//            newLessonsList.layoutManager = GridLayoutManager(context, 3)
+//            newLessonsList.adapter = LessonAdapter(lessonList)
+//
+//            pastLessonsList.layoutManager = GridLayoutManager(context, 3)
+//            pastLessonsList.adapter = LessonAdapter(lessonList)
         }
     }
 

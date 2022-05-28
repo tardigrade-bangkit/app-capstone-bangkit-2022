@@ -13,7 +13,7 @@
         android:theme="@style/Theme.CapstoneBangkit2022">
         <activity
             android:name=".view.ChildActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
