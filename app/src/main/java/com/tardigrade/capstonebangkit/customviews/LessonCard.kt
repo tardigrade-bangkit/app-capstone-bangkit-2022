@@ -11,27 +11,15 @@ import androidx.palette.graphics.Palette
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.ViewLessonCardBinding
 
-class LessonCard @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet?,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr){
+class LessonCard : FrameLayout{
     private val binding = ViewLessonCardBinding.inflate(LayoutInflater.from(context))
 
-    init {
-        inflate(context, R.layout.view_lesson_card, this)
+    constructor(context: Context): super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.LessonCard)
-        setLessonCoverImage(
-            BitmapFactory.decodeResource(
-                resources,
-                attributes.getResourceId(R.styleable.LessonCard_cover_image, 0)
-            )
-        )
-        setLessonTitle(attributes.getString(R.styleable.LessonCard_lesson_title) ?: "Lesson Title")
-        setLessonType(attributes.getString(R.styleable.LessonCard_lesson_type) ?: "Lesson Type")
-        clipToOutline = true
-        attributes.recycle()
+    init {
+        addView(binding.root)
     }
 
     fun setLessonTitle(title: String) {
@@ -60,12 +48,15 @@ class LessonCard @JvmOverloads constructor(
 
     fun setLessonCoverImage(image: Bitmap) {
         binding.lessonCoverImage.setImageBitmap(image)
+        binding.root.clipToOutline = true
 
         // Set title color based on image color
         val palette = Palette.from(image).generate()
         binding.lessonTitle.background.setTint(
-            palette.getLightVibrantColor(ContextCompat.getColor(context, R.color.blue_800)))
+            palette.getLightVibrantColor(
+                palette.getLightMutedColor(ContextCompat.getColor(context, R.color.blue_100))))
         binding.lessonTitle.setTextColor(
-            palette.getDarkMutedColor(ContextCompat.getColor(context, R.color.blue_200)))
+            palette.getDarkMutedColor(
+                palette.getDarkVibrantColor(ContextCompat.getColor(context, R.color.blue_800))))
     }
 }

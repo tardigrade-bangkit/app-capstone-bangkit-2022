@@ -2,6 +2,8 @@ package com.tardigrade.capstonebangkit.adapter
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.util.Log
+import android.util.Log.INFO
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,29 +19,27 @@ import com.tardigrade.capstonebangkit.databinding.AddChildButtonBinding
 import com.tardigrade.capstonebangkit.databinding.ChildProfileBinding
 
 class LessonAdapter(private val listLesson: ArrayList<Lesson>)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-    inner class LessonViewHolder(v: View) : RecyclerView.ViewHolder(v){
+    : RecyclerView.Adapter<LessonAdapter.ViewHolder>(){
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v){
         val view: LessonCard
         init {
             view = v as LessonCard
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        val itemView = LessonCard(parent.context, null)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val itemView = LessonCard(parent.context)
         itemView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        return LessonViewHolder(itemView)
+        return ViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (coverImageUrl, title, type) = listLesson[position]
-        val lessonViewHolder = holder as LessonViewHolder
-        lessonViewHolder.view.apply {
+        holder.view.apply {
             setLessonTitle(title)
             setLessonType(type)
             Glide.with(context)
@@ -55,5 +55,5 @@ class LessonAdapter(private val listLesson: ArrayList<Lesson>)
         }
     }
 
-    override fun getItemCount() = listLesson.size + 1
+    override fun getItemCount() = listLesson.size
 }
