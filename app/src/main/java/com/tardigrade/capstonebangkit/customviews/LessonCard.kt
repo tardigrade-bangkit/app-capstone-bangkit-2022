@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.customviews
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -12,7 +13,7 @@ import com.tardigrade.capstonebangkit.databinding.ViewLessonCardBinding
 
 class LessonCard @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet,
+    attrs: AttributeSet?,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr){
     private val binding = ViewLessonCardBinding.inflate(LayoutInflater.from(context))
@@ -21,7 +22,12 @@ class LessonCard @JvmOverloads constructor(
         inflate(context, R.layout.view_lesson_card, this)
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.LessonCard)
-        setLessonCoverImage(attributes.getResourceId(R.styleable.LessonCard_cover_image, 0))
+        setLessonCoverImage(
+            BitmapFactory.decodeResource(
+                resources,
+                attributes.getResourceId(R.styleable.LessonCard_cover_image, 0)
+            )
+        )
         setLessonTitle(attributes.getString(R.styleable.LessonCard_lesson_title) ?: "Lesson Title")
         setLessonType(attributes.getString(R.styleable.LessonCard_lesson_type) ?: "Lesson Type")
         clipToOutline = true
@@ -52,15 +58,14 @@ class LessonCard @JvmOverloads constructor(
         }
     }
 
-    fun setLessonCoverImage(image: Int) {
-        binding.lessonCoverImage.setImageResource(image)
+    fun setLessonCoverImage(image: Bitmap) {
+        binding.lessonCoverImage.setImageBitmap(image)
 
         // Set title color based on image color
-        val coverImage = BitmapFactory.decodeResource(resources, image)
-        val palette = Palette.from(coverImage).generate()
+        val palette = Palette.from(image).generate()
         binding.lessonTitle.background.setTint(
             palette.getLightVibrantColor(ContextCompat.getColor(context, R.color.blue_800)))
         binding.lessonTitle.setTextColor(
-            palette.getDarkMutedColor(ContextCompat.getColor(context, R.color.blue_800)))
+            palette.getDarkMutedColor(ContextCompat.getColor(context, R.color.blue_200)))
     }
 }

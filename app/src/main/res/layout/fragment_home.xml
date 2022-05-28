@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.children.home.HomeFragment"
+    tools:context=".view.child.home.HomeFragment"
     android:background="@drawable/children_home_background"
     android:padding="24dp"
     android:orientation="vertical">
@@ -17,21 +17,25 @@
         android:layout_marginBottom="24dp">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintEnd_toStartOf="@+id/btn_missions"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_missions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button" />
+            app:layout_constraintStart_toEndOf="@+id/btn_account"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -40,22 +44,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/new_lessons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp"
+            app:layout_goneMarginBottom="0dp">
 
             <TextView
                 android:id="@+id/new_lessons_title"
                 style="@style/Text.Heading.2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Belajar yang baru!" />
+                android:text="Belajar yang baru!"
+                android:layout_marginBottom="8dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/new_lessons_list"

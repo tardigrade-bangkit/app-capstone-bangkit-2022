@@ -1,4 +1,4 @@
-package com.tardigrade.capstonebangkit.view.children.home
+package com.tardigrade.capstonebangkit.view.child.home
 
 import androidx.lifecycle.ViewModel
 
