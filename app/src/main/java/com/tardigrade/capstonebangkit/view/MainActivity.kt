@@ -28,7 +28,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.customToolbar)
-        binding.customToolbar.setTitleTextAppearance(this, R.style.Text_Heading_1)
+        binding.customToolbar.apply {
+            setTitleTextAppearance(this@MainActivity, R.style.Text_Heading_1)
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
+        }
 
         val navView = binding.navParentView
 

@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.ChildProfileAdapter
@@ -14,6 +16,7 @@ import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.databinding.FragmentDashboardBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentProfileBinding
 import com.tardigrade.capstonebangkit.misc.getActionBar
+import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
 import com.tardigrade.capstonebangkit.view.parent.dashboard.DashboardViewModel
 
 class ProfileFragment : Fragment() {
@@ -42,37 +45,52 @@ class ProfileFragment : Fragment() {
             profileName.text = "Nama"
             profileEmail.text = "Email@email.com"
 
-            profileChilds.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             profileChilds.adapter = ChildProfileAdapter(arrayListOf(
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
-                    avatarUrl = "https://picsum.photos/200",
+                    avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
-            ))
+            )).apply {
+                setOnItemClickCallback(object : ChildProfileAdapter.OnItemClickCallback {
+                    override fun onItemClicked(child: ChildProfile) {
+                        val toChildProfile = ProfileFragmentDirections
+                            .actionNavProfileToChildProfileFragment().apply {
+                                mode = ChildProfileFragment.EDIT_MODE
+                            }
+
+                        findNavController().navigate(toChildProfile)
+                    }
+
+                    override fun onFooterClicked() {
+                        findNavController().navigate(R.id.action_nav_profile_to_childProfileFragment)
+                    }
+
+                })
+            }
         }
     }
 
