@@ -13,6 +13,7 @@ import com.tardigrade.capstonebangkit.adapter.ChildProfileAdapter
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.databinding.FragmentDashboardBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentProfileBinding
+import com.tardigrade.capstonebangkit.misc.getActionBar
 import com.tardigrade.capstonebangkit.view.parent.dashboard.DashboardViewModel
 
 class ProfileFragment : Fragment() {
@@ -29,6 +30,11 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getActionBar(activity)?.apply {
+            show()
+            setTitle(R.string.profile_title)
+        }
 
         binding?.apply {
             // placeholder

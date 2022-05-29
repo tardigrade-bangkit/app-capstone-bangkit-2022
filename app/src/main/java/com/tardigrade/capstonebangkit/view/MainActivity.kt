@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        setSupportActionBar(binding.customToolbar)
+        binding.customToolbar.setTitleTextAppearance(this, R.style.Text_Heading_1)
 
         val navView = binding.navParentView
 

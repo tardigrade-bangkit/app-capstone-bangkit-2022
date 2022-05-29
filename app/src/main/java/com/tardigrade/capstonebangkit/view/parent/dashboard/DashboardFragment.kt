@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentDashboardBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentLoginBinding
+import com.tardigrade.capstonebangkit.misc.getActionBar
 import com.tardigrade.capstonebangkit.misc.isValidEmail
 import com.tardigrade.capstonebangkit.misc.validate
 import com.tardigrade.capstonebangkit.view.parent.login.LoginViewModel
@@ -28,6 +29,16 @@ class DashboardFragment : Fragment() {
     ): View? {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getActionBar(activity)?.apply {
+            show()
+            setTitle(R.string.stat_title)
+        }
+
     }
 
     override fun onDestroyView() {
