@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         val childrenButton = (navView.getChildAt(0) as BottomNavigationMenuView)
             .getChildAt(1) as BottomNavigationItemView
         childrenButton.background = ContextCompat.getDrawable(this, R.drawable.nav_bottom_item_bg_children)
+        childrenButton.setOnClickListener {
+            navHostFragment.navController.navigate(R.id.chooseChildFragment)
+        }
 
         // these two lines show up as an error but they actually works as expected
         // hence the SuppressLint

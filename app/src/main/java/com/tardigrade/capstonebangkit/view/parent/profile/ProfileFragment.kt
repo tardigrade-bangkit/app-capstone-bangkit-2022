@@ -1,23 +1,20 @@
 package com.tardigrade.capstonebangkit.view.parent.profile
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.tardigrade.capstonebangkit.R
-import com.tardigrade.capstonebangkit.adapter.ChildProfileAdapter
+import com.tardigrade.capstonebangkit.adapter.ChildProfileSmallAdapter
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.databinding.FragmentDashboardBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentProfileBinding
 import com.tardigrade.capstonebangkit.misc.getActionBar
 import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
-import com.tardigrade.capstonebangkit.view.parent.dashboard.DashboardViewModel
+import com.tardigrade.capstonebangkit.view.parent.choosechild.ChooseChildFragmentDirections
 
 class ProfileFragment : Fragment() {
     private val viewModel by viewModels<ProfileViewModel>()
@@ -45,7 +42,7 @@ class ProfileFragment : Fragment() {
             profileName.text = "Nama"
             profileEmail.text = "Email@email.com"
 
-            profileChilds.adapter = ChildProfileAdapter(arrayListOf(
+            profileChilds.adapter = ChildProfileSmallAdapter(arrayListOf(
                 ChildProfile(
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
@@ -75,7 +72,7 @@ class ProfileFragment : Fragment() {
                     name = "test"
                 ),
             )).apply {
-                setOnItemClickCallback(object : ChildProfileAdapter.OnItemClickCallback {
+                setOnItemClickCallback(object : ChildProfileSmallAdapter.OnItemClickCallback {
                     override fun onItemClicked(child: ChildProfile) {
                         val toChildProfile = ProfileFragmentDirections
                             .actionNavProfileToChildProfileFragment().apply {

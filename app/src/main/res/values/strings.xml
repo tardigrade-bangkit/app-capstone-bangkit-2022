@@ -40,4 +40,9 @@
     <string name="back_to_dashboard">Kembali ke Dahsboard</string>
     <string name="creation_success_image_desc">Ikon pembuatan profil anak berhasil</string>
     <string name="creation_success_title">Profil anak dibuat!</string>
+    <string name="choose_child_title">Pilih Profil Anak</string>
+    <string name="add_label">Tambah</string>
+    <string name="not_taken_test">Belum mengambil ujian</string>
+    <string name="child_level">Level %1$d</string>
+    <string name="cancel">Batal</string>
 </resources>
