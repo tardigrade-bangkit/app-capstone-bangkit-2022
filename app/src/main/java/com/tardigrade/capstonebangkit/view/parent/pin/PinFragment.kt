@@ -100,7 +100,7 @@ class PinFragment : Fragment() {
         }.toString()
 
         Toast.makeText(context, "Pin: $pin", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_pinFragment_to_dashboardFragment)
+        findNavController().navigate(PinFragmentDirections.actionPinFragmentToDashboardFragment())
     }
 
     override fun onDestroyView() {

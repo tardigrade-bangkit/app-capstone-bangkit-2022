@@ -34,4 +34,10 @@
     <string name="save_child_profile">Simpan Perubahan</string>
     <string name="no_test_warning">Anak ini belum melakukan ujian kemampuan. Lakukan ujian agar bisa mengakses area belajar anak.</string>
     <string name="take_test">Lakukan Ujian!</string>
+    <string name="creation_success_head">Profil anak berhasil dibuat! Lanjutkan ke ujian kemampuan anak?</string>
+    <string name="creation_success_body">Ujian kemampuan anak akan digunakan untuk menentukan materi sesuai kemampuan anak. Lanjutkan ke ujian?</string>
+    <string name="child_test">Ujian Kemampuan Anak</string>
+    <string name="back_to_dashboard">Kembali ke Dahsboard</string>
+    <string name="creation_success_image_desc">Ikon pembuatan profil anak berhasil</string>
+    <string name="creation_success_title">Profil anak dibuat!</string>
 </resources>

@@ -23,6 +23,9 @@ class ChildProfileFragment : Fragment() {
 
     private val calendar = Calendar.getInstance()
 
+    private var mode: Int? = null
+    private var tookTest = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,8 +37,7 @@ class ChildProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mode = ChildProfileFragmentArgs.fromBundle(arguments as Bundle).mode
-        val tookTest = false
+        mode = ChildProfileFragmentArgs.fromBundle(arguments as Bundle).mode
 
         getActionBar(activity)?.apply {
             show()
@@ -116,7 +118,13 @@ class ChildProfileFragment : Fragment() {
             return
         }
 
-        findNavController().navigateUp()
+        if (mode == ADD_MODE) {
+            findNavController()
+                .navigate(ChildProfileFragmentDirections
+                    .actionChildProfileFragmentToChildCreatedFragment())
+        } else {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

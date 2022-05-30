@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1755" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/drawable/ic_baseline_bar_chart_24.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/drawable/input_with_border.xml" value="0.1755" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/drawable/input_without_border.xml" value="0.1755" />
@@ -15,7 +16,8 @@
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/add_child_button.xml" value="0.8800000000000001" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/avatar_item.xml" value="0.72" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/child_profile.xml" value="1.0" />
-        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_child_profile.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_child_created.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_child_profile.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_dashboard.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_login.xml" value="0.4" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_pin.xml" value="0.152" />

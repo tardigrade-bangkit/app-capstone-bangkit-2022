@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(
             navHostFragment.navController, AppBarConfiguration(
                 setOf(
-                    R.id.nav_dashboard, R.id.nav_profile
+                    R.id.nav_dashboard, R.id.nav_profile, R.id.childCreatedFragment
                 )
             )
         )
