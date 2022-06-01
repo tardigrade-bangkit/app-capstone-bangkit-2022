@@ -6,24 +6,36 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.databinding.AddChildButtonBinding
-import com.tardigrade.capstonebangkit.databinding.ChildProfileBinding
+import com.tardigrade.capstonebangkit.databinding.AddChildProfileSmallBinding
+import com.tardigrade.capstonebangkit.databinding.ChildProfileSmallBinding
+import com.tardigrade.capstonebangkit.misc.loadImage
 
-class ChildProfileAdapter(private val listChild: ArrayList<ChildProfile>)
+class ChildProfileSmallAdapter(private val listChild: ArrayList<ChildProfile>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-    inner class ChildViewHolder(val binding: ChildProfileBinding)
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    interface OnItemClickCallback {
+        fun onItemClicked(child: ChildProfile)
+        fun onFooterClicked()
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+    inner class ChildViewHolder(val binding: ChildProfileSmallBinding)
         : RecyclerView.ViewHolder(binding.root)
-    inner class FooterViewHolder(val binding: AddChildButtonBinding) :
+    inner class FooterViewHolder(val binding: AddChildProfileSmallBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == FOOTER_TYPE) {
-            val binding = AddChildButtonBinding
+            val binding = AddChildProfileSmallBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
             return FooterViewHolder(binding)
         }
 
-        val binding = ChildProfileBinding
+        val binding = ChildProfileSmallBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return ChildViewHolder(binding)
     }
@@ -33,18 +45,18 @@ class ChildProfileAdapter(private val listChild: ArrayList<ChildProfile>)
             val (avatarUrl, name) = listChild[position]
 
             holder.binding.apply {
-                Glide.with(holder.itemView.context)
-                    .load(avatarUrl)
-                    .into(childAvatar)
+                childAvatar.loadImage(avatarUrl)
 
                 childAvatar.contentDescription = name
                 childName.text = name
             }
+
+            holder.itemView.setOnClickListener {
+                onItemClickCallback?.onItemClicked(listChild[holder.adapterPosition])
+            }
         } else if (holder is FooterViewHolder) {
-            holder.binding.apply {
-                addChildButton.setOnClickListener {
-                    Toast.makeText(holder.itemView.context, "Touch Add", Toast.LENGTH_SHORT).show()
-                }
+            holder.itemView.setOnClickListener {
+                onItemClickCallback?.onFooterClicked()
             }
         }
     }

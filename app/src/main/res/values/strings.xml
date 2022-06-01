@@ -27,4 +27,22 @@
     <string name="statistic">Statistik</string>
     <string name="to_children_area">Ke Anak-anak</string>
     <string name="profile">Profil</string>
+    <string name="child_profile_add_title">Buat Profil Anak</string>
+    <string name="child_profile_edit_title">Ubah Profil Anak</string>
+    <string name="birthdate_input_label">Tanggal Lahir</string>
+    <string name="add_child_profile">Buat Profil Anak</string>
+    <string name="save_child_profile">Simpan Perubahan</string>
+    <string name="no_test_warning">Anak ini belum melakukan ujian kemampuan. Lakukan ujian agar bisa mengakses area belajar anak.</string>
+    <string name="take_test">Lakukan Ujian!</string>
+    <string name="creation_success_head">Profil anak berhasil dibuat! Lanjutkan ke ujian kemampuan anak?</string>
+    <string name="creation_success_body">Ujian kemampuan anak akan digunakan untuk menentukan materi sesuai kemampuan anak. Lanjutkan ke ujian?</string>
+    <string name="child_test">Ujian Kemampuan Anak</string>
+    <string name="back_to_dashboard">Kembali ke Dahsboard</string>
+    <string name="creation_success_image_desc">Ikon pembuatan profil anak berhasil</string>
+    <string name="creation_success_title">Profil anak dibuat!</string>
+    <string name="choose_child_title">Pilih Profil Anak</string>
+    <string name="add_label">Tambah</string>
+    <string name="not_taken_test">Belum mengambil ujian</string>
+    <string name="child_level">Level %1$d</string>
+    <string name="cancel">Batal</string>
 </resources>

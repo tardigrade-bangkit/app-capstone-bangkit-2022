@@ -2,21 +2,14 @@ package com.tardigrade.capstonebangkit.adapter
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.util.Log
-import android.util.Log.INFO
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.tardigrade.capstonebangkit.customviews.LessonCard
-import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.data.model.Lesson
-import com.tardigrade.capstonebangkit.databinding.AddChildButtonBinding
-import com.tardigrade.capstonebangkit.databinding.ChildProfileBinding
 
 class LessonAdapter(private val listLesson: ArrayList<Lesson>)
     : RecyclerView.Adapter<LessonAdapter.ViewHolder>(){

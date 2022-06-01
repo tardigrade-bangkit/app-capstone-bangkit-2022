@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentPinBinding
+import com.tardigrade.capstonebangkit.misc.getActionBar
 
 class PinFragment : Fragment() {
     private val viewModel by viewModels<PinViewModel>()
@@ -28,6 +29,8 @@ class PinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getActionBar(activity)?.hide()
 
         binding?.apply {
             val pinInputs = arrayOf(
@@ -97,7 +100,7 @@ class PinFragment : Fragment() {
         }.toString()
 
         Toast.makeText(context, "Pin: $pin", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_pinFragment_to_dashboardFragment)
+        findNavController().navigate(PinFragmentDirections.actionPinFragmentToDashboardFragment())
     }
 
     override fun onDestroyView() {

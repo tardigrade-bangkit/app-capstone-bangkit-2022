@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentLoginBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
+import com.tardigrade.capstonebangkit.misc.getActionBar
 import com.tardigrade.capstonebangkit.misc.isValidEmail
 import com.tardigrade.capstonebangkit.misc.validate
 import com.tardigrade.capstonebangkit.view.parent.login.LoginViewModel
@@ -38,6 +39,8 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getActionBar(activity)?.hide()
 
         binding?.apply {
             loginBtn.setOnClickListener {

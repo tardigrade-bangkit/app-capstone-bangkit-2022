@@ -17,7 +17,6 @@ class ChildActivity : AppCompatActivity() {
         binding = ActivityChildBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         // Hide status bar and navigation bar

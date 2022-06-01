@@ -27,7 +27,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        setSupportActionBar(binding.customToolbar)
+        binding.customToolbar.apply {
+            setTitleTextAppearance(this@MainActivity, R.style.Text_Heading_1)
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
+        }
 
         val navView = binding.navParentView
 
@@ -37,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(
             navHostFragment.navController, AppBarConfiguration(
                 setOf(
-                    R.id.nav_dashboard, R.id.nav_profile
+                    R.id.nav_dashboard, R.id.nav_profile, R.id.childCreatedFragment
                 )
             )
         )
@@ -53,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         val childrenButton = (navView.getChildAt(0) as BottomNavigationMenuView)
             .getChildAt(1) as BottomNavigationItemView
         childrenButton.background = ContextCompat.getDrawable(this, R.drawable.nav_bottom_item_bg_children)
+        childrenButton.setOnClickListener {
+            navHostFragment.navController.navigate(R.id.chooseChildFragment)
+        }
 
         // these two lines show up as an error but they actually works as expected
         // hence the SuppressLint

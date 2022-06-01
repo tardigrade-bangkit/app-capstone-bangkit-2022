@@ -10,7 +10,7 @@ fun TextInputLayout.validate(
     name: String,
     validation: ((String) -> String?)? = null
 ): Boolean {
-    val inputted = editText?.text.toString() ?: ""
+    val inputted = editText?.text.toString()
     Log.d("TAG", "validate: $inputted")
     if (inputted.isBlank()) {
         Log.d("TAG", "validate: empty")

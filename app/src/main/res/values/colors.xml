@@ -44,4 +44,5 @@
     <color name="yellow_800">#FF9EA100</color>
     <color name="yellow_900">#FF7D8000</color>
     <color name="grey">#E9E9E9</color>
+    <color name="dark_grey">#7E7E7E</color>
 </resources>
