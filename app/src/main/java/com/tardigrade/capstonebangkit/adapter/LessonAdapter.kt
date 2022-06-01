@@ -27,6 +27,12 @@ class LessonAdapter(private val listLesson: ArrayList<Lesson>)
         }
     }
 
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LessonCard(parent.context)
         itemView.layoutParams = ViewGroup.LayoutParams(
@@ -52,7 +58,12 @@ class LessonAdapter(private val listLesson: ArrayList<Lesson>)
                         setLessonCoverImage(resource)
                     }
                 })
+            setOnClickListener { onItemClickCallback.onItemClicked(listLesson[position], holder.view) }
         }
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: Lesson?, view: LessonCard)
     }
 
     override fun getItemCount() = listLesson.size

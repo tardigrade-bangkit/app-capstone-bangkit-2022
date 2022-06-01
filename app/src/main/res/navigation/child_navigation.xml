@@ -9,5 +9,18 @@
         android:id="@+id/homeFragment"
         android:name="com.tardigrade.capstonebangkit.view.child.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_materialFragment"
+            app:destination="@id/materialFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/materialFragment"
+        android:name="com.tardigrade.capstonebangkit.view.child.material.MaterialFragment"
+        android:label="fragment_material"
+        tools:layout="@layout/fragment_material" >
+        <action
+            android:id="@+id/action_materialFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

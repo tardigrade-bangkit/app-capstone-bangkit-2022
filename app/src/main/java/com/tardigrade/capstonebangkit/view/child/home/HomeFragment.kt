@@ -8,14 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.LessonAdapter
+import com.tardigrade.capstonebangkit.customviews.LessonCard
 import com.tardigrade.capstonebangkit.data.model.Lesson
+import com.tardigrade.capstonebangkit.data.model.LessonContent
+import com.tardigrade.capstonebangkit.data.model.MaterialContent
 import com.tardigrade.capstonebangkit.databinding.FragmentHomeBinding
 import com.tardigrade.capstonebangkit.misc.MarginItemDecoration
+import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
+    private val lessonContentViewModel by viewModels<LessonContentViewModel>()
     private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(
@@ -60,7 +67,24 @@ class HomeFragment : Fragment() {
             )
 
             newLessonsList.layoutManager = GridLayoutManager(context, 3)
-            newLessonsList.adapter = LessonAdapter(lessonList)
+            val newLessonListAdapter = LessonAdapter(lessonList)
+            newLessonsList.adapter = newLessonListAdapter
+            newLessonListAdapter.setOnItemClickCallback(object : LessonAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: Lesson?, view: LessonCard) {
+                    // Dummy data
+                    val lessonContents = arrayListOf(
+                        LessonContent(
+                            title = "Material 1",
+                            type = 0,
+                        )
+                    )
+                    lessonContentViewModel.setListLessonContent(lessonContents)
+                    val nextLessonContent = lessonContentViewModel.getNextLessonContent()
+                    if (nextLessonContent.type == 0) {
+                        findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
+                    }
+                }
+            })
             newLessonsList.addItemDecoration(MarginItemDecoration(24, 3, GridLayout.VERTICAL))
 
 //            pastLessonsList.layoutManager = GridLayoutManager(context, 3)
