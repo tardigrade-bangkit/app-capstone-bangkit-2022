@@ -46,5 +46,5 @@
     <string name="child_level">Level %1$d</string>
     <string name="cancel">Batal</string>
     <string name="confirm_password_not_match">Konfirmasi password tidak sama</string>
-    <string name="registering">Sedang Mendaftar...</string>
+    <string name="loading">Tunggu sebentar...</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.tardigrade.capstonebangkit.data.api
 
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 interface ApiService {
     @Headers("Content-Type: application/json")
@@ -10,11 +11,9 @@ interface ApiService {
     suspend fun register(
         @Body requestBody: RequestBody
     ): GenericResponse
-//
-//    @FormUrlEncoded
-//    @POST("login")
-//    suspend fun login(
-//        @Field("email") email: String,
-//        @Field("password") password: String
-//    ): LoginRespons
+
+    @POST("login")
+    suspend fun login(
+        @Body requestBody: RequestBody
+    ): LoginResponse
 }

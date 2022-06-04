@@ -1,7 +1,6 @@
 package com.tardigrade.capstonebangkit.view.parent.register
 
 import androidx.lifecycle.*
-import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse

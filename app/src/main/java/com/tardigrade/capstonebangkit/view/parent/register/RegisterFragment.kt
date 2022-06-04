@@ -2,26 +2,28 @@ package com.tardigrade.capstonebangkit.view.parent.register
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.preference.SessionPreferences
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.*
 
 class RegisterFragment : Fragment() {
-    private val viewModel by viewModels<RegisterViewModel>() {
+    private val viewModel by viewModels<RegisterViewModel> {
         RegisterViewModel.Factory(
             AuthRepository(
-                ApiConfig.getApiService()
+                ApiConfig.getApiService(),
+                SessionPreferences(requireContext())
             )
         )
     }

@@ -3,20 +3,23 @@ package com.tardigrade.capstonebangkit.view.parent.pin
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentPinBinding
 import com.tardigrade.capstonebangkit.utils.getActionBar
 
 class PinFragment : Fragment() {
     private val viewModel by viewModels<PinViewModel>()
     private var binding: FragmentPinBinding? = null
+
+    private var hasPin: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +33,7 @@ class PinFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getActionBar(activity)?.hide()
+        hasPin = PinFragmentArgs.fromBundle(arguments as Bundle).hasPin
 
         binding?.apply {
             val pinInputs = arrayOf(
@@ -82,6 +86,12 @@ class PinFragment : Fragment() {
 
             continueBtn.setOnClickListener {
                 checkPin(pinInputs)
+            }
+
+            pinLabel.text = if (hasPin == true) {
+                getString(R.string.pin_enter_label)
+            } else {
+                getString(R.string.pin_create_label)
             }
         }
     }

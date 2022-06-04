@@ -1,7 +1,6 @@
 package com.tardigrade.capstonebangkit.utils
 
 import android.content.Context
-import android.util.Log
 import com.google.android.material.textfield.TextInputLayout
 import com.tardigrade.capstonebangkit.R
 
