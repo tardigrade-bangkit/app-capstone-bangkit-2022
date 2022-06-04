@@ -1,4 +1,4 @@
-package com.tardigrade.capstonebangkit.misc
+package com.tardigrade.capstonebangkit.utils
 
 import android.content.Context
 import android.util.Log
@@ -11,20 +11,12 @@ fun TextInputLayout.validate(
     validation: ((String) -> String?)? = null
 ): Boolean {
     val inputted = editText?.text.toString()
-    Log.d("TAG", "validate: $inputted")
     if (inputted.isBlank()) {
-        Log.d("TAG", "validate: empty")
         error = context?.getString(R.string.input_empty, name)
         return false
     }
 
-    val otherErrorMessage = validation?.invoke(inputted)
+    error = validation?.invoke(inputted)
 
-    if (otherErrorMessage == null) {
-        error = null
-        return true
-    } else {
-        error = otherErrorMessage
-        return false
-    }
+    return error == null
 }

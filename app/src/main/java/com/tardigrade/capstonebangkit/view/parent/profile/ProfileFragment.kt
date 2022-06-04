@@ -5,16 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.ChildProfileSmallAdapter
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.databinding.FragmentProfileBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
+import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
-import com.tardigrade.capstonebangkit.view.parent.choosechild.ChooseChildFragmentDirections
 
 class ProfileFragment : Fragment() {
     private val viewModel by viewModels<ProfileViewModel>()

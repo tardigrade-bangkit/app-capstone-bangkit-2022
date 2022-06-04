@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.FragmentLoginBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
-import com.tardigrade.capstonebangkit.misc.isValidEmail
-import com.tardigrade.capstonebangkit.misc.validate
+import com.tardigrade.capstonebangkit.utils.getActionBar
+import com.tardigrade.capstonebangkit.utils.isValidEmail
+import com.tardigrade.capstonebangkit.utils.validate
 import com.tardigrade.capstonebangkit.view.parent.register.RegisterFragment
 
 class LoginFragment : Fragment() {

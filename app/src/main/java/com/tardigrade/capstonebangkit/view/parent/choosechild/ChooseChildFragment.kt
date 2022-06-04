@@ -1,8 +1,6 @@
 package com.tardigrade.capstonebangkit.view.parent.choosechild
 
 import android.app.AlertDialog
-import android.content.DialogInterface
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,15 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.ChildProfileBigAdapter
-import com.tardigrade.capstonebangkit.adapter.ChildProfileSmallAdapter
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.databinding.FragmentChildCreatedBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentChooseChildBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
-import com.tardigrade.capstonebangkit.view.parent.childcreated.ChildCreatedFragmentDirections
-import com.tardigrade.capstonebangkit.view.parent.childcreated.ChildCreatedViewModel
-import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
-import com.tardigrade.capstonebangkit.view.parent.profile.ProfileFragmentDirections
+import com.tardigrade.capstonebangkit.utils.getActionBar
 
 class ChooseChildFragment : Fragment() {
     private val viewModel by viewModels<ChooseChildViewModel>()

@@ -1,4 +1,4 @@
-package com.tardigrade.capstonebangkit.misc
+package com.tardigrade.capstonebangkit.utils
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity

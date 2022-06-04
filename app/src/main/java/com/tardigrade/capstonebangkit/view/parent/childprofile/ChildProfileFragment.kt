@@ -11,9 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.AvatarAdapter
 import com.tardigrade.capstonebangkit.databinding.FragmentChildProfileBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
-import com.tardigrade.capstonebangkit.misc.loadImage
-import com.tardigrade.capstonebangkit.misc.validate
+import com.tardigrade.capstonebangkit.utils.getActionBar
+import com.tardigrade.capstonebangkit.utils.loadImage
+import com.tardigrade.capstonebangkit.utils.validate
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.tardigrade.capstonebangkit.misc
+package com.tardigrade.capstonebangkit.utils
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

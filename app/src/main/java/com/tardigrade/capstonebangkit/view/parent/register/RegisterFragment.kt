@@ -1,6 +1,5 @@
 package com.tardigrade.capstonebangkit.view.parent.register
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
@@ -12,15 +11,20 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
-import com.tardigrade.capstonebangkit.databinding.FragmentLoginBinding
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
-import com.tardigrade.capstonebangkit.misc.isValidEmail
-import com.tardigrade.capstonebangkit.misc.validate
-import com.tardigrade.capstonebangkit.view.parent.login.LoginViewModel
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.*
 
 class RegisterFragment : Fragment() {
-    private val viewModel by viewModels<RegisterViewModel>()
+    private val viewModel by viewModels<RegisterViewModel>() {
+        RegisterViewModel.Factory(
+            AuthRepository(
+                ApiConfig.getApiService()
+            )
+        )
+    }
     private var binding: FragmentRegisterBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +45,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getActionBar(activity)?.hide()
+        showLoading(false)
 
         binding?.apply {
             loginBtn.setOnClickListener {
@@ -50,6 +55,29 @@ class RegisterFragment : Fragment() {
             registerBtn.setOnClickListener {
                 tryRegister()
             }
+        }
+
+        viewModel.registered.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Success -> {
+                    registerSuccess(it.data)
+                    showLoading(false)
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    binding?.root?.let { view ->
+                        showSnackbar(view, it.error)
+                    }
+                }
+                is Result.Loading -> showLoading(true)
+            }
+        }
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding?.apply {
+            registerLoadingGroup.setVisible(show)
+            registerGroup.setVisible(!show)
         }
     }
 
@@ -67,14 +95,20 @@ class RegisterFragment : Fragment() {
                 .validate(context, getString(R.string.name_input_label))
             val passwordValid = passwordInput
                 .validate(context, getString(R.string.password_input_label)) {
-                    if(it.length < 8) {
+                    if (it.length < 8) {
                         return@validate getString(R.string.password_min_length)
                     }
 
                     null
                 }
             val confirmPasswordValid = confirmPasswordInput
-                .validate(context, getString(R.string.confirm_password_input_label))
+                .validate(context, getString(R.string.confirm_password_input_label)) {
+                    if (it != passwordInputEt.text.toString()) {
+                        return@validate getString(R.string.confirm_password_not_match)
+                    }
+
+                    null
+                }
 
             if (!emailValid || !nameValid || !passwordValid || !confirmPasswordValid) {
                 return
@@ -83,16 +117,17 @@ class RegisterFragment : Fragment() {
             val email = emailInputEt.text.toString()
             val name = nameInputEt.text.toString()
             val password = passwordInputEt.text.toString()
-            val confirmPassword = confirmPasswordInputEt.text.toString()
 
-            registerSuccess(email)
+            viewModel.register(name, email, password)
         }
     }
 
     private fun registerSuccess(email: String) {
-        setFragmentResult(RESULT_KEY, bundleOf(
-            RESULT_EMAIL to email
-        ))
+        setFragmentResult(
+            RESULT_KEY, bundleOf(
+                RESULT_EMAIL to email
+            )
+        )
 
         findNavController().navigateUp()
     }

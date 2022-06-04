@@ -2,16 +2,12 @@ package com.tardigrade.capstonebangkit.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.databinding.AddChildProfileBigBinding
-import com.tardigrade.capstonebangkit.databinding.AddChildProfileSmallBinding
 import com.tardigrade.capstonebangkit.databinding.ChildProfileBigBinding
-import com.tardigrade.capstonebangkit.databinding.ChildProfileSmallBinding
-import com.tardigrade.capstonebangkit.misc.loadImage
+import com.tardigrade.capstonebangkit.utils.loadImage
 
 class ChildProfileBigAdapter(private val listChild: ArrayList<ChildProfile>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(){

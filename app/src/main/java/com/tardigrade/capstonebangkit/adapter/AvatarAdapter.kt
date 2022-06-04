@@ -3,9 +3,8 @@ package com.tardigrade.capstonebangkit.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.tardigrade.capstonebangkit.databinding.AvatarItemBinding
-import com.tardigrade.capstonebangkit.misc.loadImage
+import com.tardigrade.capstonebangkit.utils.loadImage
 
 class AvatarAdapter(private val imageUrls: ArrayList<String>)
     : RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>(){
