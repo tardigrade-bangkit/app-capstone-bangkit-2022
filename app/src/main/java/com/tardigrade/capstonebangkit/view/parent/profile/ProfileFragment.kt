@@ -44,30 +44,37 @@ class ProfileFragment : Fragment() {
 
             profileChilds.adapter = ChildProfileSmallAdapter(arrayListOf(
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),
                 ChildProfile(
+                    id = 1,
                     avatarUrl = "https://i.pravatar.cc/300",
                     name = "test"
                 ),

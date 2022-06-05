@@ -47,4 +47,5 @@
     <string name="cancel">Batal</string>
     <string name="confirm_password_not_match">Konfirmasi password tidak sama</string>
     <string name="loading">Tunggu sebentar...</string>
+    <string name="try_again">coba lagi</string>
 </resources>

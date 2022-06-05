@@ -41,14 +41,14 @@ class ChildProfileBigAdapter(private val listChild: ArrayList<ChildProfile>)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ChildViewHolder) {
-            val (avatarUrl, name, level, tookTest) = listChild[position]
+            val (_, avatarUrl, name, level) = listChild[position]
 
             holder.binding.apply {
                 childAvatar.loadImage(avatarUrl)
 
                 childAvatar.contentDescription = name
                 childName.text = name
-                childLevel.text = if (tookTest) {
+                childLevel.text = if (level > 0) {
                     holder.itemView.context.getString(R.string.child_level, level)
                 } else {
                     holder.itemView.context.getString(R.string.not_taken_test)

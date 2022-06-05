@@ -36,51 +36,51 @@ class ChooseChildFragment : Fragment() {
             listChildren.adapter = ChildProfileBigAdapter(
                 arrayListOf(
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1,
-                        tookTest = true
+                        level = 1
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2,
-                        tookTest = true
+                        level = 2
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1,
-                        tookTest = true
+                        level = 1
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2,
-                        tookTest = true
+                        level = 2
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1,
-                        tookTest = true
+                        level = 1
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2,
-                        tookTest = true
+                        level = 2
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
-                        name = "test",
-                        tookTest = false
+                        name = "test"
                     ),
                 )
             ).apply {
                 setOnItemClickCallback(object : ChildProfileBigAdapter.OnItemClickCallback {
                     override fun onItemClicked(child: ChildProfile) {
-                        if (!child.tookTest) {
+                        if (child.level == 0) {
                             AlertDialog.Builder(requireContext()).apply {
                                 setMessage(R.string.no_test_warning)
                                 setPositiveButton(R.string.take_test) { dialogInterface, _ ->

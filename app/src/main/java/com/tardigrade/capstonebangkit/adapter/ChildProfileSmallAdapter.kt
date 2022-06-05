@@ -40,7 +40,7 @@ class ChildProfileSmallAdapter(private val listChild: ArrayList<ChildProfile>)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ChildViewHolder) {
-            val (avatarUrl, name) = listChild[position]
+            val (_, avatarUrl, name) = listChild[position]
 
             holder.binding.apply {
                 childAvatar.loadImage(avatarUrl)

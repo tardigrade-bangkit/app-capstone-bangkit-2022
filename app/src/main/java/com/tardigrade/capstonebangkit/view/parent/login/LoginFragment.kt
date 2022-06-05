@@ -93,7 +93,7 @@ class LoginFragment : Fragment() {
                     val error = it.getErrorIfNotHandled()
                     if (!error.isNullOrEmpty()) {
                         binding?.root?.let { view ->
-                            showSnackbar(view, it.error)
+                            showSnackbar(view, error)
                         }
                     }
                 }
