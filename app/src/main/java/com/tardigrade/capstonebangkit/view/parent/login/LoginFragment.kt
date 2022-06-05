@@ -1,5 +1,6 @@
 package com.tardigrade.capstonebangkit.view.parent.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +19,15 @@ import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.*
 import com.tardigrade.capstonebangkit.view.parent.register.RegisterFragment
 
+internal val Context.preferences: SessionPreferences
+    get() = SessionPreferences(this)
+
 class LoginFragment : Fragment() {
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModel.Factory(
             AuthRepository(
                 ApiConfig.getApiService(),
-                SessionPreferences(requireContext())
+                requireContext().preferences
             )
         )
     }
@@ -43,9 +47,9 @@ class LoginFragment : Fragment() {
         getActionBar(activity)?.hide()
         showLoading(false)
 
-        val session = SessionPreferences(requireContext())
-        if(!session.getToken().isNullOrEmpty()) {
-            loginSuccess(session.hasPin())
+        val preferences = requireContext().preferences
+        if(!preferences.getToken().isNullOrEmpty()) {
+            loginSuccess(preferences.hasPin())
         }
 
         setFragmentResultListener(RegisterFragment.RESULT_KEY) { _, bundle ->
@@ -94,10 +98,10 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun showLoading(show: Boolean) {
+    private fun showLoading(loading: Boolean) {
         binding?.apply {
-            loginLoadingGroup.setVisible(show)
-            loginGroup.setVisible(!show)
+            loginLoadingGroup.setVisible(loading)
+            loginGroup.setVisible(!loading)
         }
     }
 

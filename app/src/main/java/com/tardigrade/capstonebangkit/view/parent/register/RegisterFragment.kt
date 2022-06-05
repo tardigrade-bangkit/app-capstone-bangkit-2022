@@ -12,18 +12,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
-import com.tardigrade.capstonebangkit.data.preference.SessionPreferences
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.*
+import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class RegisterFragment : Fragment() {
     private val viewModel by viewModels<RegisterViewModel> {
         RegisterViewModel.Factory(
             AuthRepository(
                 ApiConfig.getApiService(),
-                SessionPreferences(requireContext())
+                requireContext().preferences
             )
         )
     }
@@ -76,10 +76,10 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun showLoading(show: Boolean) {
+    private fun showLoading(loading: Boolean) {
         binding?.apply {
-            registerLoadingGroup.setVisible(show)
-            registerGroup.setVisible(!show)
+            registerLoadingGroup.setVisible(loading)
+            registerGroup.setVisible(!loading)
         }
     }
 

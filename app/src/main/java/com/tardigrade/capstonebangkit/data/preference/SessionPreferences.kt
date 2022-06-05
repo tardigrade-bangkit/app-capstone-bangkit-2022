@@ -14,6 +14,12 @@ class SessionPreferences (private val context: Context) {
         }
     }
 
+    fun setHasPin(hasPin: Boolean) {
+        preferences.edit {
+            putBoolean(HAS_PIN, hasPin)
+        }
+    }
+
     fun getToken() = preferences.getString(TOKEN, null)
 
     fun hasPin() = if (!preferences.contains(HAS_PIN)) {

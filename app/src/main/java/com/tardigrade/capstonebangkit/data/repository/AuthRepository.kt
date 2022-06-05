@@ -31,4 +31,22 @@ class AuthRepository(
 
         return response.hasPin
     }
+
+    suspend fun addPin(token: String, pin: String) {
+        val requestJson = JSONObject().apply {
+            put("pin", pin)
+        }
+
+        apiService.addPin(token, requestJson.toRequestBody())
+
+        pref.setHasPin(true)
+    }
+
+    suspend fun checkPin(token: String, pin: String) {
+        val requestJson = JSONObject().apply {
+            put("pin", pin)
+        }
+
+        apiService.checkPin(token, requestJson.toRequestBody())
+    }
 }

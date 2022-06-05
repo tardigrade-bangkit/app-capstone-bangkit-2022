@@ -3,6 +3,7 @@ package com.tardigrade.capstonebangkit.view.parent.pin
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +13,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentPinBinding
+import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getActionBar
+import com.tardigrade.capstonebangkit.utils.hideSoftKeyboard
+import com.tardigrade.capstonebangkit.utils.setVisible
+import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class PinFragment : Fragment() {
-    private val viewModel by viewModels<PinViewModel>()
+    private val viewModel by viewModels<PinViewModel> {
+        PinViewModel.Factory(
+            AuthRepository(
+                ApiConfig.getApiService(),
+                requireContext().preferences
+            )
+        )
+    }
     private var binding: FragmentPinBinding? = null
 
     private var hasPin: Boolean? = null
@@ -31,6 +46,8 @@ class PinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        showLoading(false)
 
         getActionBar(activity)?.hide()
         hasPin = PinFragmentArgs.fromBundle(arguments as Bundle).hasPin
@@ -76,7 +93,7 @@ class PinFragment : Fragment() {
                                 if (i != pinInputs.lastIndex) {
                                     pinInputs[i + 1].requestFocus()
                                 } else {
-                                    checkPin(pinInputs)
+                                   hideSoftKeyboard(requireActivity())
                                 }
                             }
                         }
@@ -85,7 +102,7 @@ class PinFragment : Fragment() {
             }
 
             continueBtn.setOnClickListener {
-                checkPin(pinInputs)
+                validatePin(pinInputs)
             }
 
             pinLabel.text = if (hasPin == true) {
@@ -94,9 +111,32 @@ class PinFragment : Fragment() {
                 getString(R.string.pin_create_label)
             }
         }
+
+        viewModel.pinResult.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Success -> {
+                    if (it.data == PinViewModel.CHECK_PIN) {
+                        findNavController()
+                            .navigate(PinFragmentDirections.actionPinFragmentToDashboardFragment())
+                    } else {
+                        findNavController()
+                            .navigate(PinFragmentDirections.actionNavPinSelf().apply {
+                                hasPin = true
+                            })
+                    }
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    binding?.root?.let { view ->
+                        showSnackbar(view, it.error)
+                    }
+                }
+                is Result.Loading -> showLoading(true)
+            }
+        }
     }
 
-    private fun checkPin(pinInputs: Array<EditText>) {
+    private fun validatePin(pinInputs: Array<EditText>) {
         val pin = StringBuilder().apply {
             pinInputs.forEach {
                 if (it.text.isBlank()) {
@@ -108,8 +148,21 @@ class PinFragment : Fragment() {
             }
         }.toString()
 
-        Toast.makeText(context, "Pin: $pin", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(PinFragmentDirections.actionPinFragmentToDashboardFragment())
+        val token = requireContext().preferences.getToken() ?: ""
+        Log.d("TAG", "validatePin: $pin $token")
+
+        if (hasPin == true) {
+            viewModel.checkPin(token, pin)
+        } else {
+            viewModel.addPin(token, pin)
+        }
+    }
+
+    private fun showLoading(loading: Boolean) {
+        binding?.apply {
+            pinLoadingGroup.setVisible(loading)
+            pinGroup.setVisible(!loading)
+        }
     }
 
     override fun onDestroyView() {

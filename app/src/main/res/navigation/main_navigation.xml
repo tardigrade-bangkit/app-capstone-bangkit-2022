@@ -36,6 +36,9 @@
             android:name="has_pin"
             app:argType="boolean"
             android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_pin_self"
+            app:destination="@id/nav_pin" />
     </fragment>
     <fragment
         android:id="@+id/nav_profile"
