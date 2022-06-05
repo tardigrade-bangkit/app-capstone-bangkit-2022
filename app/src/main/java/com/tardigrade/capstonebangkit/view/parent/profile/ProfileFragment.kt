@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.databinding.FragmentProfileBinding
 import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
+import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class ProfileFragment : Fragment() {
     private val viewModel by viewModels<ProfileViewModel>()
@@ -83,10 +85,18 @@ class ProfileFragment : Fragment() {
                     override fun onFooterClicked() {
                         findNavController().navigate(R.id.action_nav_profile_to_childProfileFragment)
                     }
-
                 })
             }
+
+            logoutButton.setOnClickListener {
+                logout()
+            }
         }
+    }
+
+    private fun logout() {
+        requireContext().preferences.resetSession()
+        findNavController().navigate(R.id.action_nav_profile_to_nav_login)
     }
 
     override fun onDestroyView() {

@@ -89,8 +89,12 @@ class LoginFragment : Fragment() {
                 }
                 is Result.Error -> {
                     showLoading(false)
-                    binding?.root?.let { view ->
-                        showSnackbar(view, it.error)
+
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, it.error)
+                        }
                     }
                 }
                 is Result.Loading -> showLoading(true)

@@ -127,8 +127,12 @@ class PinFragment : Fragment() {
                 }
                 is Result.Error -> {
                     showLoading(false)
-                    binding?.root?.let { view ->
-                        showSnackbar(view, it.error)
+
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, it.error)
+                        }
                     }
                 }
                 is Result.Loading -> showLoading(true)
@@ -149,7 +153,6 @@ class PinFragment : Fragment() {
         }.toString()
 
         val token = requireContext().preferences.getToken() ?: ""
-        Log.d("TAG", "validatePin: $pin $token")
 
         if (hasPin == true) {
             viewModel.checkPin(token, pin)

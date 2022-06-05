@@ -38,7 +38,9 @@
             android:defaultValue="true" />
         <action
             android:id="@+id/action_nav_pin_self"
-            app:destination="@id/nav_pin" />
+            app:destination="@id/nav_pin"
+            app:popUpTo="@id/nav_pin"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/nav_profile"
@@ -48,6 +50,11 @@
         <action
             android:id="@+id/action_nav_profile_to_childProfileFragment"
             app:destination="@id/childProfileFragment" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_login"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/nav_profile"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/nav_dashboard"

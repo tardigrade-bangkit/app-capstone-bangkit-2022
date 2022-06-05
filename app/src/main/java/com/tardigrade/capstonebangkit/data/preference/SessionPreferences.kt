@@ -28,6 +28,13 @@ class SessionPreferences (private val context: Context) {
         preferences.getBoolean(HAS_PIN, false)
     }
 
+    fun resetSession() {
+        preferences.edit {
+            remove(TOKEN)
+            remove(HAS_PIN)
+        }
+    }
+
     companion object {
         private const val PREFS_NAME = "session_pref"
         private const val TOKEN = "token"
