@@ -32,4 +32,9 @@ interface ApiService {
 
     @GET("avatars")
     suspend fun getAvatars() : GetAvatarsResponse
+
+    @GET("children")
+    suspend fun getChildren(
+        @Header("x-access-token") token: String
+    )  : GetChildrenResponse
 }
