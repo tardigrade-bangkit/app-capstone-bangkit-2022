@@ -29,12 +29,14 @@
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_register.xml" value="0.4" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/to_children_button.xml" value="0.12330009066183137" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/view_lesson_card.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/menu/bottom_nav_parent_menu.xml" value="0.264" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_audio.xml" value="0.254" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_background.xml" value="0.254" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_name_selected.xml" value="0.253" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_name_unselected.xml" value="0.254" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_selected.xml" value="0.253" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.158" />
+        <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.254" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/rectangle_rounded_8dp.xml" value="0.24" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/activity_child.xml" value="0.2039333048311244" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -44,10 +46,10 @@
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_material.xml" value="0.264" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_pin.xml" value="0.2039333048311244" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_quiz.xml" value="0.4" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_register.xml" value="0.2039333048311244" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/view_answer_card.xml" value="0.536" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/view_lesson_card.xml" value="0.2" />
-        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/menu/bottom_nav_parent_menu.xml" value="0.264" />
       </map>
     </option>
   </component>

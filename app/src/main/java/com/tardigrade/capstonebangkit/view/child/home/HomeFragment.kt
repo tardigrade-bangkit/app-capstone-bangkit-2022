@@ -76,12 +76,19 @@ class HomeFragment : Fragment() {
                         LessonContent(
                             title = "Material 1",
                             type = 0,
-                        )
+                        ),
+                        LessonContent(
+                            title = "Latihan 1",
+                            type = 1,
+                        ),
                     )
                     lessonContentViewModel.setListLessonContent(lessonContents)
                     val nextLessonContent = lessonContentViewModel.getNextLessonContent()
-                    if (nextLessonContent.type == 0) {
-                        findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
+                    when (nextLessonContent.type) {
+                        0 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
+                        1 -> {
+
+                        }
                     }
                 }
             })
