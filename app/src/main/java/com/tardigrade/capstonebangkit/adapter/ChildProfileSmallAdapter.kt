@@ -2,13 +2,11 @@ package com.tardigrade.capstonebangkit.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.databinding.AddChildProfileSmallBinding
 import com.tardigrade.capstonebangkit.databinding.ChildProfileSmallBinding
-import com.tardigrade.capstonebangkit.misc.loadImage
+import com.tardigrade.capstonebangkit.utils.loadImage
 
 class ChildProfileSmallAdapter(private val listChild: ArrayList<ChildProfile>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -42,7 +40,7 @@ class ChildProfileSmallAdapter(private val listChild: ArrayList<ChildProfile>)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ChildViewHolder) {
-            val (avatarUrl, name) = listChild[position]
+            val (_, avatarUrl, name) = listChild[position]
 
             holder.binding.apply {
                 childAvatar.loadImage(avatarUrl)

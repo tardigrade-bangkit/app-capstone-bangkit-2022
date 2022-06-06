@@ -1,27 +1,19 @@
 package com.tardigrade.capstonebangkit.view.parent.choosechild
 
 import android.app.AlertDialog
-import android.content.DialogInterface
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.ChildProfileBigAdapter
-import com.tardigrade.capstonebangkit.adapter.ChildProfileSmallAdapter
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.databinding.FragmentChildCreatedBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentChooseChildBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
-import com.tardigrade.capstonebangkit.view.parent.childcreated.ChildCreatedFragmentDirections
-import com.tardigrade.capstonebangkit.view.parent.childcreated.ChildCreatedViewModel
-import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
-import com.tardigrade.capstonebangkit.view.parent.profile.ProfileFragmentDirections
+import com.tardigrade.capstonebangkit.utils.getActionBar
 
 class ChooseChildFragment : Fragment() {
     private val viewModel by viewModels<ChooseChildViewModel>()
@@ -44,51 +36,51 @@ class ChooseChildFragment : Fragment() {
             listChildren.adapter = ChildProfileBigAdapter(
                 arrayListOf(
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1,
-                        tookTest = true
+                        level = 1
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2,
-                        tookTest = true
+                        level = 2
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1,
-                        tookTest = true
+                        level = 1
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2,
-                        tookTest = true
+                        level = 2
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1,
-                        tookTest = true
+                        level = 1
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2,
-                        tookTest = true
+                        level = 2
                     ),
                     ChildProfile(
+                        id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
-                        name = "test",
-                        tookTest = false
+                        name = "test"
                     ),
                 )
             ).apply {
                 setOnItemClickCallback(object : ChildProfileBigAdapter.OnItemClickCallback {
                     override fun onItemClicked(child: ChildProfile) {
-                        if (!child.tookTest) {
+                        if (child.level == 0) {
                             AlertDialog.Builder(requireContext()).apply {
                                 setMessage(R.string.no_test_warning)
                                 setPositiveButton(R.string.take_test) { dialogInterface, _ ->

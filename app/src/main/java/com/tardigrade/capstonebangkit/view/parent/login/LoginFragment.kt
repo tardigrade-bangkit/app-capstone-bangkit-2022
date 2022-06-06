@@ -1,25 +1,36 @@
 package com.tardigrade.capstonebangkit.view.parent.login
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.preference.SessionPreferences
+import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentLoginBinding
-import com.tardigrade.capstonebangkit.misc.getActionBar
-import com.tardigrade.capstonebangkit.misc.isValidEmail
-import com.tardigrade.capstonebangkit.misc.validate
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.*
 import com.tardigrade.capstonebangkit.view.parent.register.RegisterFragment
 
+internal val Context.preferences: SessionPreferences
+    get() = SessionPreferences(this)
+
 class LoginFragment : Fragment() {
-    private val viewModel by viewModels<LoginViewModel>()
+    private val viewModel by viewModels<LoginViewModel> {
+        LoginViewModel.Factory(
+            AuthRepository(
+                ApiConfig.getApiService(),
+                requireContext().preferences
+            )
+        )
+    }
     private var binding: FragmentLoginBinding? = null
 
     override fun onCreateView(
@@ -34,6 +45,12 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getActionBar(activity)?.hide()
+        showLoading(false)
+
+        val preferences = requireContext().preferences
+        if(!preferences.getToken().isNullOrEmpty()) {
+            loginSuccess(preferences.hasPin())
+        }
 
         setFragmentResultListener(RegisterFragment.RESULT_KEY) { _, bundle ->
             val email = bundle.getString(RegisterFragment.RESULT_EMAIL)
@@ -63,6 +80,33 @@ class LoginFragment : Fragment() {
                 tryLogin()
             }
         }
+
+        viewModel.loggedIn.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Success -> {
+                    loginSuccess(it.data)
+                    showLoading(false)
+                }
+                is Result.Error -> {
+                    showLoading(false)
+
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error)
+                        }
+                    }
+                }
+                is Result.Loading -> showLoading(true)
+            }
+        }
+    }
+
+    private fun showLoading(loading: Boolean) {
+        binding?.apply {
+            loginLoadingGroup.setVisible(loading)
+            loginGroup.setVisible(!loading)
+        }
     }
 
     private fun tryLogin() {
@@ -85,15 +129,21 @@ class LoginFragment : Fragment() {
             val email = emailInputEt.text.toString()
             val password = passwordInputEt.text.toString()
 
-            Toast.makeText(context, "Logged in with $email and $password", Toast.LENGTH_SHORT)
-                .show()
-
-            loginSuccess()
+            viewModel.login(email, password)
         }
     }
 
-    private fun loginSuccess() {
-        findNavController().navigate(R.id.action_loginFragment_to_pinFragment)
+    private fun loginSuccess(hasPin: Boolean?) {
+        if (hasPin == null) {
+            return
+        }
+
+        val toPinFragment = LoginFragmentDirections
+            .actionLoginFragmentToPinFragment().apply {
+                this.hasPin = hasPin
+            }
+
+        findNavController().navigate(toPinFragment)
     }
 
     override fun onDestroyView() {

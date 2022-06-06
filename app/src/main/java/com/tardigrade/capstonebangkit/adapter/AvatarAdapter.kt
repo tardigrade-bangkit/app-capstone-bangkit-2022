@@ -3,16 +3,16 @@ package com.tardigrade.capstonebangkit.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.tardigrade.capstonebangkit.data.model.Avatar
 import com.tardigrade.capstonebangkit.databinding.AvatarItemBinding
-import com.tardigrade.capstonebangkit.misc.loadImage
+import com.tardigrade.capstonebangkit.utils.loadImage
 
-class AvatarAdapter(private val imageUrls: ArrayList<String>)
+class AvatarAdapter(private val avatars: ArrayList<Avatar>)
     : RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>(){
     private var onItemClickCallback: OnItemClickCallback? = null
 
     interface OnItemClickCallback {
-        fun onItemClicked(imageUrl: String)
+        fun onItemClicked(avatar: Avatar)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -29,14 +29,14 @@ class AvatarAdapter(private val imageUrls: ArrayList<String>)
     }
 
     override fun onBindViewHolder(holder: AvatarViewHolder, position: Int) {
-        val imageUrl = imageUrls[position]
+        val ( _, imageUrl ) = avatars[position]
 
         holder.binding.imageAvatarItem.loadImage(imageUrl)
 
         holder.itemView.setOnClickListener {
-            onItemClickCallback?.onItemClicked(imageUrl)
+            onItemClickCallback?.onItemClicked(avatars[holder.adapterPosition])
         }
     }
 
-    override fun getItemCount() = imageUrls.size
+    override fun getItemCount() = avatars.size
 }

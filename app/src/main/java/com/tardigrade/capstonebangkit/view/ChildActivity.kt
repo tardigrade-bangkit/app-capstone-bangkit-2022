@@ -2,9 +2,9 @@ package com.tardigrade.capstonebangkit.view
 
 import android.content.pm.ActivityInfo
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tardigrade.capstonebangkit.databinding.ActivityChildBinding
