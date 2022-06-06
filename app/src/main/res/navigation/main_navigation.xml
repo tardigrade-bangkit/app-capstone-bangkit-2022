@@ -66,14 +66,15 @@
         android:name="com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment"
         android:label="fragment_child_profile"
         tools:layout="@layout/fragment_child_profile" >
-        <argument
-            android:name="mode"
-            app:argType="integer"
-            android:defaultValue="0" />
         <action
             android:id="@+id/action_childProfileFragment_to_childCreatedFragment"
             app:destination="@id/childCreatedFragment"
             app:popUpTo="@id/nav_dashboard" />
+        <argument
+            android:name="child"
+            app:argType="com.tardigrade.capstonebangkit.data.model.ChildProfile"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/childCreatedFragment"

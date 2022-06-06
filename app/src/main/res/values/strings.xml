@@ -28,7 +28,7 @@
     <string name="to_children_area">Ke Anak-anak</string>
     <string name="profile">Profil</string>
     <string name="child_profile_add_title">Buat Profil Anak</string>
-    <string name="child_profile_edit_title">Ubah Profil Anak</string>
+    <string name="child_profile_edit_title">Profil Anak</string>
     <string name="birthdate_input_label">Tanggal Lahir</string>
     <string name="add_child_profile">Buat Profil Anak</string>
     <string name="save_child_profile">Simpan Perubahan</string>
@@ -49,4 +49,5 @@
     <string name="loading">Tunggu sebentar...</string>
     <string name="try_again">coba lagi</string>
     <string name="not_available_yet">Fitur ini masih belum tersedia</string>
+    <string name="pin_not_valid">Pin not valid</string>
 </resources>

@@ -176,4 +176,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/birthdate_input" />
 
+    <ProgressBar
+        android:id="@+id/avatar_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_test_warning" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/avatar_loading_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="child_avatar, list_avatar" />
+
+    <ProgressBar
+        android:id="@+id/add_child_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/add_child_loading_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids=" list_avatar,child_avatar,divider,birthdate_input,birthdate_input_label,name_input,save_btn,name_input_label" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

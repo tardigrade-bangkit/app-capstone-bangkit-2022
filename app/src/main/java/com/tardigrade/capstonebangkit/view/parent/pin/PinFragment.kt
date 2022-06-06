@@ -144,7 +144,7 @@ class PinFragment : Fragment() {
         val pin = StringBuilder().apply {
             pinInputs.forEach {
                 if (it.text.isBlank()) {
-                    Toast.makeText(context, "Pin not valid", Toast.LENGTH_SHORT).show()
+                    showSnackbar(binding?.root as View, getString(R.string.pin_not_valid))
                     return
                 }
 

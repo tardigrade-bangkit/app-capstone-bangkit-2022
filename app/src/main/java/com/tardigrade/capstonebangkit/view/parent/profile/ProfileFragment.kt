@@ -19,7 +19,6 @@ import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.utils.loadImage
 import com.tardigrade.capstonebangkit.utils.setVisible
 import com.tardigrade.capstonebangkit.utils.showSnackbar
-import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
 import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class ProfileFragment : Fragment() {
@@ -131,7 +130,7 @@ class ProfileFragment : Fragment() {
                 override fun onItemClicked(child: ChildProfile) {
                     val toChildProfile = ProfileFragmentDirections
                         .actionNavProfileToChildProfileFragment().apply {
-                            mode = ChildProfileFragment.EDIT_MODE
+                            this.child = child
                         }
 
                     findNavController().navigate(toChildProfile)
