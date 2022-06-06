@@ -12,3 +12,27 @@ data class AddChild(
     @field:SerializedName("avatar")
     val avatar_id: Int,
 )
+
+data class NewUser(
+    @field:SerializedName("name")
+    val name: String,
+
+    @field:SerializedName("email")
+    val email: String,
+
+    @field:SerializedName("password")
+    val password: String
+)
+
+data class PinData(
+    @field:SerializedName("pin")
+    val pin: String
+)
+
+data class LoginData(
+    @field:SerializedName("email")
+    val email: String,
+
+    @field:SerializedName("password")
+    val password: String
+)

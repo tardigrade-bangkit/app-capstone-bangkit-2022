@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.api.NewUser
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
 import com.tardigrade.capstonebangkit.misc.Result
@@ -124,7 +125,7 @@ class RegisterFragment : Fragment() {
             val name = nameInputEt.text.toString()
             val password = passwordInputEt.text.toString()
 
-            viewModel.register(name, email, password)
+            viewModel.register(NewUser(name, email, password))
         }
     }
 

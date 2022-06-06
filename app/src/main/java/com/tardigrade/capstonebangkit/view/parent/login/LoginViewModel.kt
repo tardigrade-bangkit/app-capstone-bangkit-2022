@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.login
 
 import androidx.lifecycle.*
+import com.tardigrade.capstonebangkit.data.api.LoginData
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
@@ -11,12 +12,12 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _loggedIn = MutableLiveData<Result<Boolean>>()
     val loggedIn: LiveData<Result<Boolean>> = _loggedIn
 
-    fun login(email: String, password: String) {
+    fun login(loginData: LoginData) {
         _loggedIn.value = Result.Loading
 
         viewModelScope.launch {
             try {
-                val hasPin = authRepository.login(email, password)
+                val hasPin = authRepository.login(loginData)
 
                 _loggedIn.value = Result.Success(hasPin)
             } catch (httpEx: HttpException) {

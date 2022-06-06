@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.register
 
 import androidx.lifecycle.*
+import com.tardigrade.capstonebangkit.data.api.NewUser
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
@@ -11,14 +12,14 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
     private val _registered = MutableLiveData<Result<String>>()
     val registered: LiveData<Result<String>> = _registered
 
-    fun register(name: String, email: String, password: String) {
+    fun register(newUser: NewUser) {
         _registered.value = Result.Loading
 
         viewModelScope.launch {
             try {
-                authRepository.register(name, email, password)
+                authRepository.register(newUser)
 
-                _registered.value = Result.Success(email)
+                _registered.value = Result.Success(newUser.email)
             } catch (httpEx: HttpException) {
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)

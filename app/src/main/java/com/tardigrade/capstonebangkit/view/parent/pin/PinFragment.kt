@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.api.PinData
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentPinBinding
 import com.tardigrade.capstonebangkit.misc.Result
@@ -155,9 +156,9 @@ class PinFragment : Fragment() {
         val token = requireContext().preferences.getToken() ?: ""
 
         if (hasPin == true) {
-            viewModel.checkPin(token, pin)
+            viewModel.checkPin(token, PinData(pin))
         } else {
-            viewModel.addPin(token, pin)
+            viewModel.addPin(token, PinData(pin))
         }
     }
 

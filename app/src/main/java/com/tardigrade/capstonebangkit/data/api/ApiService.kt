@@ -7,27 +7,27 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("users")
     suspend fun register(
-        @Body requestBody: RequestBody
+        @Body newUser: NewUser
     ): GenericResponse
 
     @Headers("Content-Type: application/json")
     @POST("login")
     suspend fun login(
-        @Body requestBody: RequestBody
+        @Body loginData: LoginData
     ): LoginResponse
 
     @Headers("Content-Type: application/json")
     @POST("pin")
     suspend fun addPin(
         @Header("x-access-token") token: String,
-        @Body requestBody: RequestBody
+        @Body pinData: PinData
     ) : GenericResponse
 
     @Headers("Content-Type: application/json")
     @POST("pin/check")
     suspend fun checkPin(
         @Header("x-access-token") token: String,
-        @Body requestBody: RequestBody
+        @Body pinData: PinData
     ) : GenericResponse
 
     @GET("avatars")
