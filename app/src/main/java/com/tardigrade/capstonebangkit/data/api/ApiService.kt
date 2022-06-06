@@ -37,4 +37,9 @@ interface ApiService {
     suspend fun getChildren(
         @Header("x-access-token") token: String
     )  : GetChildrenResponse
+
+    @GET("users/self")
+    suspend fun getSelf(
+        @Header("x-access-token") token: String
+    ) : GetSelfResponse
 }

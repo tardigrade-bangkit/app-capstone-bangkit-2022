@@ -2,7 +2,6 @@ package com.tardigrade.capstonebangkit.view.parent.childprofile
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.AvatarAdapter
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.Avatar
-import com.tardigrade.capstonebangkit.data.repository.ChildrenDataRepository
+import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentChildProfileBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getActionBar
@@ -27,7 +26,7 @@ import kotlin.collections.ArrayList
 class ChildProfileFragment : Fragment() {
     private val viewModel by viewModels<ChildProfileViewModel> {
         ChildProfileViewModel.Factory(
-            ChildrenDataRepository(ApiConfig.getApiService())
+            ProfileRepository(ApiConfig.getApiService())
         )
     }
     private var binding: FragmentChildProfileBinding? = null

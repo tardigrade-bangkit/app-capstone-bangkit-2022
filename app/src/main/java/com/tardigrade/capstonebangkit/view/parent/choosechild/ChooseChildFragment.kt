@@ -39,42 +39,49 @@ class ChooseChildFragment : Fragment() {
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1
+                        level = 1,
+                        birthdate = "02/04/2000"
                     ),
                     ChildProfile(
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2
+                        level = 2,
+                        birthdate = "02/04/2000"
                     ),
                     ChildProfile(
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1
+                        level = 1,
+                        birthdate = "02/04/2000"
                     ),
                     ChildProfile(
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2
+                        level = 2,
+                        birthdate = "02/04/2000"
                     ),
                     ChildProfile(
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 1
+                        level = 1,
+                        birthdate = "02/04/2000"
                     ),
                     ChildProfile(
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
                         name = "test",
-                        level = 2
+                        level = 2,
+                        birthdate = "02/04/2000"
                     ),
                     ChildProfile(
                         id = 1,
                         avatarUrl = "https://i.pravatar.cc/300",
-                        name = "test"
+                        name = "test",
+                        birthdate = "02/04/2000"
                     ),
                 )
             ).apply {
