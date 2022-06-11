@@ -2,35 +2,25 @@ package com.tardigrade.capstonebangkit.view.child.quiz
 
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.tardigrade.capstonebangkit.R
-import com.tardigrade.capstonebangkit.adapter.LessonAdapter
 import com.tardigrade.capstonebangkit.adapter.MultipleChoiceAdapter
-import com.tardigrade.capstonebangkit.customviews.AnswerCard
-import com.tardigrade.capstonebangkit.customviews.LessonCard
 import com.tardigrade.capstonebangkit.data.model.*
-import com.tardigrade.capstonebangkit.databinding.FragmentMaterialBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentMultipleChoiceQuizBinding
-import com.tardigrade.capstonebangkit.misc.MarginItemDecoration
-import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class MultipleChoiceQuizFragment : Fragment() {
     private val viewModel by viewModels<MultipleChoiceQuizViewModel>()
-    private val quizViewModel by viewModels<QuizViewModel>()
+    private val quizViewModel: QuizViewModel by activityViewModels()
     private var binding: FragmentMultipleChoiceQuizBinding? = null
 
     override fun onCreateView(
@@ -85,6 +75,13 @@ class MultipleChoiceQuizFragment : Fragment() {
         )
 
         viewModel.multipleChoiceQuestion.value = multipleChoiceQuestion
+
+        binding?.apply {
+            val quizFragment: QuizFragment = this@MultipleChoiceQuizFragment.parentFragment as QuizFragment
+            btnNext.setOnClickListener { quizFragment.nextQuestion() }
+            btnPrevious.setOnClickListener { quizFragment.previousQuestion() }
+            btnBack.setOnClickListener { quizFragment.backToHome() }
+        }
     }
 
     private fun setQuizContent(content: MultipleChoiceQuestion) {
@@ -111,7 +108,7 @@ class MultipleChoiceQuizFragment : Fragment() {
         }
     }
 
-    private fun nextSlide() {
+    private fun nextQuestion() {
         TODO("not yet implemented")
     }
 

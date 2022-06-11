@@ -14,7 +14,7 @@ import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 
 class QuizFragment : Fragment() {
-    private val viewModel by viewModels<QuizViewModel>()
+    private val viewModel: QuizViewModel by activityViewModels()
     private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
     private var binding: FragmentQuizBinding? = null
 
@@ -59,7 +59,6 @@ class QuizFragment : Fragment() {
         )
 
         viewModel.listQuizContent.value = quizContents
-
     }
 
     private fun setQuizContent(content: QuizContent) {
@@ -71,9 +70,41 @@ class QuizFragment : Fragment() {
                     addToBackStack(null)
                 }
             }
+            1 -> {
+                childFragmentManager.commit {
+                    replace<ArrangeWordsQuizFragment>(binding!!.quizContentFragment.id)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+            }
         }
     }
-    
+
+    fun nextQuestion() {
+        val currentIndex = viewModel.listQuizContent.value?.indexOf(viewModel.currentQuizContent.value)
+        if (currentIndex != null && currentIndex < viewModel.listQuizContent.value?.size!! - 1) {
+            viewModel.currentQuizContent.value = viewModel.listQuizContent.value?.get(currentIndex + 1)
+        } else {
+            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
+            if (nextLessonContent == null) findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_homeFragment)
+            when (nextLessonContent.type) {
+                0 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_materialFragment)
+                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_self)
+            }
+        }
+    }
+
+    fun previousQuestion() {
+    val currentIndex = viewModel.listQuizContent.value?.indexOf(viewModel.currentQuizContent.value)
+        if (currentIndex != null && currentIndex > 0) {
+            viewModel.currentQuizContent.value = viewModel.listQuizContent.value?.get(currentIndex - 1)
+        }
+    }
+
+    fun backToHome() {
+        findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_homeFragment)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
