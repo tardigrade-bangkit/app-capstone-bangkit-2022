@@ -2,6 +2,7 @@ package com.tardigrade.capstonebangkit.view.parent.pin
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.tardigrade.capstonebangkit.data.api.PinData
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
@@ -12,7 +13,7 @@ class PinViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _pinResult = MutableLiveData<Result<Int>>()
     val pinResult: LiveData<Result<Int>> = _pinResult
 
-    fun addPin(token: String, pin: String) {
+    fun addPin(token: String, pin: PinData) {
         _pinResult.value = Result.Loading
 
         viewModelScope.launch {
@@ -32,7 +33,7 @@ class PinViewModel(private val authRepository: AuthRepository) : ViewModel() {
         }
     }
 
-    fun checkPin(token: String, pin: String) {
+    fun checkPin(token: String, pin: PinData) {
         _pinResult.value = Result.Loading
 
         viewModelScope.launch {

@@ -1,7 +1,6 @@
 package com.tardigrade.capstonebangkit.view.parent.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +11,20 @@ import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.ChildProfileSmallAdapter
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.data.repository.ChildrenDataRepository
+import com.tardigrade.capstonebangkit.data.model.User
+import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentProfileBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.utils.loadImage
+import com.tardigrade.capstonebangkit.utils.setVisible
 import com.tardigrade.capstonebangkit.utils.showSnackbar
-import com.tardigrade.capstonebangkit.view.parent.childprofile.ChildProfileFragment
 import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class ProfileFragment : Fragment() {
     private val viewModel by viewModels<ProfileViewModel> {
         ProfileViewModel.Factory(
-            ChildrenDataRepository(ApiConfig.getApiService()),
+            ProfileRepository(ApiConfig.getApiService()),
             requireContext().preferences.getToken() ?: throw IllegalStateException("must have token")
         )
     }
@@ -46,13 +46,44 @@ class ProfileFragment : Fragment() {
             setTitle(R.string.profile_title)
         }
 
+        showProfileLoading(false)
+        showChildrenLoading(false)
+
         viewModel.apply {
+            myProfile.observe(viewLifecycleOwner) {
+                when(it) {
+                    is Result.Success -> {
+                        showProfileLoading(false)
+                        setMyProfile(it.data)
+                    }
+                    is Result.Error -> {
+                        showProfileLoading(false)
+
+                        val error = it.getErrorIfNotHandled()
+                        if (!error.isNullOrEmpty()) {
+                            binding?.root?.let { view ->
+                                showSnackbar(view, error, getString(R.string.try_again)) {
+                                    viewModel.getMyProfile()
+                                }
+                            }
+                        }
+                    }
+                    is Result.Loading -> {
+                        showProfileLoading(true)
+                    }
+                }
+            }
+
             children.observe(viewLifecycleOwner) {
                 when(it) {
                     is Result.Success -> {
+                        showChildrenLoading(false)
+
                         setChildrenData(it.data)
                     }
                     is Result.Error -> {
+                        showChildrenLoading(false)
+
                         val error = it.getErrorIfNotHandled()
                         if (!error.isNullOrEmpty()) {
                             binding?.root?.let { view ->
@@ -63,20 +94,19 @@ class ProfileFragment : Fragment() {
                         }
                     }
                     is Result.Loading -> {
-
+                        showChildrenLoading(true)
                     }
                 }
             }
         }
 
         binding?.apply {
-            // placeholder
-            profileAvatar.setImageResource(R.drawable.ic_launcher_background)
-            profileName.text = "Nama"
-            profileEmail.text = "Email@email.com"
-
             logoutButton.setOnClickListener {
                 logout()
+            }
+
+            editInfoAccountButton.setOnClickListener {
+                showSnackbar(binding?.root as View, getString(R.string.not_available_yet))
             }
         }
     }
@@ -86,13 +116,21 @@ class ProfileFragment : Fragment() {
         findNavController().navigate(R.id.action_nav_profile_to_nav_login)
     }
 
+    private fun setMyProfile(user: User) {
+        binding?.apply {
+            profileAvatar.loadImage(user.avatar)
+            profileName.text = user.name
+            profileEmail.text = user.email
+        }
+    }
+
     private fun setChildrenData(children: List<ChildProfile>) {
         binding?.profileChilds?.adapter = ChildProfileSmallAdapter(ArrayList(children)).apply {
             setOnItemClickCallback(object : ChildProfileSmallAdapter.OnItemClickCallback {
                 override fun onItemClicked(child: ChildProfile) {
                     val toChildProfile = ProfileFragmentDirections
                         .actionNavProfileToChildProfileFragment().apply {
-                            mode = ChildProfileFragment.EDIT_MODE
+                            this.child = child
                         }
 
                     findNavController().navigate(toChildProfile)
@@ -102,6 +140,20 @@ class ProfileFragment : Fragment() {
                     findNavController().navigate(R.id.action_nav_profile_to_childProfileFragment)
                 }
             })
+        }
+    }
+
+    private fun showChildrenLoading(loading: Boolean) {
+        binding?.apply {
+            childrenLoading.setVisible(loading)
+            profileChilds.setVisible(!loading)
+        }
+    }
+
+    private fun showProfileLoading(loading: Boolean) {
+        binding?.apply {
+            profileLoading.setVisible(loading)
+            profileLoadingGroup.setVisible(!loading)
         }
     }
 

@@ -1,16 +1,23 @@
 package com.tardigrade.capstonebangkit.view.parent.childprofile
 
 import androidx.lifecycle.*
+import com.tardigrade.capstonebangkit.data.api.AddChild
 import com.tardigrade.capstonebangkit.data.model.Avatar
-import com.tardigrade.capstonebangkit.data.repository.ChildrenDataRepository
+import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class ChildProfileViewModel(private val childrenDataRepository: ChildrenDataRepository) : ViewModel() {
+class ChildProfileViewModel(
+    private val profileRepository: ProfileRepository,
+    private val token: String
+) : ViewModel() {
     private var _avatars = MutableLiveData<Result<List<Avatar>>>()
     val avatars: LiveData<Result<List<Avatar>>> = _avatars
+
+    private var _addChildrenResult = MutableLiveData<Result<Unit>>()
+    val addChildrenResult: LiveData<Result<Unit>> = _addChildrenResult
 
     init {
         getAvatars()
@@ -21,7 +28,7 @@ class ChildProfileViewModel(private val childrenDataRepository: ChildrenDataRepo
 
         viewModelScope.launch {
             try {
-                val avatars = childrenDataRepository.getAvatars()
+                val avatars = profileRepository.getAvatars()
 
                 _avatars.value = Result.Success(avatars)
             } catch (httpEx: HttpException) {
@@ -36,11 +43,31 @@ class ChildProfileViewModel(private val childrenDataRepository: ChildrenDataRepo
         }
     }
 
+    fun addChildren(child: AddChild) {
+        _addChildrenResult.value = Result.Loading
+
+        viewModelScope.launch {
+            try {
+                profileRepository.addChildren(token, child)
+
+                _addChildrenResult.value = Result.Success(Unit)
+            } catch (httpEx: HttpException) {
+                httpEx.response()?.errorBody()?.let {
+                    val errorResponse = getErrorResponse(it)
+
+                    _addChildrenResult.value = Result.Error(errorResponse.msg)
+                }
+            } catch (genericEx: Exception) {
+                _addChildrenResult.value = Result.Error(genericEx.message ?: "")
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val childrenDataRepository: ChildrenDataRepository) :
+    class Factory(private val profileRepository: ProfileRepository, private val token: String) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ChildProfileViewModel(childrenDataRepository) as T
+            return ChildProfileViewModel(profileRepository, token) as T
         }
     }
 }
