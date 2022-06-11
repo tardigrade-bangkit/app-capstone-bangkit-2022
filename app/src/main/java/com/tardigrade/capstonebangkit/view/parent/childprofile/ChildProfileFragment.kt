@@ -28,7 +28,7 @@ class ChildProfileFragment : Fragment() {
         ChildProfileViewModel.Factory(
             ProfileRepository(ApiConfig.getApiService()),
             requireContext().preferences.getToken()
-                ?: throw IllegalStateException("must have token")
+                ?: error("must have token")
         )
     }
     private var binding: FragmentChildProfileBinding? = null

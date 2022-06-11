@@ -49,4 +49,22 @@ interface ApiService {
         @Header("x-access-token") token: String,
         @Body newChild: AddChild
     ): GenericResponse
+
+    @GET("progress/{child_id}")
+    suspend fun getChildrenLesson(
+        @Header("x-access-token") token: String,
+        @Path("child_id") childId: Int
+    ) : GetProgressResponse
+
+    @GET("badges/{child_id}")
+    suspend fun getChildrenBadges(
+        @Header("x-access-token") token: String,
+        @Path("child_id") childId: Int
+    ) : GetBadgesResponse
+
+    @GET("achievements/{child_id}")
+    suspend fun getChildrenAchievements(
+        @Header("x-access-token") token: String,
+        @Path("child_id") childId: Int
+    ) : GetAchievementsResponse
 }

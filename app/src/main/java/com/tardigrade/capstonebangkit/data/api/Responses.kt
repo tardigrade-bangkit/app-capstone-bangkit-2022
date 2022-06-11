@@ -1,9 +1,7 @@
 package com.tardigrade.capstonebangkit.data.api
 
 import com.google.gson.annotations.SerializedName
-import com.tardigrade.capstonebangkit.data.model.Avatar
-import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.data.model.User
+import com.tardigrade.capstonebangkit.data.model.*
 
 data class GenericResponse(
 	@field:SerializedName("msg")
@@ -33,3 +31,17 @@ data class GetSelfResponse(
 	val user: User
 )
 
+data class GetProgressResponse(
+	@field:SerializedName("lessons")
+	val lessons: List<Lesson>
+)
+
+data class GetBadgesResponse(
+	@field:SerializedName("badges")
+	val badges: List<Badge>
+)
+
+data class GetAchievementsResponse(
+	@field:SerializedName("achievements")
+	val achievements: List<Achievement>
+)

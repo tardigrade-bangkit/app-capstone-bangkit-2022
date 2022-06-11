@@ -10,10 +10,13 @@ data class Lesson(
     val title: String,
 
     @field:SerializedName("type")
-    val type: String,
+    val type: String = "",
 
     @field:SerializedName("id")
-    val id: Int
+    val id: Int,
+
+    @field:SerializedName("finished_date")
+    val finishedDate: String? = null,
 )
 
 data class LessonContent(

@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
     private val viewModel by viewModels<ProfileViewModel> {
         ProfileViewModel.Factory(
             ProfileRepository(ApiConfig.getApiService()),
-            requireContext().preferences.getToken() ?: throw IllegalStateException("must have token")
+            requireContext().preferences.getToken() ?: error("must have token")
         )
     }
     private var binding: FragmentProfileBinding? = null
