@@ -14,8 +14,8 @@
             android:id="@+id/action_homeFragment_to_materialFragment"
             app:destination="@id/materialFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_multipleChoiceQuizFragment"
-            app:destination="@id/multipleChoiceQuizFragment" />
+            android:id="@+id/action_homeFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
     </fragment>
     <fragment
         android:id="@+id/materialFragment"
@@ -26,16 +26,25 @@
             android:id="@+id/action_materialFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_materialFragment_to_multipleChoiceQuizFragment"
-            app:destination="@id/multipleChoiceQuizFragment" />
+            android:id="@+id/action_materialFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+        <action
+            android:id="@+id/action_materialFragment_self"
+            app:destination="@id/materialFragment" />
     </fragment>
     <fragment
-        android:id="@+id/multipleChoiceQuizFragment"
-        android:name="com.tardigrade.capstonebangkit.view.child.quiz.MultipleChoiceQuizFragment"
-        android:label="fragment_quiz_multiple_choice"
-        tools:layout="@layout/fragment_quiz_multiple_choice" >
+        android:id="@+id/quizFragment"
+        android:name="com.tardigrade.capstonebangkit.view.child.quiz.QuizFragment"
+        android:label="fragment_quiz"
+        tools:layout="@layout/fragment_quiz" >
         <action
-            android:id="@+id/action_multipleChoiceQuizFragment_to_materialFragment"
+            android:id="@+id/action_quizFragment_to_materialFragment"
             app:destination="@id/materialFragment" />
+        <action
+            android:id="@+id/action_quizFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_quizFragment_self"
+            app:destination="@id/quizFragment" />
     </fragment>
 </navigation>

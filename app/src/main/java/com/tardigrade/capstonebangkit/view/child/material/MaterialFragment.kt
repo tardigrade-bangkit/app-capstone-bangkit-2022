@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -22,7 +23,7 @@ import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class MaterialFragment : Fragment() {
     private val viewModel by viewModels<MaterialViewModel>()
-    private val lessonContentViewModel by viewModels<LessonContentViewModel>()
+    private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
     private var binding: FragmentMaterialBinding? = null
 
     override fun onCreateView(
@@ -95,7 +96,12 @@ class MaterialFragment : Fragment() {
         if (currentIndex != null && currentIndex < viewModel.listMaterialContent.value?.size!! - 1) {
             viewModel.currentMaterialContent.value = viewModel.listMaterialContent.value?.get(currentIndex + 1)
         } else {
-            findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
+            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
+            if (nextLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
+            when (nextLessonContent.type) {
+                0 -> findNavController().navigate(R.id.action_materialFragment_self)
+                1 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
+            }
         }
     }
 

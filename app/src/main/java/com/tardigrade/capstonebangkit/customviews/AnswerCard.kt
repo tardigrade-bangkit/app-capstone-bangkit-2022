@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -15,11 +16,6 @@ import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.databinding.ViewAnswerCardBinding
 
 class AnswerCard : LinearLayout {
-    var answer_text: String? = null
-    var answer_image_url: String? = null
-    var answer_audio_url: String? = null
-    var answer_name: String = "A"
-
     private val binding = ViewAnswerCardBinding.inflate(LayoutInflater.from(context))
 
     constructor(context: Context): super(context)
@@ -27,6 +23,7 @@ class AnswerCard : LinearLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
+        addView(binding.root)
         binding.apply {
             answerAudio.visibility = GONE
             answerImage.visibility = GONE
@@ -34,8 +31,12 @@ class AnswerCard : LinearLayout {
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+    fun setAnswerContent(
+        answer_name: String = "A",
+        answer_text: String? = null,
+        answer_image_url: String? = null,
+        answer_audio_url: String? = null
+    ) {
 
         if (answer_text != null) {
             binding.answerText.apply {

@@ -51,9 +51,9 @@
             app:strokeWidth="1dp"
             app:strokeColor="#333333"
             app:cardPreventCornerOverlap="true"
+            app:contentPadding="8dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="16dp"
-            app:contentPadding="8dp"
             android:layout_marginEnd="8dp"
             app:layout_goneMarginEnd="0dp"
             app:layout_constraintHorizontal_weight="2"
@@ -64,7 +64,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <ImageView
@@ -101,50 +101,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/ans_multiple_choice"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_choices"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <com.tardigrade.capstonebangkit.customviews.AnswerCard
-                        android:id="@+id/card_answer_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                    <com.tardigrade.capstonebangkit.customviews.AnswerCard
-                        android:id="@+id/card_answer_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <com.tardigrade.capstonebangkit.customviews.AnswerCard
-                        android:id="@+id/card_answer_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                    <com.tardigrade.capstonebangkit.customviews.AnswerCard
-                        android:id="@+id/card_answer_4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
+                android:layout_height="match_parent"/>
 
         </com.google.android.material.card.MaterialCardView>
 

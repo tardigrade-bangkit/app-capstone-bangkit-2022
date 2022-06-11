@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,7 +22,7 @@ import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
-    private val lessonContentViewModel by viewModels<LessonContentViewModel>()
+    private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
     private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(
@@ -41,27 +42,32 @@ class HomeFragment : Fragment() {
                 Lesson(
                     coverImageUrl = "https://picsum.photos/160/300",
                     title = "Lesson 1",
-                    type = "Grammar"
+                    type = "Grammar",
+                    id = 1
                 ),
                 Lesson(
                     coverImageUrl = "https://picsum.photos/260/500",
                     title = "Lesson 2",
-                    type = "Vocabulary"
+                    type = "Vocabulary",
+                    id = 2
                 ),
                 Lesson(
                     coverImageUrl = "https://picsum.photos/360/500",
                     title = "Lesson 3",
-                    type = "Vocabulary"
+                    type = "Vocabulary",
+                    id = 3
                 ),
                 Lesson(
                     coverImageUrl = "https://picsum.photos/460/500",
                     title = "Lesson 4",
-                    type = "Grammar"
+                    type = "Grammar",
+                    id = 4
                 ),
                 Lesson(
                     coverImageUrl = "https://picsum.photos/430/500",
                     title = "Lesson 5",
-                    type = "Vocabulary"
+                    type = "Vocabulary",
+                    id = 5
                 )
             )
 
@@ -85,9 +91,7 @@ class HomeFragment : Fragment() {
                     val nextLessonContent = lessonContentViewModel.getNextLessonContent()
                     when (nextLessonContent.type) {
                         0 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
-                        1 -> {
-
-                        }
+                        1 -> findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
                     }
                 }
             })
