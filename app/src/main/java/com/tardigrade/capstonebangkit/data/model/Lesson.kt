@@ -32,10 +32,10 @@ data class LessonContent(
     @field:SerializedName("order")
     val order: Int,
 
-    @field:SerializedName("quizzes_id")
+    @field:SerializedName("Quizzes_id")
     val quizzesId: Int? = null,
 
-    @field:SerializedName("materials_id")
+    @field:SerializedName("Materials_id")
     val materialId: Int? = null,
 )
 
@@ -54,13 +54,16 @@ data class MaterialContent(
 )
 
 data class QuizContent(
+    @field:SerializedName("id")
+    val id: Int,
+
     @field:SerializedName("order")
     val order: Int,
 
     @field:SerializedName("type")
     val type: Int,
 
-    @field:SerializedName("multiple_choice_id")
+    @field:SerializedName("multiple_choices_id")
     val multipleChoiceId: Int? = null,
 
     @field:SerializedName("arrange_words_id")
@@ -94,16 +97,16 @@ data class MultipleChoiceQuestion(
 )
 
 data class Choice(
-    @field:SerializedName("choice")
+    @field:SerializedName("answer_choice")
     val choiceName: String,
 
-    @field:SerializedName("image")
+    @field:SerializedName("answer_image")
     val choiceImage: String? = null,
 
-    @field:SerializedName("audio")
+    @field:SerializedName("answer_audio")
     val choiceAudio: String? = null,
 
-    @field:SerializedName("text")
+    @field:SerializedName("answer_text")
     val choiceText: String? = null
 )
 

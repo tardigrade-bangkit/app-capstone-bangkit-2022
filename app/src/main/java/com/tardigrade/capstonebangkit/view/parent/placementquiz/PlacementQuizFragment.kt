@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.MultipleChoiceAdapter
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
+import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.data.model.Choice
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
+import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentPlacementQuizBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
 import com.tardigrade.capstonebangkit.misc.MarginItemDecoration
@@ -18,11 +21,19 @@ import com.tardigrade.capstonebangkit.misc.VerticalSpacingItemDecoration
 import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.utils.loadImage
 import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class PlacementQuizFragment : Fragment() {
-    private val viewModel by viewModels<PlacementQuizViewModel>()
+    private val viewModel by viewModels<PlacementQuizViewModel> {
+        PlacementQuizViewModel.Factory(
+            LessonRepository(ApiConfig.getApiService()),
+            requireContext().preferences.getToken() ?: error("must have token"),
+            chosenChild?.id ?: error("must have chosen child")
+        )
+    }
     private var binding: FragmentPlacementQuizBinding? = null
 
+    private var chosenChild: ChildProfile? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +45,8 @@ class PlacementQuizFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        chosenChild = PlacementQuizFragmentArgs.fromBundle(arguments as Bundle).choosenChild
 
         getActionBar(requireActivity())?.apply {
             show()
@@ -102,6 +115,8 @@ class PlacementQuizFragment : Fragment() {
 
             choiceList.adapter = MultipleChoiceAdapter(ArrayList(multiQuestion.choices))
         }
+
+        viewModel.getData()
     }
 
     override fun onDestroyView() {

@@ -74,6 +74,9 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
+                is Result.Loading -> {
+
+                }
             }
         }
 
@@ -92,6 +95,9 @@ class HomeFragment : Fragment() {
                             }
                         }
                     }
+                }
+                is Result.Loading -> {
+
                 }
             }
         }

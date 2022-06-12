@@ -42,16 +42,19 @@ class QuizFragment : Fragment() {
 
         val quizContents = arrayListOf(
             QuizContent(
+                id = 0,
                 order = 1,
                 type = 0,
                 multipleChoiceId = 1
             ),
             QuizContent(
+                id = 0,
                 order = 2,
                 type = 1,
                 arrangeWordsId = 1
             ),
             QuizContent(
+                id = 0,
                 order = 3,
                 type = 2,
                 shortAnswerId = 1

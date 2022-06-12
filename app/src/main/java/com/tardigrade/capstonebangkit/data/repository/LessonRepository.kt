@@ -11,4 +11,10 @@ class LessonRepository(private val apiService: ApiService) {
 
     suspend fun getMaterial(token: String, materialId: Int) =
         apiService.getMaterial(token, materialId).materialContents
+
+    suspend fun getQuiz(token: String, quizId: Int) =
+        apiService.getQuiz(token, quizId).questions
+
+    suspend fun getMultipleChoiceQuestion(token: String, question_id: Int) =
+        apiService.getMultipleChoiceQuestion(token, question_id)
 }

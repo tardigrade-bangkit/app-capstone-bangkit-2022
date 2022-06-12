@@ -295,15 +295,15 @@ class DashboardFragment : Fragment() {
     private fun setDropdownData(children: List<ChildProfile>) {
         binding?.apply {
             if (children.isEmpty()) {
+                hasChildren = false
                 noChildren.visibility = View.VISIBLE
                 chooseChildDropdown.visibility = View.GONE
                 statGroup.visibility = View.GONE
-                hasChildren = false
             } else {
+                hasChildren = true
                 noChildren.visibility = View.GONE
                 chooseChildDropdown.visibility = View.VISIBLE
                 statGroup.visibility = View.VISIBLE
-                hasChildren = true
                 childAutocomplete.setAdapter(ChooseChildAdapter(requireContext(), children))
             }
         }
@@ -314,7 +314,9 @@ class DashboardFragment : Fragment() {
                 || isAchievementsLoading || isUsagesLoading
 
         binding?.apply {
-            statGroup.setVisible(!loading && hasChildren)
+            if (hasChildren) {
+                statGroup.setVisible(!loading)
+            }
             statLoadingGroup.setVisible(loading)
         }
     }
