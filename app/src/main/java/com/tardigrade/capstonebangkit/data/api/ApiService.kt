@@ -67,4 +67,26 @@ interface ApiService {
         @Header("x-access-token") token: String,
         @Path("child_id") childId: Int
     ) : GetAchievementsResponse
+
+    @GET("usages/{child_id}")
+    suspend fun getChildrenUsages(
+        @Header("x-access-token") token: String,
+        @Path("child_id") childId: Int
+    ) : GetUsagesResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("usages/{child_id}")
+    suspend fun addUsage(
+        @Header("x-access-token") token: String,
+        @Body addUsageData: AddUsageData,
+        @Path("child_id") childId: Int
+    ): GenericResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("usages/end/{child_id}")
+    suspend fun addUsage(
+        @Header("x-access-token") token: String,
+        @Body addEndUsageData: AddEndUsageData,
+        @Path("child_id") childId: Int
+    ): GenericResponse
 }

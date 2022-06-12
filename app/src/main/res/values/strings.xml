@@ -61,6 +61,9 @@
     <string name="latest_achievements">Achievement Terbaru</string>
     <string name="no_data">Belum ada data</string>
     <string name="no_children">Anda masih belum mempunyai profil anak</string>
+    <string name="usages">Waktu Pakai</string>
+    <string name="today">Hari ini</string>
+    <string name="this_week">Seminggu ini</string>
     <string name="btn_action_text_photo">Ambil Foto Jawaban</string>
     <string name="tv_warning_text_photo">Siapkan kertas dan alat tulis! Tulis jawabanmu di kertas lalu foto!</string>
     <string name="btn_action_text_audio">Rekam Jawaban</string>

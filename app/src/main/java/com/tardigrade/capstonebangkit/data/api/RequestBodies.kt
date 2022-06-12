@@ -36,3 +36,13 @@ data class LoginData(
     @field:SerializedName("password")
     val password: String
 )
+
+data class AddUsageData(
+    @field:SerializedName("time_start")
+    val time_start: String
+)
+
+data class AddEndUsageData(
+    @field:SerializedName("time_end")
+    val time_end: String
+)

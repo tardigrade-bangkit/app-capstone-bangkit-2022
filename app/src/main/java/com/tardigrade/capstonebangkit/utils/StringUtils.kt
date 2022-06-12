@@ -8,3 +8,5 @@ fun String.isValidEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
 fun String.toDateTime() = SimpleDateFormat("yyyy/MM/dd hh:mm:ss", Locale.getDefault())
     .parse(this)
+
+fun Float.format(digits: Int) = "%.${digits}f".format(this)

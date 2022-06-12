@@ -45,3 +45,8 @@ data class GetAchievementsResponse(
 	@field:SerializedName("achievements")
 	val achievements: List<Achievement>
 )
+
+data class GetUsagesResponse(
+	@field:SerializedName("usages")
+	val usages: List<Usage>
+)
