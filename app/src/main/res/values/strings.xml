@@ -67,4 +67,8 @@
     <string name="question_no_x">Soal %1$d</string>
     <string name="previous">Sebelumnya</string>
     <string name="placement_quiz">Ujian Kemampuan</string>
+    <string name="btn_action_text_photo">Ambil Foto Jawaban</string>
+    <string name="tv_warning_text_photo">Siapkan kertas dan alat tulis! Tulis jawabanmu di kertas lalu foto!</string>
+    <string name="btn_action_text_audio">Rekam Jawaban</string>
+    <string name="tv_warning_text_audio">Ini soal speaking! Rekam suara jawabamu jika sudah siap!</string>
 </resources>
