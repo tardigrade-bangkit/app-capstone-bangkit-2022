@@ -20,19 +20,31 @@ class LessonContentViewModel(
     private val _listLessonContent = MutableLiveData<Result<List<LessonContent>>>()
     val listLessonContent: MutableLiveData<Result<List<LessonContent>>> = _listLessonContent
 
-    val currentLessonContent = MutableLiveData<LessonContent>()
+    var currentLessonContent: LessonContent? = null
+    var lessonContents: List<LessonContent>? = null
 
     private var currentLessonContentIdx = -1
 
-    fun getNextLessonContent(lessonContents: List<LessonContent> ) {
-        currentLessonContent.value =
+    fun getNextLessonContent() {
+        currentLessonContent =
             if (currentLessonContentIdx == -1) {
                     currentLessonContentIdx = 0
-                    lessonContents[0]
+                    lessonContents?.get(0)
                 } else {
                     currentLessonContentIdx += 1
-                    lessonContents[currentLessonContentIdx]
+                    lessonContents?.get(currentLessonContentIdx)
                 }
+    }
+
+    fun getPreviousContent() {
+        currentLessonContent =
+            if (currentLessonContentIdx == -1) {
+                currentLessonContentIdx = 0
+                lessonContents?.get(0)
+            } else {
+                currentLessonContentIdx -= 1
+                lessonContents?.get(currentLessonContentIdx)
+            }
     }
 
     fun getLessonContent(lessonId: Int) {

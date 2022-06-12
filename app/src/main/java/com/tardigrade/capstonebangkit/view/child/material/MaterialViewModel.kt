@@ -19,8 +19,12 @@ class MaterialViewModel(
     private val _listMaterialContent = MutableLiveData<Result<List<MaterialContent>>>()
     val listMaterialContent: MutableLiveData<Result<List<MaterialContent>>> = _listMaterialContent
 
-    private val _currentMaterialContent = MutableLiveData<MaterialContent>()
-    val currentMaterialContent: MutableLiveData<MaterialContent> = _currentMaterialContent
+    private val _currentMaterialContent = MutableLiveData<MaterialContent?>()
+    val currentMaterialContent: MutableLiveData<MaterialContent?> = _currentMaterialContent
+
+    fun setCurrentMaterialContent(materialContent: MaterialContent?) {
+        _currentMaterialContent.value = materialContent
+    }
 
     fun getMaterial(materialId: Int) {
 //        _listMaterialContent.value = Result.Loading
