@@ -64,4 +64,7 @@
     <string name="usages">Waktu Pakai</string>
     <string name="today">Hari ini</string>
     <string name="this_week">Seminggu ini</string>
+    <string name="question_no_x">Soal %1$d</string>
+    <string name="previous">Sebelumnya</string>
+    <string name="placement_quiz">Ujian Kemampuan</string>
 </resources>

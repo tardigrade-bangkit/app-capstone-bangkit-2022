@@ -25,10 +25,10 @@ class MultipleChoiceAdapter(private val listChoice: ArrayList<Choice>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = AnswerCard(parent.context)
-//        itemView.layoutParams = ViewGroup.LayoutParams(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        )
+        itemView.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
 
         return ViewHolder(itemView)
     }
@@ -46,6 +46,8 @@ class MultipleChoiceAdapter(private val listChoice: ArrayList<Choice>)
             }
         }
     }
+
+    fun getSelectedItem() = listChoice[selectedPosition]
 
     interface OnItemClickCallback {
         fun onItemClicked(data: Choice?, view: AnswerCard)
