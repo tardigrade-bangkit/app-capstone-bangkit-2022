@@ -75,6 +75,9 @@
             app:argType="com.tardigrade.capstonebangkit.data.model.ChildProfile"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_childProfileFragment_to_placementQuizFragment"
+            app:destination="@id/placementQuizFragment" />
     </fragment>
     <fragment
         android:id="@+id/childCreatedFragment"
@@ -86,6 +89,9 @@
             app:destination="@id/nav_dashboard"
             app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_childCreatedFragment_to_placementQuizFragment"
+            app:destination="@id/placementQuizFragment" />
     </fragment>
     <fragment
         android:id="@+id/chooseChildFragment"
@@ -95,5 +101,17 @@
         <action
             android:id="@+id/action_chooseChildFragment_to_childProfileFragment"
             app:destination="@id/childProfileFragment" />
+        <action
+            android:id="@+id/action_chooseChildFragment_to_placementQuizFragment"
+            app:destination="@id/placementQuizFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placementQuizFragment"
+        android:name="com.tardigrade.capstonebangkit.view.parent.placementquiz.PlacementQuizFragment"
+        android:label="fragment_placement_quiz"
+        tools:layout="@layout/fragment_placement_quiz" >
+        <argument
+            android:name="choosenChild"
+            app:argType="com.tardigrade.capstonebangkit.data.model.ChildProfile" />
     </fragment>
 </navigation>

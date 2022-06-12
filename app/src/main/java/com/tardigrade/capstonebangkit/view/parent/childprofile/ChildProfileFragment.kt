@@ -107,8 +107,10 @@ class ChildProfileFragment : Fragment() {
                         showAddChildLoading(false)
 
                         findNavController()
-                            .navigate(ChildProfileFragmentDirections
-                                .actionChildProfileFragmentToChildCreatedFragment())
+                            .navigate(
+                                ChildProfileFragmentDirections
+                                    .actionChildProfileFragmentToChildCreatedFragment()
+                            )
                     }
                     is Result.Error -> {
                         showAddChildLoading(false)
@@ -149,13 +151,24 @@ class ChildProfileFragment : Fragment() {
             }
 
             if (child != null) {
-                childAvatar.loadImage(child?.avatarUrl ?: "")
-                nameInputEt.setText(child?.name)
+                val choosenChild = child
+
+                childAvatar.loadImage(choosenChild?.avatarUrl ?: "")
+                nameInputEt.setText(choosenChild?.name)
                 nameInputEt.isClickable = false
                 nameInputEt.isFocusable = false
-                birthdateInputEt.setText(child?.birthdate)
+                birthdateInputEt.setText(choosenChild?.birthdate)
                 birthdateInputEt.isClickable = false
                 birthdateInputEt.isFocusable = false
+
+                testBtn.setOnClickListener {
+                    val navigateTest =
+                        ChildProfileFragmentDirections.actionChildProfileFragmentToPlacementQuizFragment(
+                            choosenChild ?: return@setOnClickListener
+                        )
+
+                    findNavController().navigate(navigateTest)
+                }
             } else {
                 birthdateInputEt.setOnClickListener {
                     DatePickerDialog(
@@ -202,18 +215,21 @@ class ChildProfileFragment : Fragment() {
     private fun saveChild() {
         with(binding ?: return) {
             val nameValid = nameInput.validate(context, getString(R.string.name_input_label))
-            val birthdateValid = birthdateInput.validate(context, getString(R.string.birthdate_input_label))
+            val birthdateValid =
+                birthdateInput.validate(context, getString(R.string.birthdate_input_label))
 
             if (!nameValid || !birthdateValid) {
                 return
             }
 
             if (child == null) {
-                viewModel.addChildren(AddChild(
-                    nameInput.editText?.text.toString(),
-                    birthdateInput.editText?.text.toString(),
-                    choosenAvatar?.id ?: 0
-                ))
+                viewModel.addChildren(
+                    AddChild(
+                        nameInput.editText?.text.toString(),
+                        birthdateInput.editText?.text.toString(),
+                        choosenAvatar?.id ?: 0
+                    )
+                )
             } else {
                 findNavController().navigateUp()
             }
