@@ -11,7 +11,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.tardigrade.capstonebangkit.customviews.LessonCard
 import com.tardigrade.capstonebangkit.data.model.Lesson
 
-class LessonAdapter(private val listLesson: ArrayList<Lesson>)
+class LessonAdapter(private val listLesson: List<Lesson>)
     : RecyclerView.Adapter<LessonAdapter.ViewHolder>(){
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v){
         val view: LessonCard

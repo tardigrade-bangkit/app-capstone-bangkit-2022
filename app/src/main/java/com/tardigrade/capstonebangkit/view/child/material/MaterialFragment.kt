@@ -17,13 +17,31 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.tardigrade.capstonebangkit.R
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.MaterialContent
+import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentMaterialBinding
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.showSnackbar
 import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class MaterialFragment : Fragment() {
-    private val viewModel by viewModels<MaterialViewModel>()
-    private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
+    private val viewModel by viewModels<MaterialViewModel>() {
+        MaterialViewModel.Factory(
+            LessonRepository(ApiConfig.getApiService()),
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+//            requireContext().preferences.getToken()
+//                ?: error("must have token")
+        )
+    }
+    private val lessonContentViewModel by viewModels<LessonContentViewModel>() {
+        LessonContentViewModel.Factory(
+            LessonRepository(ApiConfig.getApiService()),
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+//            requireContext().preferences.getToken()
+//                ?: error("must have token")
+        )
+    }
     private var binding: FragmentMaterialBinding? = null
 
     override fun onCreateView(
@@ -43,31 +61,26 @@ class MaterialFragment : Fragment() {
             setMaterialContent(it)
         }
 
-        viewModel.listMaterialContent.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                viewModel.currentMaterialContent.value = it[0]
+        viewModel.listMaterialContent.observe(viewLifecycleOwner) { contents ->
+            when(contents) {
+                is Result.Success -> {
+                    Log.d("lesson Success", contents.data.toString())
+                    viewModel.currentMaterialContent.value = contents.data[0]
+                }
+                is Result.Error -> {
+                    val error = contents.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error, getString(R.string.try_again)) {
+                                lessonContentViewModel.currentLessonContent.value?.materialId?.let { viewModel.getMaterial(it) }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        val materialContents = arrayListOf(
-            MaterialContent(
-                order = 1,
-                imageUrl = "https://picsum.photos/800/360"
-            ),
-            MaterialContent(
-                order = 2,
-                imageUrl = "https://picsum.photos/801/360"
-            ),
-            MaterialContent(
-                order = 3,
-                imageUrl = "https://picsum.photos/802/360"
-            ),
-            MaterialContent(
-                order = 4,
-                imageUrl = "https://picsum.photos/803/360"
-            ),
-        )
-        viewModel.listMaterialContent.value = materialContents
+        lessonContentViewModel.currentLessonContent.value?.materialId?.let { viewModel.getMaterial(it) }
 
         binding?.apply {
             btnBack.setOnClickListener {findNavController().navigate(R.id.action_materialFragment_to_homeFragment)}
@@ -92,23 +105,25 @@ class MaterialFragment : Fragment() {
     }
 
     private fun nextSlide() {
-        val currentIndex = viewModel.listMaterialContent.value?.indexOf(viewModel.currentMaterialContent.value)
-        if (currentIndex != null && currentIndex < viewModel.listMaterialContent.value?.size!! - 1) {
-            viewModel.currentMaterialContent.value = viewModel.listMaterialContent.value?.get(currentIndex + 1)
+        val listMaterialContent = (viewModel.listMaterialContent.value as Result.Success<List<MaterialContent>>).data
+        val currentIndex = listMaterialContent.indexOf(viewModel.currentMaterialContent.value)
+        if (currentIndex < listMaterialContent.size - 1) {
+            viewModel.currentMaterialContent.value = listMaterialContent[currentIndex + 1]
         } else {
-            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
-            if (nextLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
-            when (nextLessonContent.type) {
-                0 -> findNavController().navigate(R.id.action_materialFragment_self)
-                1 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
-            }
+//            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
+//            if (nextLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
+//            when (nextLessonContent.type) {
+//                0 -> findNavController().navigate(R.id.action_materialFragment_self)
+//                1 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
+//            }
         }
     }
 
     private fun previousSlide() {
-        val currentIndex = viewModel.listMaterialContent.value?.indexOf(viewModel.currentMaterialContent.value)
+        val listMaterialContent = (viewModel.listMaterialContent.value as Result.Success<List<MaterialContent>>).data
+        val currentIndex = listMaterialContent.indexOf(viewModel.currentMaterialContent.value)
         if (currentIndex != null && currentIndex > 0) {
-            viewModel.currentMaterialContent.value = viewModel.listMaterialContent.value?.get(currentIndex - 1)
+            viewModel.currentMaterialContent.value = listMaterialContent[currentIndex - 1]
         }
     }
 

@@ -2,6 +2,7 @@ package com.tardigrade.capstonebangkit.view.child.home
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +15,33 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.LessonAdapter
 import com.tardigrade.capstonebangkit.customviews.LessonCard
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.Lesson
 import com.tardigrade.capstonebangkit.data.model.LessonContent
+import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentHomeBinding
 import com.tardigrade.capstonebangkit.misc.MarginItemDecoration
 import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.showSnackbar
 
 class HomeFragment : Fragment() {
-    private val viewModel by viewModels<HomeViewModel>()
-    private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
+    private val viewModel by viewModels<HomeViewModel>() {
+        HomeViewModel.Factory(
+            LessonRepository(ApiConfig.getApiService()),
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+//            requireContext().preferences.getToken()
+//                ?: error("must have token")
+        )
+    }
+    private val lessonContentViewModel by viewModels<LessonContentViewModel>() {
+        LessonContentViewModel.Factory(
+            LessonRepository(ApiConfig.getApiService()),
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+//            requireContext().preferences.getToken()
+//                ?: error("must have token")
+        )
+    }
     private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(
@@ -37,68 +56,67 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.apply {
-            val lessonList = arrayListOf(
-                Lesson(
-                    coverImageUrl = "https://picsum.photos/160/300",
-                    title = "Lesson 1",
-                    type = "Grammar",
-                    id = 1
-                ),
-                Lesson(
-                    coverImageUrl = "https://picsum.photos/260/500",
-                    title = "Lesson 2",
-                    type = "Vocabulary",
-                    id = 2
-                ),
-                Lesson(
-                    coverImageUrl = "https://picsum.photos/360/500",
-                    title = "Lesson 3",
-                    type = "Vocabulary",
-                    id = 3
-                ),
-                Lesson(
-                    coverImageUrl = "https://picsum.photos/460/500",
-                    title = "Lesson 4",
-                    type = "Grammar",
-                    id = 4
-                ),
-                Lesson(
-                    coverImageUrl = "https://picsum.photos/430/500",
-                    title = "Lesson 5",
-                    type = "Vocabulary",
-                    id = 5
-                )
-            )
+        viewModel.getLessons(1)
 
+        viewModel.listLesson.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Success -> {
+                    Log.d("listLesson Success", it.data.toString())
+                    setLessonData(it.data)
+                }
+                is Result.Error -> {
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error, getString(R.string.try_again)) {
+                                viewModel.getLessons(1)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        lessonContentViewModel.listLessonContent.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Success -> {
+                    Log.d("lesson Success", it.data.toString())
+                    lessonContentViewModel.getNextLessonContent(it.data)
+                }
+                is Result.Error -> {
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error, getString(R.string.try_again)) {
+                                viewModel.getLessons(1)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        lessonContentViewModel.currentLessonContent.observe(viewLifecycleOwner) {
+            when (it.type) {
+                0 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
+                1 -> findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
+            }
+        }
+    }
+
+    private fun setLessonData(lessons: List<Lesson>) {
+        binding?.apply {
             newLessonsList.layoutManager = GridLayoutManager(context, 3)
-            val newLessonListAdapter = LessonAdapter(lessonList)
+
+            val newLessonListAdapter = LessonAdapter(lessons)
             newLessonsList.adapter = newLessonListAdapter
             newLessonListAdapter.setOnItemClickCallback(object : LessonAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: Lesson?, view: LessonCard) {
-                    // Dummy data
-                    val lessonContents = arrayListOf(
-                        LessonContent(
-                            title = "Material 1",
-                            type = 0,
-                        ),
-                        LessonContent(
-                            title = "Latihan 1",
-                            type = 1,
-                        ),
-                    )
-                    lessonContentViewModel.setListLessonContent(lessonContents)
-                    val nextLessonContent = lessonContentViewModel.getNextLessonContent()
-                    when (nextLessonContent.type) {
-                        0 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
-                        1 -> findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
-                    }
+                    data?.let { lessonContentViewModel.getLessonContent(it.id) }
                 }
             })
-            newLessonsList.addItemDecoration(MarginItemDecoration(24, 3, GridLayout.VERTICAL))
 
-//            pastLessonsList.layoutManager = GridLayoutManager(context, 3)
-//            pastLessonsList.adapter = LessonAdapter(lessonList)
+            newLessonsList.addItemDecoration(MarginItemDecoration(24, 3, GridLayout.VERTICAL))
         }
     }
 

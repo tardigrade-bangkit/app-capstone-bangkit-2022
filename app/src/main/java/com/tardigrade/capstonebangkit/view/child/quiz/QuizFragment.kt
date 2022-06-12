@@ -85,12 +85,12 @@ class QuizFragment : Fragment() {
         if (currentIndex != null && currentIndex < viewModel.listQuizContent.value?.size!! - 1) {
             viewModel.currentQuizContent.value = viewModel.listQuizContent.value?.get(currentIndex + 1)
         } else {
-            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
-            if (nextLessonContent == null) findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_homeFragment)
-            when (nextLessonContent.type) {
-                0 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_materialFragment)
-                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_self)
-            }
+//            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
+//            if (nextLessonContent == null) findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_homeFragment)
+//            when (nextLessonContent.type) {
+//                0 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_materialFragment)
+//                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_self)
+//            }
         }
     }
 
