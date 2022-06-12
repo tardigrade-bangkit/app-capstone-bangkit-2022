@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Capstone Bangkit 2022</string>
+    <string name="app_name">TardiLang</string>
     <string name="login_title">Silakan login!</string>
     <string name="email_input_label">Email</string>
     <string name="password_input_label">Password</string>
@@ -71,4 +71,5 @@
     <string name="tv_warning_text_photo">Siapkan kertas dan alat tulis! Tulis jawabanmu di kertas lalu foto!</string>
     <string name="btn_action_text_audio">Rekam Jawaban</string>
     <string name="tv_warning_text_audio">Ini soal speaking! Rekam suara jawabamu jika sudah siap!</string>
+    <string name="send_answers">Kumpulkan</string>
 </resources>

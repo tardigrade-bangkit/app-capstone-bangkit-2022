@@ -2,10 +2,7 @@ package com.tardigrade.capstonebangkit.view.parent.placementquiz
 
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.tardigrade.capstonebangkit.data.api.NewUser
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import com.tardigrade.capstonebangkit.data.model.QuizContent
@@ -22,33 +19,57 @@ class PlacementQuizViewModel(
     private val token: String,
     private val childId: Int
 ) : ViewModel() {
-    private val _listQuizContent = MutableLiveData<List<QuizContent>>()
-    val listQuizContent: MutableLiveData<List<QuizContent>> = _listQuizContent
+    private val _listQuizContent = MutableLiveData<Result<List<QuizContent>>>()
+    val listQuizContent: LiveData<Result<List<QuizContent>>> = _listQuizContent
 
-    fun getData() {
+    private val _currentQuestion = MutableLiveData<Result<MultipleChoiceQuestion>>()
+    val currentQuestion: LiveData<Result<MultipleChoiceQuestion>> = _currentQuestion
+
+    init {
+        getListQuestion()
+    }
+
+    fun getListQuestion() {
+        _listQuizContent.value = Result.Loading
+
         viewModelScope.launch {
             try {
                 val lesson = lessonRepository.getLessonsByLevel(token, 0)[0]
-                Log.d("TAG", "lesson: $lesson")
                 val content = lessonRepository.getLesson(token, lesson.id)[0]
-                Log.d("TAG", "content: $content")
-
-                val quiz = lessonRepository.getQuiz(token, content.quizzesId ?: 0).sortedBy {
+                val quizzes = lessonRepository.getQuiz(token, content.quizzesId ?: 0).sortedBy {
                     it.order
                 }
-                Log.d("TAG", "quiz: $quiz")
 
-                val questions = mutableListOf<MultipleChoiceQuestion>()
-                quiz.forEach {
-                    questions.add(lessonRepository.getMultipleChoiceQuestion(token, it.id))
+                _listQuizContent.value = Result.Success(quizzes)
+                getQuestion(quizzes[0])
+            } catch (httpEx: HttpException) {
+                httpEx.response()?.errorBody()?.let {
+                    val errorResponse = getErrorResponse(it)
+
+                    _listQuizContent.value = Result.Error(errorResponse.msg)
                 }
-                Log.d("TAG", "questions: $questions")
-
-
             } catch (genericEx: Exception) {
-                Log.d("TAG", "register: $genericEx")
-                Log.d("TAG", "register: ${genericEx.stackTrace.toString()}")
+                _listQuizContent.value = Result.Error(genericEx.message ?: "")
+            }
+        }
+    }
 
+    fun getQuestion(quizContent: QuizContent) {
+        _currentQuestion.value = Result.Loading
+
+        viewModelScope.launch {
+            try {
+                val question = lessonRepository.getMultipleChoiceQuestion(token, quizContent.id)
+
+                _currentQuestion.value = Result.Success(question)
+            } catch (httpEx: HttpException) {
+                httpEx.response()?.errorBody()?.let {
+                    val errorResponse = getErrorResponse(it)
+
+                    _currentQuestion.value = Result.Error(errorResponse.msg)
+                }
+            } catch (genericEx: Exception) {
+                _currentQuestion.value = Result.Error(genericEx.message ?: "")
             }
         }
     }

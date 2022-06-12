@@ -46,3 +46,10 @@ data class AddEndUsageData(
     @field:SerializedName("time_end")
     val time_end: String
 )
+
+data class Answer(
+    @field:SerializedName("question_id")
+    val questionId: Int,
+    @field:SerializedName("answer")
+    val answer: String,
+)
