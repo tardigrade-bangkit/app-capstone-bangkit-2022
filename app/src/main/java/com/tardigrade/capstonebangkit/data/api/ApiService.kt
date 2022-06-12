@@ -89,4 +89,46 @@ interface ApiService {
         @Body addEndUsageData: AddEndUsageData,
         @Path("child_id") childId: Int
     ): GenericResponse
+
+    @GET("lessons/{level}")
+    suspend fun getLessonsByLevel(
+        @Header("x-access-token") token: String,
+        @Path("level") level: Int
+    ): GetLessonsResponse
+
+    @GET("lessons/content/{lesson_id}")
+    suspend fun getLesson(
+        @Header("x-access-token") token: String,
+        @Path("lesson_id") lesson_id: Int
+    ): GetLessonResponse
+
+    @GET("materials/{material_id}")
+    suspend fun getMaterial(
+        @Header("x-access-token") token: String,
+        @Path("material_id") material_id: Int
+    ): GetMaterialResponse
+
+    @GET("quizzes/{quiz_id}")
+    suspend fun getQuiz(
+        @Header("x-access-token") token: String,
+        @Path("quiz_id") quiz_id: Int
+    ): GetQuizResponse
+
+    @GET("questions/{question_id}")
+    suspend fun getMultipleChoiceQuestion(
+        @Header("x-access-token") token: String,
+        @Path("question_id") question_id: Int
+    ): GetMultipleChoiceResponse
+
+    @GET("questions/{question_id}")
+    suspend fun getArrangeWordsQuestion(
+        @Header("x-access-token") token: String,
+        @Path("question_id") question_id: Int
+    ): GetArrangeWordsResponse
+
+    @GET("questions/{question_id}")
+    suspend fun getShortAnswerQuestion(
+        @Header("x-access-token") token: String,
+        @Path("question_id") question_id: Int
+    ): GetShortAnswerResponse
 }

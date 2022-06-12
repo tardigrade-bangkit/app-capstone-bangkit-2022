@@ -50,3 +50,38 @@ data class GetUsagesResponse(
 	@field:SerializedName("usages")
 	val usages: List<Usage>
 )
+
+data class GetLessonsResponse(
+	@field:SerializedName("lessons")
+	val lessons: List<Lesson>
+)
+
+data class GetLessonResponse(
+	@field:SerializedName("lesson_contents")
+	val lessonContents: List<LessonContent>
+)
+
+data class GetMaterialResponse(
+	@field:SerializedName("material_contents")
+	val materialContents: List<MaterialContent>
+)
+
+data class GetQuizResponse(
+	@field:SerializedName("questions")
+	val questions: List<QuizContent>
+)
+
+data class GetMultipleChoiceResponse(
+	@field:SerializedName("multiple_choice")
+	val multipleChoiceQuestion: MultipleChoiceQuestion
+)
+
+data class GetArrangeWordsResponse(
+	@field:SerializedName("multiple_choice")
+	val arrangeWordsQuestion: ArrangeWordsQuestion
+)
+
+data class GetShortAnswerResponse(
+	@field:SerializedName("multiple_choice")
+	val shortAnswerQuestion: ShortAnswerQuestion
+)
