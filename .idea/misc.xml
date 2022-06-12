@@ -29,7 +29,7 @@
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_dashboard.xml" value="0.4" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_login.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_pin.xml" value="0.2" />
-        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_register.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/latest_achievements_item.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/latest_badges_item.xml" value="0.8800000000000001" />
@@ -50,6 +50,8 @@
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/activity_child.xml" value="0.2039333048311244" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/child_profile.xml" value="0.2039333048311244" />
+        <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_arrange_word_quiz.xml" value="0.2039333048311244" />
+        <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_arrange_words_quiz.xml" value="0.20307823856348867" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_login.xml" value="0.264" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/layout/fragment_material.xml" value="0.264" />
