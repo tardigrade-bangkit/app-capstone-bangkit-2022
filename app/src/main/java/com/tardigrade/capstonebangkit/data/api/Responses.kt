@@ -85,3 +85,11 @@ data class GetShortAnswerResponse(
 	@field:SerializedName("multiple_choice")
 	val shortAnswerQuestion: ShortAnswerQuestion
 )
+
+data class PostAnswerResponse(
+	@field:SerializedName("score")
+	val score: Double,
+
+	@field:SerializedName("correct_answer")
+	val correctAnswer: Int
+)

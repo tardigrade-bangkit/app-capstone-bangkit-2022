@@ -152,3 +152,10 @@ data class ShortAnswerQuestion(
     @field:SerializedName("answer")
     val answer: String,
 )
+
+data class Answer(
+    @field:SerializedName("question_id")
+    val questionId: Int,
+    @field:SerializedName("answer")
+    val answer: String,
+)

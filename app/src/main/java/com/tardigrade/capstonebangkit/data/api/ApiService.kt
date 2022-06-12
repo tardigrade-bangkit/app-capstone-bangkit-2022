@@ -132,4 +132,11 @@ interface ApiService {
         @Header("x-access-token") token: String,
         @Path("question_id") question_id: Int
     ): GetShortAnswerResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("quiz")
+    suspend fun sendAnswer(
+        @Header("x-access-token") token: String,
+        @Body answer: PostAnswerBody
+    ): PostAnswerResponse
 }
