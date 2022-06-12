@@ -1,10 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.dashboard
 
 import androidx.lifecycle.*
-import com.tardigrade.capstonebangkit.data.model.Achievement
-import com.tardigrade.capstonebangkit.data.model.Badge
-import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.data.model.Lesson
+import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
@@ -26,6 +23,9 @@ class DashboardViewModel(
 
     private var _achievements = MutableLiveData<Result<List<Achievement>>>()
     val achievements: LiveData<Result<List<Achievement>>> = _achievements
+
+    private var _usages = MutableLiveData<Result<List<DailyUsage>>>()
+    val usages: LiveData<Result<List<DailyUsage>>> = _usages
 
     init {
         getChildren()
@@ -55,6 +55,27 @@ class DashboardViewModel(
         getProgress(childProfile)
         getBadges(childProfile)
         getAchievements(childProfile)
+        getDailyUsages(childProfile)
+    }
+
+    private fun getDailyUsages(childProfile: ChildProfile) {
+        _usages.value = Result.Loading
+
+        viewModelScope.launch {
+            try {
+                val usages = profileRepository.getChildrenDailyUsages(token, childProfile)
+
+                _usages.value = Result.Success(usages)
+            } catch (httpEx: HttpException) {
+                httpEx.response()?.errorBody()?.let {
+                    val errorResponse = getErrorResponse(it)
+
+                    _usages.value = Result.Error(errorResponse.msg)
+                }
+            } catch (genericEx: Exception) {
+                _usages.value = Result.Error(genericEx.message ?: "")
+            }
+        }
     }
 
     private fun getAchievements(childProfile: ChildProfile) {

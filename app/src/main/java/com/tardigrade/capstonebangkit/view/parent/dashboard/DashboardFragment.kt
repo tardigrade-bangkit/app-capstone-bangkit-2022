@@ -1,5 +1,6 @@
 package com.tardigrade.capstonebangkit.view.parent.dashboard
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,15 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tardigrade.capstonebangkit.R
-import com.tardigrade.capstonebangkit.adapter.ChooseChildAdapter
-import com.tardigrade.capstonebangkit.adapter.StatAchievementAdapter
-import com.tardigrade.capstonebangkit.adapter.StatBadgeAdapter
-import com.tardigrade.capstonebangkit.adapter.StatLessonAdapter
+import com.tardigrade.capstonebangkit.adapter.*
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
-import com.tardigrade.capstonebangkit.data.model.Achievement
-import com.tardigrade.capstonebangkit.data.model.Badge
-import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.data.model.Lesson
+import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentDashboardBinding
 import com.tardigrade.capstonebangkit.misc.Result
@@ -39,6 +34,7 @@ class DashboardFragment : Fragment() {
     private var isProgressLoading = false
     private var isBadgesLoading = false
     private var isAchievementsLoading = false
+    private var isUsagesLoading = false
     private var hasChildren = false
     private var choosenChild: ChildProfile? = null
 
@@ -174,6 +170,35 @@ class DashboardFragment : Fragment() {
 
                 showLoading()
             }
+
+            usages.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Result.Success -> {
+                        isUsagesLoading = false
+
+                        setUsageData(it.data)
+                    }
+                    is Result.Error -> {
+                        isUsagesLoading = false
+
+                        val error = it.getErrorIfNotHandled()
+                        if (!error.isNullOrEmpty()) {
+                            binding?.root?.let { view ->
+                                showSnackbar(view, error, getString(R.string.try_again)) {
+                                    choosenChild?.let { child ->
+                                        viewModel.getChildData(child)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    is Result.Loading -> {
+                        isUsagesLoading = true
+                    }
+                }
+
+                showLoading()
+            }
         }
 
         binding?.apply {
@@ -182,6 +207,10 @@ class DashboardFragment : Fragment() {
             }
 
             showAllBadgesAchievement.setOnClickListener {
+                showSnackbar(binding?.root as View, getString(R.string.not_available_yet))
+            }
+
+            showAllUsages.setOnClickListener {
                 showSnackbar(binding?.root as View, getString(R.string.not_available_yet))
             }
 
@@ -195,7 +224,30 @@ class DashboardFragment : Fragment() {
                 }
             }
 
-            achievementsList.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+            achievementsList.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+            weeklyUsageList.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+        }
+    }
+
+    private fun setUsageData(usages: List<DailyUsage>) {
+        val todayUsage = usages[0].duration.toFloat() / (60 * 60 * 1000)
+        val lastWeek = usages.takeLast(7)
+
+        binding?.apply {
+            todayUsageBody.text = "${todayUsage.format(2)} Jam"
+            todayUsageBody.setTextColor(Color.BLACK)
+            weeklyUsageList.adapter = StatUsageAdapter(ArrayList(lastWeek))
+            weeklyUsageNoData.setVisible(lastWeek.isEmpty())
         }
     }
 
@@ -258,8 +310,8 @@ class DashboardFragment : Fragment() {
     }
 
     private fun showLoading() {
-        val loading =
-            isChildrenLoading || isProgressLoading || isBadgesLoading || isAchievementsLoading
+        val loading = isChildrenLoading || isProgressLoading || isBadgesLoading
+                || isAchievementsLoading || isUsagesLoading
 
         binding?.apply {
             statGroup.setVisible(!loading && hasChildren)

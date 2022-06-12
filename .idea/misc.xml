@@ -26,7 +26,7 @@
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_child_created.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_child_profile.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_choose_child.xml" value="0.264" />
-        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_dashboard.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_dashboard.xml" value="0.4" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_login.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_pin.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
@@ -37,6 +37,7 @@
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/to_children_button.xml" value="0.12330009066183137" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/view_answer_card.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/view_lesson_card.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/layout/weekly_usages_item.xml" value="0.536" />
         <entry key="..\:/AndroidStudioProjects/CapstoneBangkit2022/app/src/main/res/menu/bottom_nav_parent_menu.xml" value="0.264" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_audio.xml" value="0.254" />
         <entry key="..\:/Bangkit 2022/Capstone Project/app-capstone-bangkit-2022/app/src/main/res/drawable/answer_background.xml" value="0.254" />
