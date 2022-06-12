@@ -1,5 +1,6 @@
 package com.tardigrade.capstonebangkit.data.api
 
+import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -118,7 +119,7 @@ interface ApiService {
     suspend fun getMultipleChoiceQuestion(
         @Header("x-access-token") token: String,
         @Path("question_id") question_id: Int
-    ): GetMultipleChoiceResponse
+    ): MultipleChoiceQuestion
 
     @GET("questions/{question_id}")
     suspend fun getArrangeWordsQuestion(

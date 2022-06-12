@@ -81,6 +81,9 @@ class MaterialFragment : Fragment() {
                         }
                     }
                 }
+                is Result.Loading -> {
+
+                }
             }
         }
 

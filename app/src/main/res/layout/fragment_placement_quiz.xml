@@ -80,20 +80,37 @@
             app:layout_constraintTop_toBottomOf="@+id/choice_list"
             app:layout_constraintVertical_bias="0.0" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/back_question_btn"
-            style="@style/Button.Parent"
+        <ProgressBar
+            android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="14dp"
-            android:text="@string/previous"
-            app:icon="@drawable/ic_baseline_arrow_back_24"
-            app:iconGravity="textStart"
-            app:layout_constraintBottom_toBottomOf="@+id/next_question_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choice_list"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/loading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progress" />
+
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/placement_quiz_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids=",question_image,choice_list,title,next_question_btn,question" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/placement_quiz_loading_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="progress, loading_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
