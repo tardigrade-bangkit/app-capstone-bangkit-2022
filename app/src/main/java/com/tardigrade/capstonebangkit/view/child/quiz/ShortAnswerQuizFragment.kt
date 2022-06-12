@@ -21,10 +21,13 @@ import com.tardigrade.capstonebangkit.adapter.MultipleChoiceAdapter
 import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.databinding.FragmentMultipleChoiceQuizBinding
 import com.tardigrade.capstonebangkit.databinding.FragmentShortAnswerQuizBinding
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.showSnackbar
 
 class ShortAnswerQuizFragment : Fragment() {
     private val viewModel by viewModels<ShortAnswerQuizViewModel>()
     private var binding: FragmentShortAnswerQuizBinding? = null
+    private var quizFragment: QuizFragment = this.parentFragment as QuizFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,22 +42,29 @@ class ShortAnswerQuizFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.shortAnswerQuestion.observe(viewLifecycleOwner) {
-            setQuizContent(it)
+            when(it) {
+                is Result.Success -> {
+                    setQuizContent(it.data)
+                }
+                is Result.Error -> {
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error, getString(R.string.try_again)) {
+                                viewModel.getShortAnswerQuestion(quizFragment.viewModel.currentQuizContent.value?.shortAnswerId!!)
+                            }
+                        }
+                    }
+                }
+                is Result.Loading -> {
+                    TODO("not yet implemented")
+                }
+            }
         }
 
-        val shortAnswerQuestion = ShortAnswerQuestion (
-            order = 3,
-            type = 0,
-            qText = "Pertinyyinninyiniaasidsaiasnif",
-            qImage = "https://picsum.photos/200/300",
-            qAudio = null,
-            answer = "Jawaban"
-        )
-
-        viewModel.shortAnswerQuestion.value = shortAnswerQuestion
+        viewModel.getShortAnswerQuestion(quizFragment.viewModel.currentQuizContent.value?.shortAnswerId!!)
 
         binding?.apply {
-            val quizFragment: QuizFragment = this@ShortAnswerQuizFragment.parentFragment as QuizFragment
             btnNext.setOnClickListener { quizFragment.nextQuestion() }
             btnPrevious.setOnClickListener { quizFragment.previousQuestion() }
             btnBack.setOnClickListener { quizFragment.backToHome() }
@@ -95,6 +105,15 @@ class ShortAnswerQuizFragment : Fragment() {
                         btnAction.text = getString(R.string.btn_action_text_audio)
                     }
                 }
+            }
+        }
+
+        binding?.apply{
+            with(quizFragment.lessonContentViewModel) {
+                btnContentList.text = StringBuilder()
+                    .append(currentLesson?.title).append(" - ")
+                    .append(currentLessonContent?.title).append(" - ")
+                    .append(content.order)
             }
         }
     }

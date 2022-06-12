@@ -70,18 +70,3 @@ data class GetQuizResponse(
 	@field:SerializedName("questions")
 	val questions: List<QuizContent>
 )
-
-data class GetMultipleChoiceResponse(
-	@field:SerializedName("multiple_choice")
-	val multipleChoiceQuestion: MultipleChoiceQuestion
-)
-
-data class GetArrangeWordsResponse(
-	@field:SerializedName("multiple_choice")
-	val arrangeWordsQuestion: ArrangeWordsQuestion
-)
-
-data class GetShortAnswerResponse(
-	@field:SerializedName("multiple_choice")
-	val shortAnswerQuestion: ShortAnswerQuestion
-)

@@ -2,7 +2,6 @@ package com.tardigrade.capstonebangkit.view.child.quiz
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ import com.tardigrade.capstonebangkit.utils.showSnackbar
 import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class QuizFragment : Fragment() {
-    private val viewModel by viewModels<QuizViewModel>() {
+    val viewModel by viewModels<QuizViewModel>() {
         QuizViewModel.Factory(
             LessonRepository(ApiConfig.getApiService()),
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
@@ -25,14 +24,10 @@ class QuizFragment : Fragment() {
 //                ?: error("must have token")
         )
     }
-    private val lessonContentViewModel by viewModels<LessonContentViewModel>() {
-        LessonContentViewModel.Factory(
-            LessonRepository(ApiConfig.getApiService()),
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
-//            requireContext().preferences.getToken()
-//                ?: error("must have token")
-        )
-    }
+    val lessonContentViewModel: LessonContentViewModel by activityViewModels()
+
+    private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+    private val lessonRepository = LessonRepository(ApiConfig.getApiService())
     private var binding: FragmentQuizBinding? = null
     private var listQuizContent: List<QuizContent>? = null
 
@@ -57,7 +52,6 @@ class QuizFragment : Fragment() {
         viewModel.listQuizContent.observe(viewLifecycleOwner) { contents ->
             when(contents) {
                 is Result.Success -> {
-                    Log.d("lesson Success", contents.data.toString())
                     viewModel.setCurrentQuizContent(contents.data[0])
                     listQuizContent = contents.data
                 }
@@ -70,6 +64,9 @@ class QuizFragment : Fragment() {
                             }
                         }
                     }
+                }
+                is Result.Loading -> {
+                    TODO("not yet implemented")
                 }
             }
         }
@@ -105,8 +102,8 @@ class QuizFragment : Fragment() {
             val nextLessonContent = lessonContentViewModel.currentLessonContent
             if (nextLessonContent == null) backToHome()
             when (nextLessonContent?.type) {
-                0 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_self)
-                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_to_quizFragment)
+                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_self)
+                2 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_to_quizFragment)
             }
         }
     }
@@ -120,8 +117,8 @@ class QuizFragment : Fragment() {
             val prevLessonContent = lessonContentViewModel.currentLessonContent
             if (prevLessonContent == null) backToHome()
             when (prevLessonContent?.type) {
-                0 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_self)
-                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_to_quizFragment)
+                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_self)
+                2 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_to_quizFragment)
             }
         }
     }

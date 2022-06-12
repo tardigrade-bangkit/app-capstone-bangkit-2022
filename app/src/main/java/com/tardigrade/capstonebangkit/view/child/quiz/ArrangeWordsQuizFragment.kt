@@ -19,11 +19,13 @@ import com.google.android.material.chip.Chip
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.databinding.FragmentArrangeWordsQuizBinding
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.showSnackbar
 
 class ArrangeWordsQuizFragment : Fragment() {
     private val viewModel by viewModels<ArrangeWordsQuizViewModel>()
-    private val quizViewModel: QuizViewModel by activityViewModels()
     private var binding: FragmentArrangeWordsQuizBinding? = null
+    private var quizFragment: QuizFragment = this.parentFragment as QuizFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +39,25 @@ class ArrangeWordsQuizFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.arrangeWordQuestion.observe(viewLifecycleOwner) {
-            setQuizContent(it)
+        viewModel.arrangeWordsQuestion.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Success -> {
+                    setQuizContent(it.data)
+                }
+                is Result.Error -> {
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error, getString(R.string.try_again)) {
+                                viewModel.getArrangeWordsQuestion(quizFragment.viewModel.currentQuizContent.value?.arrangeWordsId!!)
+                            }
+                        }
+                    }
+                }
+                is Result.Loading -> {
+                    TODO("not yet implemented")
+                }
+            }
         }
 
         viewModel.selectedWords.observe(viewLifecycleOwner) {
@@ -46,20 +65,9 @@ class ArrangeWordsQuizFragment : Fragment() {
             Toast.makeText(context, sentence, Toast.LENGTH_SHORT).show()
         }
 
-        val arrangeWordsQuestion = ArrangeWordsQuestion(
-            order = 1,
-            type = 2,
-            qText = "Pertinyiinnyi idilih",
-            qImage = "https://picsum.photos/200/300",
-            qAudio = null,
-            answer = "jawabannya adalah ini",
-            words = listOf("hai", "ini", "tes", "nama", "jawabannya", "adalah")
-        )
-
-        viewModel.arrangeWordQuestion.value = arrangeWordsQuestion
+        viewModel.getArrangeWordsQuestion(quizFragment.viewModel.currentQuizContent.value?.arrangeWordsId!!)
 
         binding?.apply {
-            val quizFragment: QuizFragment = this@ArrangeWordsQuizFragment.parentFragment as QuizFragment
             btnNext.setOnClickListener { quizFragment.nextQuestion() }
             btnPrevious.setOnClickListener { quizFragment.previousQuestion() }
             btnBack.setOnClickListener { quizFragment.backToHome() }
@@ -89,6 +97,15 @@ class ArrangeWordsQuizFragment : Fragment() {
         binding?.cgWords?.apply {
             for (word in content.words) {
                 addView(newAnswerChip(word))
+            }
+        }
+
+        binding?.apply{
+            with(quizFragment.lessonContentViewModel) {
+                btnContentList.text = StringBuilder()
+                    .append(currentLesson?.title).append(" - ")
+                    .append(currentLessonContent?.title).append(" - ")
+                    .append(content.order)
             }
         }
     }

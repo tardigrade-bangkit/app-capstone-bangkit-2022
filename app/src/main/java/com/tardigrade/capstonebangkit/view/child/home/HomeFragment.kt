@@ -34,14 +34,10 @@ class HomeFragment : Fragment() {
 //                ?: error("must have token")
         )
     }
-    private val lessonContentViewModel by viewModels<LessonContentViewModel>() {
-        LessonContentViewModel.Factory(
-            LessonRepository(ApiConfig.getApiService()),
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
-//            requireContext().preferences.getToken()
-//                ?: error("must have token")
-        )
-    }
+    private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
+
+    private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+    private val lessonRepository = LessonRepository(ApiConfig.getApiService())
     private var binding: FragmentHomeBinding? = null
     private var listLessonContent: List<LessonContent>? = null
 
@@ -88,6 +84,12 @@ class HomeFragment : Fragment() {
                     listLessonContent = it.data
                     lessonContentViewModel.lessonContents = it.data
                     lessonContentViewModel.getNextLessonContent()
+
+                    Log.d("current lesson content", lessonContentViewModel.currentLessonContent.toString())
+                    when (lessonContentViewModel.currentLessonContent?.type) {
+                        1 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
+                        2 -> findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
+                    }
                 }
                 is Result.Error -> {
                     val error = it.getErrorIfNotHandled()
@@ -114,11 +116,9 @@ class HomeFragment : Fragment() {
             newLessonsList.adapter = newLessonListAdapter
             newLessonListAdapter.setOnItemClickCallback(object : LessonAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: Lesson?, view: LessonCard) {
-                    data?.let { lessonContentViewModel.getLessonContent(it.id) }
-
-                    when (lessonContentViewModel.currentLessonContent?.type) {
-                        0 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
-                        1 -> findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
+                    data?.let {
+                        lessonContentViewModel.getLessonContent(it.id, lessonRepository, token)
+                        lessonContentViewModel.currentLesson = data
                     }
                 }
             })

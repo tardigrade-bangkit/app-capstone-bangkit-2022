@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.tardigrade.capstonebangkit.data.model.Lesson
 import com.tardigrade.capstonebangkit.data.model.LessonContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.misc.Result
@@ -13,14 +14,12 @@ import com.tardigrade.capstonebangkit.view.child.home.HomeViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class LessonContentViewModel(
-    private val lessonRepository: LessonRepository,
-    private val token: String
-) : ViewModel() {
+class LessonContentViewModel : ViewModel() {
     private val _listLessonContent = MutableLiveData<Result<List<LessonContent>>>()
     val listLessonContent: MutableLiveData<Result<List<LessonContent>>> = _listLessonContent
 
     var currentLessonContent: LessonContent? = null
+    var currentLesson: Lesson? = null
     var lessonContents: List<LessonContent>? = null
 
     private var currentLessonContentIdx = -1
@@ -47,7 +46,7 @@ class LessonContentViewModel(
             }
     }
 
-    fun getLessonContent(lessonId: Int) {
+    fun getLessonContent(lessonId: Int, lessonRepository: LessonRepository, token: String) {
 //        _listLessonContent = Result.Loading
 
         viewModelScope.launch {
@@ -64,14 +63,6 @@ class LessonContentViewModel(
             } catch (genericEx: Exception) {
                 _listLessonContent.value = Result.Error(genericEx.message ?: "")
             }
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    class Factory(private val lessonRepository: LessonRepository, private val token: String) :
-        ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return LessonContentViewModel(lessonRepository, token) as T
         }
     }
 }
