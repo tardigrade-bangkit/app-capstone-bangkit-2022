@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.data.api
 
 import com.tardigrade.capstonebangkit.data.model.ArrangeWordsQuestion
+import com.tardigrade.capstonebangkit.data.model.MaterialContent
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import com.tardigrade.capstonebangkit.data.model.ShortAnswerQuestion
 import retrofit2.http.*
@@ -108,7 +109,7 @@ interface ApiService {
     suspend fun getMaterial(
         @Header("x-access-token") token: String,
         @Path("material_id") material_id: Int
-    ): GetMaterialResponse
+    ): List<MaterialContent>
 
     @GET("quizzes/{quiz_id}")
     suspend fun getQuiz(

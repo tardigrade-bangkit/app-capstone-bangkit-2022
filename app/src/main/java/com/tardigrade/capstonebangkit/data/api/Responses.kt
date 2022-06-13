@@ -61,11 +61,6 @@ data class GetLessonResponse(
 	val lessonContents: List<LessonContent>
 )
 
-data class GetMaterialResponse(
-	@field:SerializedName("material_contents")
-	val materialContents: List<MaterialContent>
-)
-
 data class GetQuizResponse(
 	@field:SerializedName("questions")
 	val questions: List<QuizContent>

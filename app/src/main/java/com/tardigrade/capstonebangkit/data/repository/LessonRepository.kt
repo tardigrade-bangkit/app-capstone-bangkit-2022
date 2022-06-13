@@ -12,7 +12,7 @@ class LessonRepository(private val apiService: ApiService) {
         apiService.getLesson(token, lessonId).lessonContents
 
     suspend fun getMaterial(token: String, materialId: Int) =
-        apiService.getMaterial(token, materialId).materialContents
+        apiService.getMaterial(token, materialId)
 
     suspend fun getQuiz(token: String, quizId: Int) =
         apiService.getQuiz(token, quizId).questions
