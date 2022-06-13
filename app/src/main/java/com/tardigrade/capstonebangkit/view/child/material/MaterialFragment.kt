@@ -159,9 +159,9 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
             lessonContentViewModel.getNextLessonContent()
             val nextLessonContent = lessonContentViewModel.currentLessonContent
             if (nextLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
-            when (nextLessonContent?.type) {
-                1 -> findNavController().navigate(R.id.action_materialFragment_self)
-                2 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
+            with(nextLessonContent) {
+                if (this?.materialId != null) findNavController().navigate(R.id.action_materialFragment_self)
+                else if (this?.quizzesId != null) findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
             }
         }
     }
@@ -177,9 +177,9 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
             lessonContentViewModel.getPreviousContent()
             val prevLessonContent = lessonContentViewModel.currentLessonContent
             if (prevLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
-            when (prevLessonContent?.type) {
-                1 -> findNavController().navigate(R.id.action_materialFragment_self)
-                2 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
+            with(prevLessonContent) {
+                if (this?.materialId != null) findNavController().navigate(R.id.action_materialFragment_self)
+                else if (this?.quizzesId != null) findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
             }
         }
     }

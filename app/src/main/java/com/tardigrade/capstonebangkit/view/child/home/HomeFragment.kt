@@ -86,9 +86,9 @@ class HomeFragment : Fragment() {
                     lessonContentViewModel.getNextLessonContent()
 
                     Log.d("current lesson content", lessonContentViewModel.currentLessonContent.toString())
-                    when (lessonContentViewModel.currentLessonContent?.type) {
-                        1 -> findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
-                        2 -> findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
+                    with(lessonContentViewModel.currentLessonContent) {
+                        if (this?.materialId != null) findNavController().navigate(R.id.action_homeFragment_to_materialFragment)
+                        else if (this?.quizzesId != null) findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
                     }
                 }
                 is Result.Error -> {

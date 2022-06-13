@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
+import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.QuizContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
@@ -140,9 +141,9 @@ class QuizFragment : Fragment(), MediaPlayer.OnPreparedListener {
             lessonContentViewModel.getNextLessonContent()
             val nextLessonContent = lessonContentViewModel.currentLessonContent
             if (nextLessonContent == null) backToHome()
-            when (nextLessonContent?.type) {
-                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_self)
-                2 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_to_quizFragment)
+            with(nextLessonContent) {
+                if (this?.materialId != null) findNavController().navigate(R.id.action_quizFragment_to_materialFragment)
+                else if (this?.quizzesId != null) findNavController().navigate(R.id.action_quizFragment_self)
             }
         }
     }
@@ -158,15 +159,15 @@ class QuizFragment : Fragment(), MediaPlayer.OnPreparedListener {
             lessonContentViewModel.getPreviousContent()
             val prevLessonContent = lessonContentViewModel.currentLessonContent
             if (prevLessonContent == null) backToHome()
-            when (prevLessonContent?.type) {
-                1 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_self)
-                2 -> findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_materialFragment_to_quizFragment)
+            with(prevLessonContent) {
+                if (this?.materialId != null) findNavController().navigate(R.id.action_quizFragment_to_materialFragment)
+                else if (this?.quizzesId != null) findNavController().navigate(R.id.action_quizFragment_self)
             }
         }
     }
 
     fun backToHome() {
-        findNavController().navigate(com.tardigrade.capstonebangkit.R.id.action_quizFragment_to_homeFragment)
+        findNavController().navigate(R.id.action_quizFragment_to_homeFragment)
     }
 
     override fun onDestroyView() {
