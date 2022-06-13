@@ -40,6 +40,10 @@ class DashboardViewModel(
 
                 _children.value = Result.Success(children)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _children.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -67,6 +71,10 @@ class DashboardViewModel(
 
                 _usages.value = Result.Success(usages)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _usages.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -87,6 +95,10 @@ class DashboardViewModel(
 
                 _achievements.value = Result.Success(achievements)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _achievements.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -107,6 +119,10 @@ class DashboardViewModel(
 
                 _progress.value = Result.Success(lessons)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _progress.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -127,6 +143,10 @@ class DashboardViewModel(
 
                 _badges.value = Result.Success(badges)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _badges.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

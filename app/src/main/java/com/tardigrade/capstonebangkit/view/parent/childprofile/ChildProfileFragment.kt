@@ -21,7 +21,6 @@ import com.tardigrade.capstonebangkit.utils.*
 import com.tardigrade.capstonebangkit.view.parent.login.preferences
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ChildProfileFragment : Fragment() {
     private val viewModel by viewModels<ChildProfileViewModel> {

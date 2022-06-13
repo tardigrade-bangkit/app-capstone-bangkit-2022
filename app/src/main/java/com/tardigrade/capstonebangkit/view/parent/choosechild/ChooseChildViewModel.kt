@@ -2,11 +2,9 @@ package com.tardigrade.capstonebangkit.view.parent.choosechild
 
 import androidx.lifecycle.*
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.data.model.User
 import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
-import com.tardigrade.capstonebangkit.view.parent.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -30,6 +28,10 @@ class ChooseChildViewModel(
 
                 _children.value = Result.Success(children)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _children.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

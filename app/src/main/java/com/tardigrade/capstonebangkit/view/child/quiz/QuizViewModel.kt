@@ -4,12 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.tardigrade.capstonebangkit.data.model.MaterialContent
 import com.tardigrade.capstonebangkit.data.model.QuizContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
-import com.tardigrade.capstonebangkit.view.child.material.MaterialViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -36,6 +34,10 @@ class QuizViewModel(
 
                 _listQuizContent.value = Result.Success(quiz)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listQuizContent.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

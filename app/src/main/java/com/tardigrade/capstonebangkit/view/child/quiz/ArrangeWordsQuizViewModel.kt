@@ -44,6 +44,10 @@ class ArrangeWordsQuizViewModel(
 
                 _arrangeWordsQuestion.value = Result.Success(arrangeWords)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _arrangeWordsQuestion.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

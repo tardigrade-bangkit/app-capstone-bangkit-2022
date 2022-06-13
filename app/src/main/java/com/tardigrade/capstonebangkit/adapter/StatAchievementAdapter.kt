@@ -4,10 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tardigrade.capstonebangkit.data.model.Achievement
-import com.tardigrade.capstonebangkit.data.model.Badge
 import com.tardigrade.capstonebangkit.databinding.LatestAchievementsItemBinding
-import com.tardigrade.capstonebangkit.databinding.LatestBadgesItemBinding
-import com.tardigrade.capstonebangkit.utils.loadImage
 
 class StatAchievementAdapter(private val achievements: ArrayList<Achievement>) :
     RecyclerView.Adapter<StatAchievementAdapter.AchievementViewHolder>() {

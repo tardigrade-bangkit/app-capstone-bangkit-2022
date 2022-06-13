@@ -1,6 +1,5 @@
 package com.tardigrade.capstonebangkit.utils
 
-import android.util.Log
 import java.util.*
 
 fun isSameDay(time1: Date, time2: Date): Boolean {

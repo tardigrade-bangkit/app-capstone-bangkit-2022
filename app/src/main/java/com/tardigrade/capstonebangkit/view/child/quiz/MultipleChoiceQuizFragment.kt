@@ -4,12 +4,10 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -17,7 +15,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.MultipleChoiceAdapter
-import com.tardigrade.capstonebangkit.data.model.*
+import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import com.tardigrade.capstonebangkit.databinding.FragmentMultipleChoiceQuizBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar

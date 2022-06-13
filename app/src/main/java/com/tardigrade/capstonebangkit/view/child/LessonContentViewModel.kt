@@ -1,16 +1,13 @@
 package com.tardigrade.capstonebangkit.view.child
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tardigrade.capstonebangkit.data.model.Lesson
 import com.tardigrade.capstonebangkit.data.model.LessonContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
-import com.tardigrade.capstonebangkit.view.child.home.HomeViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -55,6 +52,10 @@ class LessonContentViewModel : ViewModel() {
 
                 _listLessonContent.value = Result.Success(lessons)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listLessonContent.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

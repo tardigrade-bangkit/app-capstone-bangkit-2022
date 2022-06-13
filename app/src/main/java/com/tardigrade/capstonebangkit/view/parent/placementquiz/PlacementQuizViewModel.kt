@@ -1,9 +1,6 @@
 package com.tardigrade.capstonebangkit.view.parent.placementquiz
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
-import com.tardigrade.capstonebangkit.data.api.NewUser
 import com.tardigrade.capstonebangkit.data.api.PostAnswerResponse
 import com.tardigrade.capstonebangkit.data.model.Answer
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
@@ -13,7 +10,6 @@ import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
-import com.tardigrade.capstonebangkit.view.parent.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -45,19 +41,18 @@ class PlacementQuizViewModel(
         viewModelScope.launch {
             try {
                 val lesson = lessonRepository.getLessonsByLevel(token, 0)[0]
-                Log.d("TAG", "lesson: $lesson")
                 val content = lessonRepository.getLesson(token, lesson.id)[0]
-                Log.d("TAG", "content: $content")
-
                 val quizzes = lessonRepository.getQuiz(token, content.quizzesId ?: 0).sortedBy {
                     it.order
                 }
-                Log.d("TAG", "quizzes: $quizzes")
-
 
                 _listQuizContent.value = Result.Success(quizzes)
                 getQuestion(quizzes[0])
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listQuizContent.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -75,10 +70,13 @@ class PlacementQuizViewModel(
         viewModelScope.launch {
             try {
                 val question = lessonRepository.getMultipleChoiceQuestion(token, quizContent.id)
-                Log.d("TAG", "question: $question")
 
                 _currentQuestion.value = Result.Success(question)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _currentQuestion.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -99,6 +97,10 @@ class PlacementQuizViewModel(
 
                 _sendAnswerResult.value = Result.Success(result)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _sendAnswerResult.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -119,6 +121,10 @@ class PlacementQuizViewModel(
 
                 _updateChildResult.value = Result.Success(Unit)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _updateChildResult.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

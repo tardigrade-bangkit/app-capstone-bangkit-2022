@@ -33,6 +33,10 @@ class ChildProfileViewModel(
 
                 _avatars.value = Result.Success(avatars)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _avatars.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -53,6 +57,10 @@ class ChildProfileViewModel(
 
                 _addChildrenResult.value = Result.Success(new)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _addChildrenResult.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

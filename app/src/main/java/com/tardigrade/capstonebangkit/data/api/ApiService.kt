@@ -3,7 +3,6 @@ package com.tardigrade.capstonebangkit.data.api
 import com.tardigrade.capstonebangkit.data.model.ArrangeWordsQuestion
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import com.tardigrade.capstonebangkit.data.model.ShortAnswerQuestion
-import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
