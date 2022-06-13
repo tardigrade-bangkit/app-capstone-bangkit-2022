@@ -1,27 +1,19 @@
 package com.tardigrade.capstonebangkit.view.parent.placementquiz
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.MultipleChoiceAdapter
 import com.tardigrade.capstonebangkit.customviews.AnswerCard
-import com.tardigrade.capstonebangkit.data.api.Answer
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
-import com.tardigrade.capstonebangkit.data.model.ChildProfile
-import com.tardigrade.capstonebangkit.data.model.Choice
-import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
-import com.tardigrade.capstonebangkit.data.model.QuizContent
+import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentPlacementQuizBinding
-import com.tardigrade.capstonebangkit.databinding.FragmentRegisterBinding
-import com.tardigrade.capstonebangkit.misc.MarginItemDecoration
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.misc.VerticalSpacingItemDecoration
 import com.tardigrade.capstonebangkit.utils.getActionBar
@@ -88,7 +80,7 @@ class PlacementQuizFragment : Fragment() {
                         curQuestion++
                         viewModel.getQuestion(listQuestion[curQuestion])
                     } else {
-                        Log.d("TAG", "onViewCreated: $listAnswer")
+                        viewModel.sendAnswer(listAnswer)
                     }
                 }
             }
@@ -181,8 +173,6 @@ class PlacementQuizFragment : Fragment() {
 
             root.fullScroll(ScrollView.FOCUS_UP)
         }
-
-
     }
 
     private fun showLoading() {

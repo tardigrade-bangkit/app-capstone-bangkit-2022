@@ -70,3 +70,11 @@ data class GetQuizResponse(
 	@field:SerializedName("questions")
 	val questions: List<QuizContent>
 )
+
+data class PostAnswerResponse(
+	@field:SerializedName("score")
+	val score: Double,
+
+	@field:SerializedName("correct_answer")
+	val correctAnswer: Int
+)
