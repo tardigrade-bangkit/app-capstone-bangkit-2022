@@ -1,6 +1,8 @@
 package com.tardigrade.capstonebangkit.data.api
 
+import com.tardigrade.capstonebangkit.data.model.ArrangeWordsQuestion
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
+import com.tardigrade.capstonebangkit.data.model.ShortAnswerQuestion
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -125,13 +127,13 @@ interface ApiService {
     suspend fun getArrangeWordsQuestion(
         @Header("x-access-token") token: String,
         @Path("question_id") question_id: Int
-    ): GetArrangeWordsResponse
+    ): ArrangeWordsQuestion
 
     @GET("questions/{question_id}")
     suspend fun getShortAnswerQuestion(
         @Header("x-access-token") token: String,
         @Path("question_id") question_id: Int
-    ): GetShortAnswerResponse
+    ): ShortAnswerQuestion
 
     @Headers("Content-Type: application/json")
     @POST("quiz")

@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +15,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.adapter.MultipleChoiceAdapter
 import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.databinding.FragmentMultipleChoiceQuizBinding
+import com.tardigrade.capstonebangkit.misc.Result
+import com.tardigrade.capstonebangkit.utils.showSnackbar
 
 class MultipleChoiceQuizFragment : Fragment() {
     private val viewModel by viewModels<MultipleChoiceQuizViewModel>()
-    private val quizViewModel: QuizViewModel by activityViewModels()
     private var binding: FragmentMultipleChoiceQuizBinding? = null
+    private var quizFragment: QuizFragment = this.parentFragment as QuizFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,48 +40,29 @@ class MultipleChoiceQuizFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.multipleChoiceQuestion.observe(viewLifecycleOwner) {
-            setQuizContent(it)
+            when(it) {
+                is Result.Success -> {
+                    setQuizContent(it.data)
+                }
+                is Result.Error -> {
+                    val error = it.getErrorIfNotHandled()
+                    if (!error.isNullOrEmpty()) {
+                        binding?.root?.let { view ->
+                            showSnackbar(view, error, getString(R.string.try_again)) {
+                                viewModel.getMultipleChoiceQuestion(quizFragment.viewModel.currentQuizContent.value?.multipleChoiceId!!)
+                            }
+                        }
+                    }
+                }
+                is Result.Loading -> {
+                    TODO("not yet implemented")
+                }
+            }
         }
 
-        val multipleChoiceQuestion = MultipleChoiceQuestion(
-            order = 0,
-            type = 0,
-            qText = "Test Question",
-            qAudio = null,
-            qImage = "https://picsum.photos/200/300",
-            answer = "answer",
-            choices = listOf(
-                Choice(
-                    choiceName = "A",
-                    choiceText = "ChoiceChoice A",
-                    choiceAudio = null,
-                    choiceImage = "https://picsum.photos/200/300"
-                ),
-                Choice(
-                    choiceName = "B",
-                    choiceText = "ChoiceChoice B",
-                    choiceAudio = null,
-                    choiceImage = "https://picsum.photos/200/300"
-                ),
-                Choice(
-                    choiceName = "C",
-                    choiceText = "ChoiceChoice C",
-                    choiceAudio = null,
-                    choiceImage = "https://picsum.photos/200/300"
-                ),
-                Choice(
-                    choiceName = "D",
-                    choiceText = "ChoiceChoice D",
-                    choiceAudio = null,
-                    choiceImage = "https://picsum.photos/200/300"
-                )
-            )
-        )
-
-        viewModel.multipleChoiceQuestion.value = multipleChoiceQuestion
+        viewModel.getMultipleChoiceQuestion(quizFragment.viewModel.currentQuizContent.value?.multipleChoiceId!!)
 
         binding?.apply {
-            val quizFragment: QuizFragment = this@MultipleChoiceQuizFragment.parentFragment as QuizFragment
             btnNext.setOnClickListener { quizFragment.nextQuestion() }
             btnPrevious.setOnClickListener { quizFragment.previousQuestion() }
             btnBack.setOnClickListener { quizFragment.backToHome() }
@@ -86,7 +71,6 @@ class MultipleChoiceQuizFragment : Fragment() {
 
     private fun setQuizContent(content: MultipleChoiceQuestion) {
 
-        // Set the quiz question
         content.qText?.let { binding?.tvQuestion?.text = it }
         content.qImage?.let {
             Glide.with(this@MultipleChoiceQuizFragment)
@@ -100,7 +84,15 @@ class MultipleChoiceQuizFragment : Fragment() {
                 })
         }
 
-        // Set the quiz choices
+        binding?.apply{
+            with(quizFragment.lessonContentViewModel) {
+                btnContentList.text = StringBuilder()
+                    .append(currentLesson?.title).append(" - ")
+                    .append(currentLessonContent?.title).append(" - ")
+                    .append(content.order)
+            }
+        }
+
         binding?.rvChoices?.apply {
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
             val choicesAdapter = MultipleChoiceAdapter(ArrayList(content.choices))

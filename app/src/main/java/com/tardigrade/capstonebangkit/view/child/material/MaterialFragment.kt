@@ -4,6 +4,8 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,7 +27,7 @@ import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar
 import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
-class MaterialFragment : Fragment() {
+class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
     private val viewModel by viewModels<MaterialViewModel>() {
         MaterialViewModel.Factory(
             LessonRepository(ApiConfig.getApiService()),
@@ -34,15 +36,14 @@ class MaterialFragment : Fragment() {
 //                ?: error("must have token")
         )
     }
-    private val lessonContentViewModel by viewModels<LessonContentViewModel>() {
-        LessonContentViewModel.Factory(
-            LessonRepository(ApiConfig.getApiService()),
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
-//            requireContext().preferences.getToken()
-//                ?: error("must have token")
-        )
-    }
+    private val lessonContentViewModel: LessonContentViewModel by activityViewModels()
+
+    private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+    private val lessonRepository = LessonRepository(ApiConfig.getApiService())
+    private var mediaPlayer: MediaPlayer? = null
+    private var audioUrl: String? = null
     private var binding: FragmentMaterialBinding? = null
+    private var listMaterialContent: List<MaterialContent>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,22 +58,25 @@ class MaterialFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.currentMaterialContent.observe(viewLifecycleOwner) {
-            Log.i("MaterialFragment", "MaterialContent: $it.order")
-            setMaterialContent(it)
+            Log.d("MaterialFragment", it.toString())
+            if (it != null) {
+                setMaterialContent(it)
+            }
         }
 
         viewModel.listMaterialContent.observe(viewLifecycleOwner) { contents ->
             when(contents) {
                 is Result.Success -> {
-                    Log.d("lesson Success", contents.data.toString())
-                    viewModel.currentMaterialContent.value = contents.data[0]
+                    Log.d("materialcontent success", contents.data.toString())
+                    viewModel.setCurrentMaterialContent(contents.data[0])
+                    listMaterialContent = contents.data
                 }
                 is Result.Error -> {
                     val error = contents.getErrorIfNotHandled()
                     if (!error.isNullOrEmpty()) {
                         binding?.root?.let { view ->
                             showSnackbar(view, error, getString(R.string.try_again)) {
-                                lessonContentViewModel.currentLessonContent.value?.materialId?.let { viewModel.getMaterial(it) }
+                                lessonContentViewModel.currentLessonContent?.materialId?.let { viewModel.getMaterial(it) }
                             }
                         }
                     }
@@ -83,12 +87,19 @@ class MaterialFragment : Fragment() {
             }
         }
 
-        lessonContentViewModel.currentLessonContent.value?.materialId?.let { viewModel.getMaterial(it) }
+        Log.d("MaterialFragment", "currentLessonContent: ${lessonContentViewModel.currentLessonContent.toString()}")
+        lessonContentViewModel.currentLessonContent?.materialId?.let { viewModel.getMaterial(it) }
 
         binding?.apply {
             btnBack.setOnClickListener {findNavController().navigate(R.id.action_materialFragment_to_homeFragment)}
             btnNextSlide.setOnClickListener {nextSlide()}
             btnPreviousSlide.setOnClickListener {previousSlide()}
+            btnReplaySlide.setOnClickListener {
+                mediaPlayer?.apply {
+                    stop()
+                    prepareAudio()
+                }
+            }
         }
     }
 
@@ -104,29 +115,68 @@ class MaterialFragment : Fragment() {
                         root.background = BitmapDrawable(context?.resources, resource)
                     }
                 })
+
+            with(lessonContentViewModel) {
+                btnContentList.text = StringBuilder()
+                    .append(currentLesson?.title).append(" - ")
+                    .append(currentLessonContent?.title).append(" - ")
+                    .append(content.order)
+            }
+        }
+
+        audioUrl = content.audioUrl
+        prepareAudio()
+    }
+
+    private fun prepareAudio() {
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.apply {
+            val attributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+            setAudioAttributes(attributes)
+            setDataSource(audioUrl)
+            setOnPreparedListener{onPrepared(this)}
+            prepareAsync()
         }
     }
 
+    override fun onPrepared(mediaPlayer: MediaPlayer) {
+        Log.d("onPrepared", "prepared")
+        mediaPlayer.start()
+    }
+
     private fun nextSlide() {
-        val listMaterialContent = (viewModel.listMaterialContent.value as Result.Success<List<MaterialContent>>).data
-        val currentIndex = listMaterialContent.indexOf(viewModel.currentMaterialContent.value)
-        if (currentIndex < listMaterialContent.size - 1) {
-            viewModel.currentMaterialContent.value = listMaterialContent[currentIndex + 1]
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+
+        val currentIndex = listMaterialContent?.indexOf(viewModel.currentMaterialContent.value)
+        if (currentIndex != null && currentIndex < (listMaterialContent?.size?.minus(1) ?: 0)) {
+            viewModel.setCurrentMaterialContent(listMaterialContent?.get(currentIndex + 1))
         } else {
-//            val nextLessonContent = lessonContentViewModel.getNextLessonContent()
-//            if (nextLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
-//            when (nextLessonContent.type) {
-//                0 -> findNavController().navigate(R.id.action_materialFragment_self)
-//                1 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
-//            }
+            lessonContentViewModel.getNextLessonContent()
+            val nextLessonContent = lessonContentViewModel.currentLessonContent
+            if (nextLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
+            when (nextLessonContent?.type) {
+                1 -> findNavController().navigate(R.id.action_materialFragment_self)
+                2 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
+            }
         }
     }
 
     private fun previousSlide() {
-        val listMaterialContent = (viewModel.listMaterialContent.value as Result.Success<List<MaterialContent>>).data
-        val currentIndex = listMaterialContent.indexOf(viewModel.currentMaterialContent.value)
+        val currentIndex = listMaterialContent?.indexOf(viewModel.currentMaterialContent.value)
         if (currentIndex != null && currentIndex > 0) {
-            viewModel.currentMaterialContent.value = listMaterialContent[currentIndex - 1]
+            viewModel.setCurrentMaterialContent(listMaterialContent?.get(currentIndex - 1))
+        } else {
+            lessonContentViewModel.getPreviousContent()
+            val prevLessonContent = lessonContentViewModel.currentLessonContent
+            if (prevLessonContent == null) findNavController().navigate(R.id.action_materialFragment_to_homeFragment)
+            when (prevLessonContent?.type) {
+                1 -> findNavController().navigate(R.id.action_materialFragment_self)
+                2 -> findNavController().navigate(R.id.action_materialFragment_to_quizFragment)
+            }
         }
     }
 

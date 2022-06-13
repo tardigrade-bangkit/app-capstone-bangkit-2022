@@ -20,6 +20,12 @@ class LessonRepository(private val apiService: ApiService) {
     suspend fun getMultipleChoiceQuestion(token: String, question_id: Int) =
         apiService.getMultipleChoiceQuestion(token, question_id)
 
+    suspend fun getArrangeWordsQuestion(token: String, question_id: Int) =
+        apiService.getArrangeWordsQuestion(token, question_id)
+
+    suspend fun getShortAnswerQuestion(token: String, question_id: Int) =
+        apiService.getShortAnswerQuestion(token, question_id)
+
     suspend fun sendAnswer(token: String, listAnswer: List<Answer>) =
         apiService.sendAnswer(token, PostAnswerBody(listAnswer))
 }

@@ -71,16 +71,6 @@ data class GetQuizResponse(
 	val questions: List<QuizContent>
 )
 
-data class GetArrangeWordsResponse(
-	@field:SerializedName("multiple_choice")
-	val arrangeWordsQuestion: ArrangeWordsQuestion
-)
-
-data class GetShortAnswerResponse(
-	@field:SerializedName("multiple_choice")
-	val shortAnswerQuestion: ShortAnswerQuestion
-)
-
 data class PostAnswerResponse(
 	@field:SerializedName("score")
 	val score: Double,
