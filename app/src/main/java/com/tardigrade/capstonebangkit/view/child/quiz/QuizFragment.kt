@@ -1,7 +1,10 @@
 package com.tardigrade.capstonebangkit.view.child.quiz
 
 import android.content.pm.ActivityInfo
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +17,11 @@ import com.tardigrade.capstonebangkit.databinding.FragmentQuizBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar
 import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
+import java.lang.Exception
 
-class QuizFragment : Fragment() {
-    val viewModel by viewModels<QuizViewModel>() {
-        QuizViewModel.Factory(
-            LessonRepository(ApiConfig.getApiService()),
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
-//            requireContext().preferences.getToken()
-//                ?: error("must have token")
-        )
-    }
+class QuizFragment : Fragment(), MediaPlayer.OnPreparedListener {
+    private val viewModel : QuizViewModel by activityViewModels()
+    val mediaPlayer: MediaPlayer = MediaPlayer()
     val lessonContentViewModel: LessonContentViewModel by activityViewModels()
 
     private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
@@ -43,8 +41,17 @@ class QuizFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mediaPlayer.apply {
+            val attributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+            setAudioAttributes(attributes)
+            setOnPreparedListener{onPrepared(this)}
+        }
+
         viewModel.currentQuizContent.observe(viewLifecycleOwner) {
             if (it != null) {
+                Log.d("currentQuizContent", it.toString())
                 setQuizContent(it)
             }
         }
@@ -53,6 +60,7 @@ class QuizFragment : Fragment() {
             when(contents) {
                 is Result.Success -> {
                     viewModel.setCurrentQuizContent(contents.data[0])
+                    Log.d("listQuizContent", contents.toString())
                     listQuizContent = contents.data
                 }
                 is Result.Error -> {
@@ -60,7 +68,7 @@ class QuizFragment : Fragment() {
                     if (!error.isNullOrEmpty()) {
                         binding?.root?.let { view ->
                             showSnackbar(view, error, getString(com.tardigrade.capstonebangkit.R.string.try_again)) {
-                                lessonContentViewModel.currentLessonContent?.quizzesId?.let { viewModel.getQuiz(it) }
+                                lessonContentViewModel.currentLessonContent?.quizzesId?.let { viewModel.getQuiz(it, lessonRepository, token) }
                             }
                         }
                     }
@@ -71,29 +79,60 @@ class QuizFragment : Fragment() {
             }
         }
 
-        lessonContentViewModel.currentLessonContent?.quizzesId?.let { viewModel.getQuiz(it) }
+        lessonContentViewModel.currentLessonContent?.quizzesId?.let { viewModel.getQuiz(it, lessonRepository, token) }
     }
 
     private fun setQuizContent(content: QuizContent) {
         when(content.type) {
             0 -> {
-                childFragmentManager.commit {
-                    replace<MultipleChoiceQuizFragment>(binding!!.quizContentFragment.id)
-                    setReorderingAllowed(true)
-                    addToBackStack(null)
+                Log.d("setQuizContent", content.toString())
+                try {
+                    childFragmentManager.commit {
+                        replace<MultipleChoiceQuizFragment>(binding!!.quizContentFragment.id)
+                        setReorderingAllowed(true)
+                    }
+                } catch (e: InstantiationException) {
+                    Log.d("setQuizContent", e.toString())
                 }
             }
             1 -> {
+                Log.d("setQuizContent", content.toString())
+                try {
+                    childFragmentManager.commit {
+                        replace<ArrangeWordsQuizFragment>(binding!!.quizContentFragment.id)
+                        setReorderingAllowed(true)
+                    }
+                } catch (e: InstantiationException) {
+                    Log.d("setQuizContent", e.toString())
+                }
+            }
+            2 -> {
                 childFragmentManager.commit {
-                    replace<ArrangeWordsQuizFragment>(binding!!.quizContentFragment.id)
+                    replace<ShortAnswerQuizFragment>(binding!!.quizContentFragment.id)
                     setReorderingAllowed(true)
-                    addToBackStack(null)
                 }
             }
         }
     }
 
+    fun prepareAudio(audioUrl: String) {
+        Log.d("prepareAudio", audioUrl)
+        mediaPlayer.apply {
+            setDataSource(audioUrl)
+            setOnPreparedListener{onPrepared(this)}
+            prepareAsync()
+        }
+    }
+
+    override fun onPrepared(mediaPlayer: MediaPlayer) {
+        Log.d("onPrepared", "prepared")
+        mediaPlayer.start()
+    }
+
     fun nextQuestion() {
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+
         val currentIndex = listQuizContent?.indexOf(viewModel.currentQuizContent.value)
         if (currentIndex != null && currentIndex < (listQuizContent?.size?.minus(1) ?: 0)) {
             viewModel.setCurrentQuizContent(listQuizContent?.get(currentIndex + 1))
@@ -109,6 +148,9 @@ class QuizFragment : Fragment() {
     }
 
     fun previousQuestion() {
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+
         val currentIndex = listQuizContent?.indexOf(viewModel.currentQuizContent.value)
         if (currentIndex != null && currentIndex > 0) {
             viewModel.setCurrentQuizContent(listQuizContent?.get(currentIndex - 1))

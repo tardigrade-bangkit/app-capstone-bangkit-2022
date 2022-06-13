@@ -40,7 +40,7 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
 
     private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
     private val lessonRepository = LessonRepository(ApiConfig.getApiService())
-    private var mediaPlayer: MediaPlayer? = null
+    private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var audioUrl: String? = null
     private var binding: FragmentMaterialBinding? = null
     private var listMaterialContent: List<MaterialContent>? = null
@@ -56,6 +56,13 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mediaPlayer.apply {
+            val attributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+            setAudioAttributes(attributes)
+        }
 
         viewModel.currentMaterialContent.observe(viewLifecycleOwner) {
             Log.d("MaterialFragment", it.toString())
@@ -95,7 +102,7 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
             btnNextSlide.setOnClickListener {nextSlide()}
             btnPreviousSlide.setOnClickListener {previousSlide()}
             btnReplaySlide.setOnClickListener {
-                mediaPlayer?.apply {
+                mediaPlayer.apply {
                     stop()
                     prepareAudio()
                 }
@@ -129,12 +136,7 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
     }
 
     private fun prepareAudio() {
-        mediaPlayer = MediaPlayer()
-        mediaPlayer?.apply {
-            val attributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build()
-            setAudioAttributes(attributes)
+        mediaPlayer.apply {
             setDataSource(audioUrl)
             setOnPreparedListener{onPrepared(this)}
             prepareAsync()
@@ -147,9 +149,8 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
     }
 
     private fun nextSlide() {
-        mediaPlayer?.stop()
-        mediaPlayer?.release()
-        mediaPlayer = null
+        mediaPlayer.stop()
+        mediaPlayer.reset()
 
         val currentIndex = listMaterialContent?.indexOf(viewModel.currentMaterialContent.value)
         if (currentIndex != null && currentIndex < (listMaterialContent?.size?.minus(1) ?: 0)) {
@@ -166,6 +167,9 @@ class MaterialFragment : Fragment(), MediaPlayer.OnPreparedListener {
     }
 
     private fun previousSlide() {
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+
         val currentIndex = listMaterialContent?.indexOf(viewModel.currentMaterialContent.value)
         if (currentIndex != null && currentIndex > 0) {
             viewModel.setCurrentMaterialContent(listMaterialContent?.get(currentIndex - 1))

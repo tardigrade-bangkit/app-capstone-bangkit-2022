@@ -3,7 +3,10 @@ package com.tardigrade.capstonebangkit.view.child.quiz
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +20,30 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.chip.Chip
 import com.tardigrade.capstonebangkit.R
+import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.*
+import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentArrangeWordsQuizBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.child.material.MaterialViewModel
 
-class ArrangeWordsQuizFragment : Fragment() {
-    private val viewModel by viewModels<ArrangeWordsQuizViewModel>()
+class ArrangeWordsQuizFragment : Fragment(), MediaPlayer.OnPreparedListener {
+    private val viewModel by viewModels<ArrangeWordsQuizViewModel>() {
+        ArrangeWordsQuizViewModel.Factory(
+            LessonRepository(ApiConfig.getApiService()),
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6N30.tbrCFKYdTTrxgl5hSQFld2ErZhUjh8OicSkJ62z_rww"
+//            requireContext().preferences.getToken()
+//                ?: error("must have token")
+        )
+    }
+    private val quizViewModel : QuizViewModel by activityViewModels()
+    val mediaPlayer: MediaPlayer = MediaPlayer()
+    var answer: String? = null
+    var arrangeWordsId: Int? = null
+
     private var binding: FragmentArrangeWordsQuizBinding? = null
-    private var quizFragment: QuizFragment = this.parentFragment as QuizFragment
+    private var quizFragment: QuizFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +57,16 @@ class ArrangeWordsQuizFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mediaPlayer.apply {
+            val attributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+            setAudioAttributes(attributes)
+            setOnPreparedListener{onPrepared(this)}
+        }
+
+        quizFragment = this.parentFragment as QuizFragment
+
         viewModel.arrangeWordsQuestion.observe(viewLifecycleOwner) {
             when(it) {
                 is Result.Success -> {
@@ -49,7 +77,7 @@ class ArrangeWordsQuizFragment : Fragment() {
                     if (!error.isNullOrEmpty()) {
                         binding?.root?.let { view ->
                             showSnackbar(view, error, getString(R.string.try_again)) {
-                                viewModel.getArrangeWordsQuestion(quizFragment.viewModel.currentQuizContent.value?.arrangeWordsId!!)
+                                viewModel.getArrangeWordsQuestion(quizViewModel.quizContent?.arrangeWordsId!!)
                             }
                         }
                     }
@@ -62,15 +90,22 @@ class ArrangeWordsQuizFragment : Fragment() {
 
         viewModel.selectedWords.observe(viewLifecycleOwner) {
             val sentence = viewModel.getSentence()
-            Toast.makeText(context, sentence, Toast.LENGTH_SHORT).show()
+            answer = sentence
         }
 
-        viewModel.getArrangeWordsQuestion(quizFragment.viewModel.currentQuizContent.value?.arrangeWordsId!!)
+        arrangeWordsId = quizViewModel.quizContent?.arrangeWordsId!!
+        viewModel.getArrangeWordsQuestion(arrangeWordsId!!)
 
         binding?.apply {
-            btnNext.setOnClickListener { quizFragment.nextQuestion() }
-            btnPrevious.setOnClickListener { quizFragment.previousQuestion() }
-            btnBack.setOnClickListener { quizFragment.backToHome() }
+            btnNext.setOnClickListener {
+                quizFragment?.nextQuestion()
+                answer?.let { it1 -> quizViewModel.setAnswer(arrangeWordsId!!, it1) }
+            }
+            btnPrevious.setOnClickListener {
+                quizFragment?.previousQuestion()
+                answer?.let { it1 -> quizViewModel.setAnswer(arrangeWordsId!!, it1) }
+            }
+            btnBack.setOnClickListener { quizFragment?.backToHome() }
         }
     }
 
@@ -101,13 +136,26 @@ class ArrangeWordsQuizFragment : Fragment() {
         }
 
         binding?.apply{
-            with(quizFragment.lessonContentViewModel) {
+            with(quizFragment?.lessonContentViewModel) {
                 btnContentList.text = StringBuilder()
-                    .append(currentLesson?.title).append(" - ")
-                    .append(currentLessonContent?.title).append(" - ")
+                    .append(this?.currentLesson?.title ?: "").append(" - ")
+                    .append(this?.currentLessonContent?.title ?: "").append(" - ")
                     .append(content.order)
             }
         }
+    }
+
+    fun prepareAudio(audioUrl: String) {
+        mediaPlayer.apply {
+            setDataSource(audioUrl)
+            setOnPreparedListener{onPrepared(this)}
+            prepareAsync()
+        }
+    }
+
+    override fun onPrepared(mediaPlayer: MediaPlayer) {
+        Log.d("onPrepared", "prepared")
+        mediaPlayer.start()
     }
 
     private fun newAnswerChip(text: String) : Chip {
