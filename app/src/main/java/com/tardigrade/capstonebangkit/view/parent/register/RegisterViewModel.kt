@@ -21,6 +21,10 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
 
                 _registered.value = Result.Success(newUser.email)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _registered.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

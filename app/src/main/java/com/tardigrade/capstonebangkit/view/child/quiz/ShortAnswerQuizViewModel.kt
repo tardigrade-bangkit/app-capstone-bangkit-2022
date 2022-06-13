@@ -27,6 +27,10 @@ class ShortAnswerQuizViewModel(
 
                 _shortAnswerQuestion.value = Result.Success(shortAnswer)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _shortAnswerQuestion.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

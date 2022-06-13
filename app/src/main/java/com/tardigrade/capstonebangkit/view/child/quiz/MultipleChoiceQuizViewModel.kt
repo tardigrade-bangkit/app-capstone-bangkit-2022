@@ -27,6 +27,10 @@ class MultipleChoiceQuizViewModel(
 
                 _multipleChoiceQuestion.value = Result.Success(multipleChoice)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _multipleChoiceQuestion.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

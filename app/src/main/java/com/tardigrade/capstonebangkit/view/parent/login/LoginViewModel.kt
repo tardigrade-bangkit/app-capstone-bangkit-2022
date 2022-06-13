@@ -21,6 +21,10 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
                 _loggedIn.value = Result.Success(hasPin)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _loggedIn.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

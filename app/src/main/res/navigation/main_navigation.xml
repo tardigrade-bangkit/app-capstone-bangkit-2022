@@ -92,6 +92,9 @@
         <action
             android:id="@+id/action_childCreatedFragment_to_placementQuizFragment"
             app:destination="@id/placementQuizFragment" />
+        <argument
+            android:name="createdChild"
+            app:argType="com.tardigrade.capstonebangkit.data.model.ChildProfile" />
     </fragment>
     <fragment
         android:id="@+id/chooseChildFragment"
@@ -113,5 +116,10 @@
         <argument
             android:name="choosenChild"
             app:argType="com.tardigrade.capstonebangkit.data.model.ChildProfile" />
+        <action
+            android:id="@+id/action_placementQuizFragment_to_nav_dashboard"
+            app:destination="@id/nav_dashboard"
+            app:popUpTo="@id/nav_dashboard"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

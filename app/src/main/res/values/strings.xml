@@ -25,7 +25,7 @@
     <string name="edit_info_account">Ubah Informasi Akun</string>
     <string name="logout">Logout</string>
     <string name="statistic">Statistik</string>
-    <string name="to_children_area">Ke Anak-anak</string>
+    <string name="to_children_area">Ke area anak</string>
     <string name="profile">Profil</string>
     <string name="child_profile_add_title">Buat Profil Anak</string>
     <string name="child_profile_edit_title">Profil Anak</string>
@@ -37,7 +37,7 @@
     <string name="creation_success_head">Profil anak berhasil dibuat! Lanjutkan ke ujian kemampuan anak?</string>
     <string name="creation_success_body">Ujian kemampuan anak akan digunakan untuk menentukan materi sesuai kemampuan anak. Lanjutkan ke ujian?</string>
     <string name="child_test">Ujian Kemampuan Anak</string>
-    <string name="back_to_dashboard">Kembali ke Dahsboard</string>
+    <string name="back_to_dashboard">Kembali ke Dashboard</string>
     <string name="creation_success_image_desc">Ikon pembuatan profil anak berhasil</string>
     <string name="creation_success_title">Profil anak dibuat!</string>
     <string name="choose_child_title">Pilih Profil Anak</string>
@@ -72,4 +72,5 @@
     <string name="btn_action_text_audio">Rekam Jawaban</string>
     <string name="tv_warning_text_audio">Ini soal speaking! Rekam suara jawabamu jika sudah siap!</string>
     <string name="send_answers">Kumpulkan</string>
+    <string name="have_took_test">Ujian kemampuan anak selesai</string>
 </resources>

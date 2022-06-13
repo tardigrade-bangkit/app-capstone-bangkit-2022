@@ -8,7 +8,6 @@ import com.tardigrade.capstonebangkit.data.model.MaterialContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
-import com.tardigrade.capstonebangkit.view.child.home.HomeViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -35,6 +34,10 @@ class MaterialViewModel(
 
                 _listMaterialContent.value = Result.Success(material)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listMaterialContent.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

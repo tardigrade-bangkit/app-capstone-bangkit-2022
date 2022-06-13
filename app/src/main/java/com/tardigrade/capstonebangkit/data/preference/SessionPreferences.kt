@@ -2,7 +2,6 @@ package com.tardigrade.capstonebangkit.data.preference
 
 import android.content.Context
 import androidx.core.content.edit
-import com.tardigrade.capstonebangkit.data.model.ChildProfile
 
 class SessionPreferences (private val context: Context) {
     private val preferences = context

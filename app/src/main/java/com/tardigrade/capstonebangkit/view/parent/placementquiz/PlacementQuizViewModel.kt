@@ -1,26 +1,24 @@
 package com.tardigrade.capstonebangkit.view.parent.placementquiz
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
-import com.tardigrade.capstonebangkit.data.api.NewUser
 import com.tardigrade.capstonebangkit.data.api.PostAnswerResponse
 import com.tardigrade.capstonebangkit.data.model.Answer
+import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import com.tardigrade.capstonebangkit.data.model.QuizContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.data.repository.ProfileRepository
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getErrorResponse
-import com.tardigrade.capstonebangkit.view.parent.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class PlacementQuizViewModel(
     private val lessonRepository: LessonRepository,
     private val token: String,
-    private val childId: Int
-) : ViewModel() {
+    private val profileRepository: ProfileRepository,
+
+    ) : ViewModel() {
     private val _listQuizContent = MutableLiveData<Result<List<QuizContent>>>()
     val listQuizContent: LiveData<Result<List<QuizContent>>> = _listQuizContent
 
@@ -29,6 +27,9 @@ class PlacementQuizViewModel(
 
     private val _sendAnswerResult = MutableLiveData<Result<PostAnswerResponse>>()
     val sendAnswerResult: LiveData<Result<PostAnswerResponse>> = _sendAnswerResult
+
+    private val _updateChildResult = MutableLiveData<Result<Unit>>()
+    val updateChildResult: LiveData<Result<Unit>> = _updateChildResult
 
     init {
         getListQuestion()
@@ -48,6 +49,10 @@ class PlacementQuizViewModel(
                 _listQuizContent.value = Result.Success(quizzes)
                 getQuestion(quizzes[0])
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listQuizContent.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -68,6 +73,10 @@ class PlacementQuizViewModel(
 
                 _currentQuestion.value = Result.Success(question)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _currentQuestion.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -88,6 +97,10 @@ class PlacementQuizViewModel(
 
                 _sendAnswerResult.value = Result.Success(result)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _sendAnswerResult.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -99,15 +112,39 @@ class PlacementQuizViewModel(
         }
     }
 
+    fun updateChild(childProfile: ChildProfile) {
+        _updateChildResult.value = Result.Loading
+
+        viewModelScope.launch {
+            try {
+                profileRepository.updateChild(token, childProfile)
+
+                _updateChildResult.value = Result.Success(Unit)
+            } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _updateChildResult.value = Result.Error("Server error")
+                }
+
+                httpEx.response()?.errorBody()?.let {
+                    val errorResponse = getErrorResponse(it)
+
+                    _updateChildResult.value = Result.Error(errorResponse.msg)
+                }
+            } catch (genericEx: Exception) {
+                _updateChildResult.value = Result.Error(genericEx.message ?: "")
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(
         private val lessonRepository: LessonRepository,
         private val token: String,
-        private val childId: Int
+        private val profileRepository: ProfileRepository
     ) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return PlacementQuizViewModel(lessonRepository, token, childId) as T
+            return PlacementQuizViewModel(lessonRepository, token, profileRepository) as T
         }
     }
 }

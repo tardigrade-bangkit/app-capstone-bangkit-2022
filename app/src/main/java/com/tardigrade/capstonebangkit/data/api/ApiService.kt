@@ -3,7 +3,6 @@ package com.tardigrade.capstonebangkit.data.api
 import com.tardigrade.capstonebangkit.data.model.ArrangeWordsQuestion
 import com.tardigrade.capstonebangkit.data.model.MultipleChoiceQuestion
 import com.tardigrade.capstonebangkit.data.model.ShortAnswerQuestion
-import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -51,7 +50,7 @@ interface ApiService {
     suspend fun addChildren(
         @Header("x-access-token") token: String,
         @Body newChild: AddChild
-    ): GenericResponse
+    ): AddChildrenResponse
 
     @GET("progress/{child_id}")
     suspend fun getChildrenLesson(
@@ -141,4 +140,12 @@ interface ApiService {
         @Header("x-access-token") token: String,
         @Body answer: PostAnswerBody
     ): PostAnswerResponse
+
+    @Headers("Content-Type: application/json")
+    @PUT("children/{children_id}")
+    suspend fun updateChild(
+        @Header("x-access-token") token: String,
+        @Path("children_id") childrenId: Int,
+        @Body updateChildrenData: UpdateChildrenData
+    ): GenericResponse
 }

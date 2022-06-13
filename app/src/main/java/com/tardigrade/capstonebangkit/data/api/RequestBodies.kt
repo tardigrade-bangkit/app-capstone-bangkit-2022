@@ -52,3 +52,8 @@ data class PostAnswerBody(
     @field:SerializedName("list_answer")
     val listAnswer: List<Answer>
 )
+
+data class UpdateChildrenData(
+    @field:SerializedName("level")
+    val level: Int
+)

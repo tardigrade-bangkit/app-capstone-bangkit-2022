@@ -27,7 +27,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -37,6 +36,7 @@ import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentMultipleChoiceQuizBinding
+import com.tardigrade.capstonebangkit.data.model.ShortAnswerQuestion
 import com.tardigrade.capstonebangkit.databinding.FragmentShortAnswerQuizBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar

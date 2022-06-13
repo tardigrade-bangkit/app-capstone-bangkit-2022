@@ -5,8 +5,6 @@ import com.tardigrade.capstonebangkit.data.api.LoginData
 import com.tardigrade.capstonebangkit.data.api.NewUser
 import com.tardigrade.capstonebangkit.data.api.PinData
 import com.tardigrade.capstonebangkit.data.preference.SessionPreferences
-import com.tardigrade.capstonebangkit.utils.toRequestBody
-import org.json.JSONObject
 
 class AuthRepository(
     private val apiService: ApiService,

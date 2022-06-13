@@ -3,6 +3,7 @@ package com.tardigrade.capstonebangkit.data.repository
 import android.util.Log
 import com.tardigrade.capstonebangkit.data.api.AddChild
 import com.tardigrade.capstonebangkit.data.api.ApiService
+import com.tardigrade.capstonebangkit.data.api.UpdateChildrenData
 import com.tardigrade.capstonebangkit.data.model.ChildProfile
 import com.tardigrade.capstonebangkit.data.model.DailyUsage
 import com.tardigrade.capstonebangkit.utils.getMidnight
@@ -17,9 +18,8 @@ class ProfileRepository(private val apiService: ApiService) {
 
     suspend fun getSelf(token: String) = apiService.getSelf(token).user
 
-    suspend fun addChildren(token: String, child: AddChild) {
-        apiService.addChildren(token, child)
-    }
+    suspend fun addChildren(token: String, child: AddChild) =
+        apiService.addChildren(token, child).new_child
 
     suspend fun getChildrenProgress(token: String, child: ChildProfile) =
         apiService.getChildrenLesson(token, child.id).lessons
@@ -43,9 +43,13 @@ class ProfileRepository(private val apiService: ApiService) {
                     )
                 )
 
-                Log.d("TAG", "getChildrenDailyUsages: ${DailyUsage(
-                    date = cal.time
-                )}")
+                Log.d(
+                    "TAG", "getChildrenDailyUsages: ${
+                        DailyUsage(
+                            date = cal.time
+                        )
+                    }"
+                )
             }
         }
 
@@ -87,5 +91,9 @@ class ProfileRepository(private val apiService: ApiService) {
         }
 
         return dailyUsages
+    }
+
+    suspend fun updateChild(token: String, child: ChildProfile) {
+        apiService.updateChild(token, child.id, UpdateChildrenData(child.level))
     }
 }

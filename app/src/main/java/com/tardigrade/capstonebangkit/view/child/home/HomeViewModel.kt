@@ -27,6 +27,10 @@ class HomeViewModel(
 
                 _listLesson.value = Result.Success(lessons)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listLesson.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

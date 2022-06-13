@@ -31,6 +31,10 @@ class ProfileViewModel(
             try {
                 _myProfile.value = Result.Success(profileRepository.getSelf(token))
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _myProfile.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -51,6 +55,10 @@ class ProfileViewModel(
 
                 _children.value = Result.Success(children)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _children.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

@@ -21,9 +21,9 @@ import com.tardigrade.capstonebangkit.data.model.LessonContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentHomeBinding
 import com.tardigrade.capstonebangkit.misc.MarginItemDecoration
-import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.child.LessonContentViewModel
 
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>() {

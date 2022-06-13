@@ -1,16 +1,8 @@
 package com.tardigrade.capstonebangkit.adapter
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
-import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.model.Badge
 import com.tardigrade.capstonebangkit.databinding.LatestBadgesItemBinding
 import com.tardigrade.capstonebangkit.utils.loadImage

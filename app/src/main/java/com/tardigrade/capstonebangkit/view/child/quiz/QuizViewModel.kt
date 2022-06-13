@@ -4,6 +4,10 @@ import androidx.lifecycle.*
 import com.tardigrade.capstonebangkit.data.api.PostAnswerResponse
 import com.tardigrade.capstonebangkit.data.model.Answer
 import com.tardigrade.capstonebangkit.data.model.MaterialContent
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.tardigrade.capstonebangkit.data.model.QuizContent
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
 import com.tardigrade.capstonebangkit.misc.Result
@@ -60,6 +64,10 @@ class QuizViewModel : ViewModel() {
 
                 _listQuizContent.value = Result.Success(quiz)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _listQuizContent.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 

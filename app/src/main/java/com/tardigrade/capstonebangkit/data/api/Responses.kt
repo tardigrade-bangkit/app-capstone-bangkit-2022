@@ -78,3 +78,8 @@ data class PostAnswerResponse(
 	@field:SerializedName("correct_answer")
 	val correctAnswer: Int
 )
+
+data class AddChildrenResponse(
+	@field:SerializedName("new_child")
+	val new_child: ChildProfile
+)

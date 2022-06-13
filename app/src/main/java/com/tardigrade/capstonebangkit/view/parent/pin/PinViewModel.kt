@@ -1,6 +1,5 @@
 package com.tardigrade.capstonebangkit.view.parent.pin
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.tardigrade.capstonebangkit.data.api.PinData
 import com.tardigrade.capstonebangkit.data.repository.AuthRepository
@@ -22,6 +21,10 @@ class PinViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
                 _pinResult.value = Result.Success(ADD_PIN)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _pinResult.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
 
@@ -42,9 +45,12 @@ class PinViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
                 _pinResult.value = Result.Success(CHECK_PIN)
             } catch (httpEx: HttpException) {
+                if (httpEx.code() == 500) {
+                    _pinResult.value = Result.Error("Server error")
+                }
+
                 httpEx.response()?.errorBody()?.let {
                     val errorResponse = getErrorResponse(it)
-                    Log.d("TAG", "checkPin: $errorResponse")
 
                     _pinResult.value = Result.Error(errorResponse.msg)
                 }

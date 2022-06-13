@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.login
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.tardigrade.capstonebangkit.data.repository.AuthRepository
 import com.tardigrade.capstonebangkit.databinding.FragmentLoginBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.*
+import com.tardigrade.capstonebangkit.view.ChildActivity
 import com.tardigrade.capstonebangkit.view.parent.register.RegisterFragment
 
 internal val Context.preferences: SessionPreferences
@@ -49,6 +51,12 @@ class LoginFragment : Fragment() {
         showLoading(false)
 
         val preferences = requireContext().preferences
+
+        if(preferences.getChosenChild() != null) {
+            startActivity(Intent(requireContext(), ChildActivity::class.java))
+            activity?.finish()
+        }
+
         if(!preferences.getToken().isNullOrEmpty()) {
             loginSuccess(preferences.hasPin())
         }

@@ -1,11 +1,11 @@
 package com.tardigrade.capstonebangkit.view.parent.choosechild
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +19,7 @@ import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.utils.setVisible
 import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.ChildActivity
 import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class ChooseChildFragment : Fragment() {
@@ -46,7 +47,7 @@ class ChooseChildFragment : Fragment() {
         showChildrenLoading(false)
 
         viewModel.children.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     showChildrenLoading(false)
 
@@ -87,18 +88,21 @@ class ChooseChildFragment : Fragment() {
                             AlertDialog.Builder(requireContext()).apply {
                                 setMessage(R.string.no_test_warning)
                                 setPositiveButton(R.string.take_test) { _, _ ->
-                                    Toast.makeText(
-                                        context,
-                                        "Test Choosen: $child",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    val navigatePlacement =
+                                        ChooseChildFragmentDirections.actionChooseChildFragmentToPlacementQuizFragment(
+                                            child
+                                        )
+
+                                    findNavController().navigate(navigatePlacement)
                                 }
                                 setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                                     dialogInterface.cancel()
                                 }
                             }.create().show()
                         } else {
-                            Toast.makeText(context, "Choosen: $child", Toast.LENGTH_SHORT).show()
+                            requireContext().preferences.setChosenChild(child.id)
+                            startActivity(Intent(requireContext(), ChildActivity::class.java))
+                            activity?.finish()
                         }
                     }
 

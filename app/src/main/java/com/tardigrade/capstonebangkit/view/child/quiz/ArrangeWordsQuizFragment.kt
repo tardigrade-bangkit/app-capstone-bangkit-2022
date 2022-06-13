@@ -23,6 +23,7 @@ import com.tardigrade.capstonebangkit.R
 import com.tardigrade.capstonebangkit.data.api.ApiConfig
 import com.tardigrade.capstonebangkit.data.model.*
 import com.tardigrade.capstonebangkit.data.repository.LessonRepository
+import com.tardigrade.capstonebangkit.data.model.ArrangeWordsQuestion
 import com.tardigrade.capstonebangkit.databinding.FragmentArrangeWordsQuizBinding
 import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.showSnackbar
