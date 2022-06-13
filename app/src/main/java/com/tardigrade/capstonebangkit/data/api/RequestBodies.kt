@@ -2,6 +2,7 @@ package com.tardigrade.capstonebangkit.data.api
 
 import com.google.gson.annotations.SerializedName
 import com.tardigrade.capstonebangkit.data.model.Answer
+import com.tardigrade.capstonebangkit.data.model.ChildProfile
 
 data class AddChild(
     @field:SerializedName("name")
@@ -51,4 +52,9 @@ data class AddEndUsageData(
 data class PostAnswerBody(
     @field:SerializedName("list_answer")
     val listAnswer: List<Answer>
+)
+
+data class UpdateChildrenData(
+    @field:SerializedName("level")
+    val level: Int
 )

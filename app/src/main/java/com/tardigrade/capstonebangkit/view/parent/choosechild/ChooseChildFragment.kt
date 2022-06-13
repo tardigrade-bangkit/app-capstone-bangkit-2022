@@ -46,7 +46,7 @@ class ChooseChildFragment : Fragment() {
         showChildrenLoading(false)
 
         viewModel.children.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     showChildrenLoading(false)
 
@@ -87,11 +87,12 @@ class ChooseChildFragment : Fragment() {
                             AlertDialog.Builder(requireContext()).apply {
                                 setMessage(R.string.no_test_warning)
                                 setPositiveButton(R.string.take_test) { _, _ ->
-                                    Toast.makeText(
-                                        context,
-                                        "Test Choosen: $child",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    val navigatePlacement =
+                                        ChooseChildFragmentDirections.actionChooseChildFragmentToPlacementQuizFragment(
+                                            child
+                                        )
+
+                                    findNavController().navigate(navigatePlacement)
                                 }
                                 setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                                     dialogInterface.cancel()

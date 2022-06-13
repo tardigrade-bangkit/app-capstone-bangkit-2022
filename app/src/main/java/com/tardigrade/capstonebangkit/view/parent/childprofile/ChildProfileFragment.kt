@@ -109,7 +109,7 @@ class ChildProfileFragment : Fragment() {
                         findNavController()
                             .navigate(
                                 ChildProfileFragmentDirections
-                                    .actionChildProfileFragmentToChildCreatedFragment()
+                                    .actionChildProfileFragmentToChildCreatedFragment(it.data)
                             )
                     }
                     is Result.Error -> {

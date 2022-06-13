@@ -71,11 +71,6 @@ data class GetQuizResponse(
 	val questions: List<QuizContent>
 )
 
-data class GetMultipleChoiceResponse(
-	@field:SerializedName("multiple_choice")
-	val multipleChoiceQuestion: MultipleChoiceQuestion
-)
-
 data class GetArrangeWordsResponse(
 	@field:SerializedName("multiple_choice")
 	val arrangeWordsQuestion: ArrangeWordsQuestion
@@ -92,4 +87,9 @@ data class PostAnswerResponse(
 
 	@field:SerializedName("correct_answer")
 	val correctAnswer: Int
+)
+
+data class AddChildrenResponse(
+	@field:SerializedName("new_child")
+	val new_child: ChildProfile
 )

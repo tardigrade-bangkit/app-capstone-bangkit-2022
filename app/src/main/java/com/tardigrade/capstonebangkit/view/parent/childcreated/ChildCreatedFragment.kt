@@ -26,16 +26,28 @@ class ChildCreatedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val createdChild = ChildCreatedFragmentArgs.fromBundle(arguments as Bundle).createdChild
+
         getActionBar(activity)?.apply {
             show()
             setTitle(R.string.creation_success_title)
         }
 
         binding?.apply {
+            takeTestBtn.setOnClickListener {
+                findNavController()
+                    .navigate(
+                        ChildCreatedFragmentDirections
+                            .actionChildCreatedFragmentToPlacementQuizFragment(createdChild)
+                    )
+            }
+
             dashboardBtn.setOnClickListener {
                 findNavController()
-                    .navigate(ChildCreatedFragmentDirections
-                        .actionChildCreatedFragmentToNavDashboard())
+                    .navigate(
+                        ChildCreatedFragmentDirections
+                            .actionChildCreatedFragmentToNavDashboard()
+                    )
             }
         }
     }

@@ -49,7 +49,7 @@ interface ApiService {
     suspend fun addChildren(
         @Header("x-access-token") token: String,
         @Body newChild: AddChild
-    ): GenericResponse
+    ): AddChildrenResponse
 
     @GET("progress/{child_id}")
     suspend fun getChildrenLesson(
@@ -139,4 +139,12 @@ interface ApiService {
         @Header("x-access-token") token: String,
         @Body answer: PostAnswerBody
     ): PostAnswerResponse
+
+    @Headers("Content-Type: application/json")
+    @PUT("children/{children_id}")
+    suspend fun updateChild(
+        @Header("x-access-token") token: String,
+        @Path("children_id") childrenId: Int,
+        @Body updateChildrenData: UpdateChildrenData
+    ): GenericResponse
 }
