@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.placementquiz
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.utils.loadImage
 import com.tardigrade.capstonebangkit.utils.setVisible
 import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.ChildActivity
 import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class PlacementQuizFragment : Fragment() {
@@ -184,6 +186,9 @@ class PlacementQuizFragment : Fragment() {
                         AlertDialog.Builder(requireContext()).apply {
                             setMessage(R.string.have_took_test)
                             setPositiveButton(R.string.to_children_area) { _, _ ->
+                                requireContext().preferences.setChosenChild(chosenChild?.id ?: error("must have chosen child"))
+                                startActivity(Intent(requireContext(), ChildActivity::class.java))
+                                activity?.finish()
                             }
                             setNegativeButton(R.string.back_to_dashboard) { _, _ ->
                                 findNavController().navigate(R.id.action_placementQuizFragment_to_nav_dashboard)

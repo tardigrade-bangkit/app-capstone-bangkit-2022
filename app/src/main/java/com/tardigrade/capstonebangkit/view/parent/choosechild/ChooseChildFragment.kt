@@ -1,6 +1,7 @@
 package com.tardigrade.capstonebangkit.view.parent.choosechild
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import com.tardigrade.capstonebangkit.misc.Result
 import com.tardigrade.capstonebangkit.utils.getActionBar
 import com.tardigrade.capstonebangkit.utils.setVisible
 import com.tardigrade.capstonebangkit.utils.showSnackbar
+import com.tardigrade.capstonebangkit.view.ChildActivity
 import com.tardigrade.capstonebangkit.view.parent.login.preferences
 
 class ChooseChildFragment : Fragment() {
@@ -99,7 +101,9 @@ class ChooseChildFragment : Fragment() {
                                 }
                             }.create().show()
                         } else {
-                            Toast.makeText(context, "Choosen: $child", Toast.LENGTH_SHORT).show()
+                            requireContext().preferences.setChosenChild(child.id)
+                            startActivity(Intent(requireContext(), ChildActivity::class.java))
+                            activity?.finish()
                         }
                     }
 
